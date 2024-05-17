@@ -1,0 +1,16 @@
+{% set pri = 1 %}{% for product in microdata_products %}
+{% if related_block%}
+<span id="related-product-{{ pri }}" itemprop="isRelatedTo" itemscope itemtype="http://schema.org/Product">
+{% else %}
+<span itemprop="itemListElement" itemscope itemtype="http://schema.org/Product">
+{% endif %}
+<meta itemprop="name" content="{{ product.name }}" />
+<meta itemprop="description" content="{{ product.microdata_description }}" />
+<link itemprop="url" href="{{ product.href }}" />
+<link itemprop="image" href="{{ product.thumb }}" />
+<span itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+<meta itemprop="priceCurrency" content="{{ microdata_code }}" />
+<meta itemprop="price" content="{{ product.microdata_price }}" />
+</span>
+</span>
+{% set pri = pri + 1 %}{% endfor %}

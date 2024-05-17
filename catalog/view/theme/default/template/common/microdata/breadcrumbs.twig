@@ -1,0 +1,37 @@
+{% if microdata_breadcrumbs %}
+{% if config_item_breadcrumb %}
+{% if config_item_syntax == "ld" or config_item_syntax == "all"%}
+<script type="application/ld+json">
+{
+"@context": "http://schema.org",
+"@type": "BreadcrumbList",
+"itemListElement": [{% set bi = 1 %}
+{% for breadcrumb in microdata_breadcrumbs %} {
+"@type": "ListItem",
+"position": {{ bi }},
+"item": {
+"@id": "{{ breadcrumb.href }}",
+"name": "{{ breadcrumb.text }}"
+}
+}
+{% if bi != microdata_breadcrumbs|length %},{% endif %}
+        {% set bi = bi + 1 %}
+{% endfor %}]
+}
+</script>
+{% endif %}
+{% if config_item_syntax == "md" or config_item_syntax == "all"%}
+<span itemscope itemtype="http://schema.org/BreadcrumbList">
+{% set bi = 1 %}
+        {% for breadcrumb in microdata_breadcrumbs %}
+        <span itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+        <link itemprop="item" href="{{ breadcrumb.href }}">
+        <meta itemprop="name" content="{{ breadcrumb.text }}" />
+        <meta itemprop="position" content="{{ bi }}" />
+        </span>
+        {% set bi = bi + 1 %}
+        {% endfor %}
+</span>
+{% endif %}
+{% endif %}
+{% endif %}

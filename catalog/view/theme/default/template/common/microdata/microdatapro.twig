@@ -1,0 +1,409 @@
+{% if (status) %}
+    {% if (breadcrumbs is defined and breadcrumbs) %}{{ breadcrumbs }}{% endif %}
+    {% if (config_company) %}
+        {% if (config_company_syntax == "ld" or config_company_syntax == "all") %}
+            <script type="application/ld+json">
+{
+"@context": "http://schema.org",
+"@type": "Organization",
+"url": "{{ microdata_base_url }}",
+"name": "{{ microdata_name }}",
+"email": "{{ microdata_email }}",
+"logo": "{{ microdata_logo }}",
+{% if (company_meta_description) %}"description": "{{ company_meta_description }}",{% endif %}
+{% if (microdata_address_1 and microdata_address_2 and microdata_address_3) %}
+"address": {
+"@type": "PostalAddress",
+"addressLocality": "{{ microdata_address_1 }}",
+"postalCode": "{{ microdata_address_2 }}",
+"streetAddress": "{{ microdata_address_3 }}"
+},
+{% endif %}
+{% if (company_rating_count and company_show_rating) %}
+"aggregateRating": {
+"@type": "AggregateRating",
+"ratingValue": "{{ company_rating_value }}",
+"reviewCount": "{{ company_rating_count }}"
+},{% endif %}
+"potentialAction": {
+"@type": "SearchAction",
+"target": "{{ microdata_base_url }}index.php?route=product/search&search={search_term_string}",
+"query-input": "required name=search_term_string"
+}{% if (microdata_phones) %},
+"contactPoint" : [
+{% set pi = 1 %}
+{% for phone in microdata_phones %}{
+"@type" : "ContactPoint",
+"telephone" : "{{ phone }}",
+"contactType" : "customer service"
+}
+{% if (pi != (microdata_phones|length)) %},{% endif %}
+                {% set pi = pi + 1 %} {% endfor %}]{% endif %}
+{% if (microdata_groups) %},
+"sameAs" : [
+{% set gi = 1 %}
+{% for group in microdata_groups %}
+"{{ group }}"{% if (gi != (microdata_groups)|length) %},{% endif %}
+                {% set gi = gi + 1 %} {% endfor %}
+]{% endif %}
+}
+</script>
+        {% endif %}
+        {% if (config_company_syntax == "md" or config_company_syntax == "all") %}
+            <span itemscope itemtype="http://schema.org/Organization">
+<meta itemprop="name" content="{{ microdata_name }}" />
+<link itemprop="url" href="{{ microdata_base_url }}" />
+<link itemprop="logo" href="{{ microdata_logo }}" />
+{% if (company_meta_description) %}<meta itemprop="description" content="{{ company_meta_description }}" />{% endif %}
+<meta itemprop="email" content="{{ microdata_email }}" />
+{% if (microdata_address_1 and microdata_address_2 and microdata_address_3) %}
+    <span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+<meta itemprop="addressLocality" content="{{ microdata_address_1 }}" />
+<meta itemprop="postalCode" content="{{ microdata_address_2 }}" />
+<meta itemprop="streetAddress" content="{{ microdata_address_3 }}" />
+</span>
+{% endif %}
+                {% if (microdata_phones) %}
+                    {% for phone in microdata_phones %}
+                        <meta itemprop="telephone" content="{{ phone }}" />
+                    {% endfor %}
+                {% endif %}
+                {% if (company_rating_count) %}
+                    <span itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+<meta itemprop="ratingValue" content="{{ company_rating_value }}">
+<meta itemprop="reviewCount" content="{{ company_rating_count }}">
+</span>
+                {% endif %}
+                {% if (microdata_groups) %}
+                    {% for group in microdata_groups %}
+                        <link itemprop="sameAs" href="{{ group }}" />
+                    {% endfor %}
+                {% endif %}
+<form itemprop="potentialAction" itemscope itemtype="http://schema.org/SearchAction">
+<meta itemprop="target" content="{{ microdata_base_url }}index.php?route=product/search&search={search_term_string}"/>
+<input itemprop="query-input" type="text" required name="search_term_string" style="display:none;"/>
+</form>
+</span>
+        {% endif %}
+    {% endif %}
+    {% if (microdata_route_product and config_product_page and product_info is defined and b) %}
+        {% if (config_item_syntax == "ld" or config_item_syntax == "all") %}
+            <script type="application/ld+json">
+{
+"@context": "http://schema.org",
+"@type": "Product",
+"url": "{{ microdata_url }}",
+{% if (microdata_breadcrumbs is defined) %}
+                {% if (microdata_breadcrumbs[(microdata_breadcrumbs)|length - 2]['text']) and ((microdata_breadcrumbs)|length - 2) != 0 %}
+"category": "{{ microdata_breadcrumbsmicrodata_breadcrumbs-2['text'] }}",
+{% endif %}
+{% endif %}
+{% if (microdata_popup is defined and microdata_popup is not empty) %}
+"image": "{{ microdata_popup }}",
+{% endif %}
+{% if (microdata_manufacturer is defined and microdata_manufacturer is not empty) %}
+"brand": "{{ microdata_manufacturer }}",
+"manufacturer": "{{ microdata_manufacturer }}",
+{% endif %}{% if (microdata_model is defined and microdata_model is not empty) %}
+"model": "{{ microdata_model }}",
+{% endif %}{% if (microdata_upc is defined and microdata_upc is not empty) %}
+"gtin12": "{{ microdata_upc }}",
+{% endif %}{% if (microdata_ean is defined and microdata_ean is not empty) %}
+"gtin8": "{{ microdata_ean }}",
+{% endif %}{% if (microdata_isbn is defined and microdata_isbn is not empty) %}
+"productID": "{{ microdata_isbn }}",
+{% endif %}{% if (microdata_mpn is defined and microdata_mpn is not empty) %}
+"mpn": "{{ microdata_mpn }}",
+{% endif %}{% if (microdata_sku is defined and microdata_sku is not empty) %}
+"sku": "{{ microdata_sku }}",
+{% endif %}{% if (microdata_review_total is defined and microdata_review_total is not empty) %}
+"aggregateRating": {
+"@type": "AggregateRating",
+"ratingValue": "{{ microdata_total_rating_value }}",
+"reviewCount": "{{ microdata_review_total }}"
+},{% endif %}{% if (microdata_description is defined and microdata_description is not empty) %}
+"description": "{{ microdata_description }}",
+{% endif %}{% if (microdata_heading_title is defined and microdata_heading_title is not empty) %}
+"name": "{{ microdata_heading_title }}",
+{% endif %}
+"offers": {
+"@type": "Offer",
+{% if (microdata_stock is defined) %}
+"availability": "http://schema.org/{{ microdata_stock > 0?"InStock":"OutOfStock" }}",
+{% endif %}
+{% if (microdata_price is defined and microdata_price is not empty) %}
+"price": "{{ microdata_price }}",
+{% endif %}
+"priceCurrency": "{{ microdata_code }}",
+"priceValidUntil": "2030-01-01",
+"url": "{{ microdata_url }}"
+}{% if (microdata_reviews is defined and microdata_reviews and config_product_reviews) %},
+"review": [
+{% set ri = 1 %} {% for review_item in microdata_reviews %}
+{
+"@type": "Review",
+"author": "{{ review_item['author'] }}",
+"datePublished": "{{ review_item['date_added'] }}",
+"description": "{{ review_item['text'] }}",
+"reviewRating": {
+"@type": "Rating",
+"bestRating": "5",
+"ratingValue": "{{ review_item['rating'] }}",
+"worstRating": "1"
+}
+}{% if (ri != (microdata_reviews)|length) %},{% endif %}{% set ri = ri + 1 %} {% endfor %}
+]{% endif %}
+{% if (microdata_products_json is defined and microdata_products_json and config_product_related) %}
+,"isRelatedTo": [
+{{ microdata_products_json }}
+]
+{% endif %}
+{% if (microdata_attribute_groups is defined) %}
+                {% if (microdata_attribute_groups and config_product_attribute) %}
+,"additionalProperty":[
+{% set ag = 1 %} {% for attribute_group in microdata_attribute_groups %}
+                {% set ai = 1 %} {% for attribute in attribute_group['attribute'] %}
+{
+"@type": "PropertyValue",
+"name": "{{ attribute['name'] }}",
+"value": "{{ attribute['text'] }}"
+}{% if (ai != (attribute_group['attribute'])|length or ag != (microdata_attribute_groups)|length) %},{% endif %}
+                {% set ai = ai + 1 %} {% endfor %}
+                {% set ag = ag + 1 %} {% endfor %}
+]
+{% endif %}
+                {% endif %}
+}
+</script>
+        {% endif %}
+        {% if (config_item_syntax == "md" or config_item_syntax == "all") %}
+            <span itemscope itemtype="http://schema.org/Product">
+<meta itemprop="name" content="{{ microdata_heading_title }}" />
+<link itemprop="url" href="{{ microdata_url }}" />
+{% if (microdata_popup is defined and microdata_popup is not empty) %}
+    <link itemprop="image" href="{{ microdata_popup }}" />
+{% endif %}{% if (microdata_manufacturer is defined and microdata_manufacturer is not empty) %}
+                    <meta itemprop="brand" content="{{ microdata_manufacturer }}" />
+                    <meta itemprop="manufacturer" content="{{ microdata_manufacturer }}" />
+                {% endif %}{% if (microdata_model is defined and microdata_model is not empty) %}
+                    <meta itemprop="model" content="{{ microdata_model }}" />
+                {% endif %}{% if (microdata_upc is defined and microdata_upc is not empty) %}
+                    <meta itemprop="gtin12" content="{{ microdata_upc }}" />
+                {% endif %}{% if (microdata_ean is defined and microdata_ean is not empty) %}
+                    <meta itemprop="gtin8" content="{{ microdata_ean }}" />
+                {% endif %}{% if (microdata_isbn is defined and microdata_isbn is not empty) %}
+                    <meta itemprop="productID" content="{{ microdata_isbn }}" />
+                {% endif %}{% if (microdata_mpn is defined and microdata_mpn is not empty) %}
+                    <meta itemprop="mpn" content="{{ microdata_mpn }}" />
+                {% endif %}{% if (microdata_sku is defined and microdata_sku is not empty) %}
+                    <meta itemprop="sku" content="{{ microdata_sku }}" />
+                {% endif %}{% if (microdata_breadcrumbs is defined) %}{% if (microdata_breadcrumbs[(microdata_breadcrumbs)|length-2]['text']) and ((microdata_breadcrumbs)|length-2) != 0 %}
+                    <meta itemprop="category" content="{{ microdata_breadcrumbsmicrodata_breadcrumbs|length-2['text'] }}" />
+                {% endif %}{% endif %}{% if (microdata_review_total is defined and microdata_review_total is not empty) %}
+                    <span itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+<meta itemprop="ratingValue" content="{{ microdata_total_rating_value }}">
+<meta itemprop="reviewCount" content="{{ microdata_review_total }}">
+</span>
+                {% endif %}
+<span itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+<meta itemprop="priceCurrency" content="{{ microdata_code }}" />
+<meta itemprop="priceValidUntil" content="2030-01-01" />
+<meta itemprop="url" content="{{ microdata_url }}" />
+{% if (microdata_price is defined and microdata_price is not empty) %}
+    <meta itemprop="price" content="{{ microdata_price }}" />
+{% endif %}
+    {% if (microdata_stock is defined) %}
+        <link itemprop="availability" href="http://schema.org/{{ microdata_stock > 0?"InStock":"OutOfStock" }}" />
+    {% endif %}
+</span>
+<meta itemprop="description" content="{{ microdata_description }}" />
+{% if (microdata_reviews is defined and microdata_reviews and config_product_reviews) %}
+    {% for review_item in microdata_reviews %}
+        <span itemprop="review" itemscope itemtype="http://schema.org/Review">
+<meta itemprop="author" content="{{ review_item['author'] }}" />
+<meta itemprop="datePublished" content="{{ review_item['date_added'] }}" />
+<span itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
+<meta itemprop="worstRating" content = "1" />
+<meta itemprop="ratingValue" content="{{ review_item['rating'] }}" />
+<meta itemprop="bestRating" content="5" />
+</span>
+<meta itemprop="description" content="{{ review_item['text'] }}" />
+</span>
+    {% endfor %}
+{% endif %}
+                {% if (microdata_products_microdata is defined and microdata_products_microdata and config_product_related) %}
+                    {{ microdata_products_microdata }}
+                {% endif %}
+                {% if (microdata_attribute_groups is defined and microdata_attribute_groups and config_product_attribute) %}
+                    {% for attribute_group in microdata_attribute_groups %}
+                        {% for attribute in attribute_group['attribute'] %}
+                            <span itemprop="additionalProperty" itemscope itemtype="http://schema.org/PropertyValue">
+<meta itemprop="value" content="{{ attribute['text'] }}" />
+<meta itemprop="name" content="{{ attribute['name'] }}" />
+</span>
+                        {% endfor %}
+                    {% endfor %}
+                {% endif %}
+</span>
+        {% endif %}
+        {% if (echo) %}<div class="mdp-description">{{ echo }}</div>{% endif %}
+    {% endif %}
+    {% if (microdata_route_category is defined and microdata_route_category and config_category_page and category_info and c) %}
+        {% if (microdata_products_json is defined and microdata_products_microdata is defined and microdata_products_json and microdata_products_microdata) %}
+            {% if (min_max) %}{{ min_max }}{% endif %}
+            {% if (config_item_syntax == "ld" or config_item_syntax == "all") %}
+                <script type="application/ld+json">
+{
+"@context": "http://schema.org",
+"@type": "ItemList",
+"name": "{{ microdata_heading_title }}",
+"url": "{{ microdata_url }}",
+{% if (microdata_description) %}"description": "{{ microdata_description }}",{% endif %}
+"numberOfItems": "{{ microdata_products_json_cont }}",
+"itemListElement": [
+{{ microdata_products_json }}
+]
+}
+</script>
+            {% endif %}
+            {% if (config_item_syntax == "md" or config_item_syntax == "all") %}
+                <span itemtype="http://schema.org/ItemList" itemscope>
+{% if (microdata_description) %}<meta itemprop="description" content="{{ microdata_description }}" />{% endif %}
+<link itemprop="url" href="{{ microdata_url }}" />
+<meta itemprop="name" content="{{ microdata_heading_title }}" />
+<meta itemprop="numberOfItems" content="{{ microdata_products_json_cont }}" />
+{{ microdata_products_microdata }}
+</span>
+            {% endif %}
+        {% endif %}
+        {% if (echo) %}<div class="mdp-description">{{ echo }}</div>{% endif %}
+    {% endif %}
+    {% if (microdata_route_manufacturer and config_manufacturer_page and d) %}
+        {% if (microdata_products_json and microdata_products_microdata) %}
+            {% if (min_max) %}{{ min_max }}{% endif %}
+            {% if (config_item_syntax == "ld" or config_item_syntax == "all") %}
+                <script type="application/ld+json">
+{
+"@context": "http://schema.org",
+"@type": "ItemList",
+"name": "{{ microdata_heading_title }}",
+"url": "{{ microdata_url }}",
+{% if (microdata_description) %}"description": "{{ microdata_description }}",{% endif %}
+"numberOfItems": "{{ (microdata_products_json)|length }}",
+"itemListElement": [
+{{ microdata_products_json }}
+]
+}
+</script>
+            {% endif %}
+            {% if (config_item_syntax == "md" or config_item_syntax == "all") %}
+                <span itemtype="http://schema.org/ItemList" itemscope>
+{% if (microdata_description) %}<meta itemprop="description" content="{{ microdata_description }}" />{% endif %}
+<link itemprop="url" href="{{ microdata_url }}" />
+<meta itemprop="name" content="{{ microdata_heading_title }}" />
+<meta itemprop="numberOfItems" content="{{ (microdata_products_microdata)|length }}" />
+{{ microdata_products_microdata }}
+</span>
+            {% endif %}
+        {% endif %}
+        {% if (echo) %}<div class="mdp-description">{{ echo }}</div>{% endif %}
+    {% endif %}
+    {% if (microdata_route_special and config_special_page and a and d) %}
+        {% if (microdata_products_json and microdata_products_microdata) %}
+            {% if (min_max) %}{{ min_max }}{% endif %}
+            {% if (config_item_syntax == "ld" or config_item_syntax == "all") %}
+                <script type="application/ld+json">
+{
+"@context": "http://schema.org",
+"@type": "ItemList",
+"url": "{{ microdata_url }}",
+"name": "{{ microdata_heading_title }}",
+{% if (microdata_description) %}"description": "{{ microdata_description }}",{% endif %}
+"numberOfItems": "{{ (microdata_products_json)|length }}",
+"itemListElement": [
+{{ microdata_products_json }}
+]
+}
+</script>
+            {% endif %}
+            {% if (config_item_syntax == "md" or config_item_syntax == "all") %}
+                <span itemscope itemtype="http://schema.org/ItemList">
+{% if (microdata_description) %}<meta itemprop="description" content="{{ microdata_description }}" />{% endif %}
+<link itemprop="url" href="{{ microdata_url }}" />
+<meta itemprop="name" content="{{ microdata_heading_title }}" />
+<meta itemprop="numberOfItems" content="{{ (microdata_products_json)|length }}" />
+{{ microdata_products_microdata }}
+</span>
+            {% endif %}
+        {% endif %}
+        {% if (microdata_description) %}<div class="mdp-description">{{ microdata_description }}</div>{% endif %}
+    {% endif %}
+    {% if (microdata_route_information and config_information_page and information_info and c and d) %}
+        {% if (config_item_syntax == "ld" or config_item_syntax == "all") %}
+            <script type="application/ld+json">
+{
+"@context": "http://schema.org",
+"@type": "NewsArticle",
+"mainEntityOfPage":{
+"@type":"WebPage",
+"@id": "{{ microdata_url }}"
+},
+"headline": "{{ microdata_heading_title }}",
+"image": {
+"@type": "ImageObject",
+"url": "{{ microdata_image }}",
+"width": "{{ image_width }}",
+"height": "{{ image_height }}"
+},
+"datePublished": "{{ date_published }}",
+"dateModified": "{{ date_published }}",
+"author": "{{ author }}",
+"publisher": {
+"@type": "Organization",
+"name": "{{ microdata_name }}",
+"logo": {
+"@type": "ImageObject",
+"url": "{{ microdata_image }}"
+}
+},
+"description":"{{ microdata_description }}"
+}
+</script>
+        {% endif %}
+        {% if (config_item_syntax == "md" or config_item_syntax == "all") %}
+            <span itemscope itemtype="http://schema.org/NewsArticle">
+<meta itemscope itemprop="mainEntityOfPage"  itemType="https://schema.org/WebPage" itemid="{{ microdata_url }}"/>
+<meta itemprop="headline" content="{{ microdata_heading_title }}" />
+<span itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="{{ author }}" /></span>
+<meta itemprop="description" content="{{ microdata_description }}">
+<span itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+<link itemprop="contentUrl" href="{{ microdata_image }}" />
+<link itemprop="url" href="{{ microdata_image }}">
+<meta itemprop="width" content="{{ image_width }}">
+<meta itemprop="height" content="{{ image_height }}">
+</span>
+<span itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+{% if (microdata_address_1 and microdata_address_2 and microdata_address_3) %}
+    <span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+<meta itemprop="addressLocality" content="{{ microdata_address_1 }}" />
+<meta itemprop="postalCode" content="{{ microdata_address_2 }}" />
+<meta itemprop="streetAddress" content="{{ microdata_address_3 }}" />
+</span>
+{% endif %}
+    {% if (microdata_phones) %}
+        {% for phone in microdata_phones %}
+            <meta itemprop="telephone" content="{{ phone }}" />
+        {% endfor %}
+    {% endif %}
+<span itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
+<link itemprop="url" href="{{ microdata_image }}">
+<link itemprop="contentUrl" href="{{ microdata_image }}" />
+</span>
+<meta itemprop="name" content="{{ microdata_name }}" />
+</span>
+<meta itemprop="datePublished" content="{{ date_published }}" />
+<meta itemprop="dateModified" content="{{ date_published }}" />
+</span>
+        {% endif %}
+    {% endif %}
+{% endif %}

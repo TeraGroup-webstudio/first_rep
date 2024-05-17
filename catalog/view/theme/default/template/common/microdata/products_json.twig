@@ -1,0 +1,16 @@
+{% set pi = 1 %}
+{% for product in microdata_products %}{
+"@type": "Product",
+"image": "{{ product.thumb }}",
+"url": "{{ product.href }}",
+"name": "{{ product.name }}",
+"description": "{{ product.microdata_description }}",
+"offers": {
+"@type": "Offer",
+"price": "{{ product.microdata_price }}",
+"priceCurrency": "{{ microdata_code }}"
+}
+}
+{% if pi != microdata_products|length %},{% endif %}
+    {% set pi = pi + 1 %}
+{% endfor %}

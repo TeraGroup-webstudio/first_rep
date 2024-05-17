@@ -1,0 +1,14 @@
+{% if (microdata_twitter_status) %}
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:creator" content="{{ microdata_twitter_account }}" />
+    <meta name="twitter:title" content="{{ (microdata_heading_title)|trim }}" />
+    <meta name="twitter:description" content="{{ (microdata_description_shot)|trim }}" />
+    <meta name="twitter:image" content="{{ microdata_popup_tw }}" />
+{% endif %}
+{% if (microdata_opengraph_status) %}
+    <meta property="og:type" content="{{ microdata_og_type }}" />
+    <meta property="og:title" content="{{ (microdata_heading_title)|trim }}" />
+    <meta property="og:description" content="{{ (microdata_description_shot)|trim }}" />
+    <meta property="og:image" content="{{ microdata_popup }}" />
+    <meta property="og:url" content="{{ microdata_url }}" />
+{% endif %}

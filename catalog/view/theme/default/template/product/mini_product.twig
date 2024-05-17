@@ -1,0 +1,84 @@
+<div class="product-item {% if slide %} {{ slide }} {% endif %}">
+    {% if type_stikers %}
+        {% if type_stikers == 'special' %}
+            <div class="label_special">
+                Sale
+            </div>
+        {% elseif type_stikers == 'latest' %}
+            <div class="label_latest">
+                New
+            </div>
+        {% endif %}
+    {% endif %}
+    {% if stickers %}
+        <ul class="stickers_image stickers_image_product" style="position: absolute;top: 10px;left: 10px;z-index: 2;right: unset;">
+            {% for sticker in stickers %}
+                <li><img src="{{ sticker}}" title="{{ heading_title }}" alt="{{ heading_title }}" /></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <div class="item-product-image">
+        {% if product_wishlist_status == 1 and not remove %}
+            <div class="section-wishlist {% if is_wishlist %} add-wishlist {% endif %}">
+                <div class=""  data-toggle="tooltip" title="{{ button_wishlist }}" onclick="wishlist.add('{{ product_id }}');">
+                    <svg class="normal" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M6.48311 2.81529C2.81152 3.99738 1.17386 8.00569 2.40482 11.8295C3.02947 13.6301 4.04534 15.2485 5.38004 16.5762C7.21101 18.3545 9.22254 19.9194 11.3849 21.2491L11.6304 21.3961C11.8656 21.5369 12.1598 21.5344 12.3926 21.3897L12.6218 21.2473C14.7812 19.9194 16.7927 18.3545 18.6174 16.5824C19.9584 15.2485 20.9743 13.6301 21.5937 11.8452C22.8291 8.00801 21.1847 3.9978 17.512 2.81535L17.2463 2.73623C15.5624 2.27309 13.773 2.5013 12.2645 3.35535L11.9964 3.51429L11.733 3.35623C10.1419 2.45344 8.2404 2.25003 6.48311 2.81529ZM11.3746 4.85427L11.5714 4.99538C11.8307 5.18111 12.1806 5.17742 12.436 4.98625C13.766 3.99057 15.4873 3.70082 17.0641 4.20669C19.9097 5.12284 21.2047 8.28096 20.2064 11.382C19.665 12.9417 18.7687 14.3696 17.5916 15.5405L17.0636 16.0421C15.641 17.3642 14.1026 18.561 12.4691 19.6156L12.0013 19.9098L12.144 19.9998C10.0805 18.7308 8.15375 17.2319 6.40582 15.5343C5.23505 14.3696 4.33877 12.9417 3.79207 11.3664C2.79808 8.27801 4.08746 5.12212 6.93153 4.20646C8.43331 3.72339 10.0706 3.96289 11.3746 4.85427Z" fill="white"/>
+                    </svg>
+                    <svg class="hover" xmlns="http://www.w3.org/2000/svg" width="24" height="23" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 23" fill="none">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M16.2147 0.000187674C16.9534 0.000187674 17.6909 0.104796 18.3922 0.341046C22.7134 1.75149 24.2705 6.51175 22.9698 10.6726C22.2322 12.7988 21.0264 14.7394 19.447 16.3249C17.1864 18.5229 14.7056 20.474 12.0351 22.1548L11.7425 22.3323L11.4381 22.143C8.75826 20.474 6.26343 18.5229 3.98168 16.3132C2.4129 14.7276 1.20587 12.7988 0.456605 10.6726C-0.866322 6.51175 0.690751 1.75149 5.05875 0.316363C5.39826 0.198826 5.74831 0.11655 6.09953 0.0707101H6.24002C6.569 0.0225198 6.89563 0.000187674 7.22343 0.000187674H7.35221C8.08978 0.0225198 8.80392 0.151811 9.49582 0.388061H9.5649C9.61173 0.410393 9.64685 0.435076 9.67026 0.457408C9.929 0.540859 10.1737 0.634889 10.4078 0.76418L10.8527 0.963994C10.9602 1.02155 11.0809 1.1095 11.1852 1.18552C11.2512 1.23367 11.3107 1.27704 11.3561 1.30485C11.3752 1.31617 11.3946 1.32755 11.4142 1.33902C11.5146 1.39785 11.6192 1.45913 11.7073 1.527C13.008 0.529106 14.5873 -0.0115661 16.2147 0.000187674Z" fill="#FF2D55"/>
+                    </svg>
+                </div>
+            </div>
+        {% endif %}
+        {% if remove %}
+            <div class="section-wishlist ">
+                <a href="{{ remove }}" class="remove-wishlist">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
+                        <path d="M14.3327 7.66675V15.5001C14.3327 15.7762 14.1088 16.0001 13.8327 16.0001H3.16602C2.88987 16.0001 2.66602 15.7762 2.66602 15.5001V7.66675" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M6.83398 12.6667V7.66675" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M10.166 12.6667V7.66675" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M16 4.33333H11.8333M11.8333 4.33333V1.5C11.8333 1.22386 11.6095 1 11.3333 1H5.66667C5.39053 1 5.16667 1.22386 5.16667 1.5V4.33333M11.8333 4.33333H5.16667M1 4.33333H5.16667" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </a>
+            </div>
+        {% endif %}
+        {% if product_compare_status == 1 %}
+            <div class="section-wishlist">
+                <button type="button" data-toggle="tooltip" title="{{ button_compare }}" onclick="compare.add('{{ product_id }}');">
+
+                </button>
+            </div>
+        {% endif %}
+        <a href="{{ href }}">
+            {% if lazy_load_status == 1  and not no_lazy %}
+                <img  data-original="{{ thumb }}" alt="{{ name }}" title="{{ name }}" class="img-responsive lazy-load"/>
+            {% else %}
+                <img src="{{ thumb }}" alt="{{ name }}" title="{{ name }}" class="img-responsive" />
+            {% endif %}
+        </a>
+    </div>
+    <div class="item-product-information">
+        <div class="caption">
+            <h4><a href="{{ href }}">{{ name }}</a></h4>
+            {% if price %}
+                <p class="price"> {% if not special %}
+                        {{ price }}
+                    {% else %}<span class="price-old">{{ price }}</span> <span class="price-new">{{ special }}</span>{% endif %}
+                    {% if tax %} <span class="price-tax">{{ text_tax }} {{ tax }}</span> {% endif %} </p>
+            {% endif %}
+            {% if rating %}
+                <div class="rating"> {% for i in 1..5 %}
+                        {% if rating < i %} <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> {% else %} <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span>{% endif %}
+                    {% endfor %} </div>
+            {% endif %} </div>
+        <div class="button-group-buy">
+            <button type="button" onclick="cart.add('{{ product_id }}', '{{ minimum }}');" class="btn-none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M13.4512 3.9517C13.8576 3.9517 14.124 4.09457 14.3905 4.40753C14.657 4.72049 14.7036 5.16951 14.6436 5.57703L14.0108 10.04C13.8909 10.898 13.1714 11.53 12.3254 11.53H5.05776C4.17178 11.53 3.43902 10.8367 3.36574 9.93871L2.75288 2.52231L1.747 2.34542C1.48054 2.2978 1.29402 2.03247 1.34065 1.76033C1.38728 1.48207 1.64708 1.2977 1.9202 1.3392L3.50896 1.58344C3.73545 1.62494 3.90199 1.81475 3.92198 2.04607L4.04854 3.57003C4.06852 3.78842 4.24172 3.9517 4.45489 3.9517H13.4512ZM4.95104 12.6053C4.39148 12.6053 3.9385 13.0679 3.9385 13.6394C3.9385 14.2041 4.39148 14.6667 4.95104 14.6667C5.50394 14.6667 5.95692 14.2041 5.95692 13.6394C5.95692 13.0679 5.50394 12.6053 4.95104 12.6053ZM12.4452 12.6053C11.8856 12.6053 11.4326 13.0679 11.4326 13.6394C11.4326 14.2041 11.8856 14.6667 12.4452 14.6667C12.9981 14.6667 13.4511 14.2041 13.4511 13.6394C13.4511 13.0679 12.9981 12.6053 12.4452 12.6053Z" fill="#ED1C24"/>
+                </svg>
+                <span>{{ button_cart }}</span>
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,172 @@
+<div id="cart">
+  <div class="head-ico">
+    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28" fill="none">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M23.5395 6.91541C24.2506 6.91541 24.7169 7.16544 25.1833 7.71311C25.6496 8.26079 25.7311 9.04657 25.6262 9.75975L24.5187 17.57C24.3089 19.0714 23.0499 20.1774 21.5694 20.1774H8.85095C7.30049 20.1774 6.01816 18.9642 5.88993 17.3927L4.81743 4.41397L3.05714 4.10442C2.59083 4.02109 2.26442 3.55675 2.34602 3.08051C2.42763 2.59357 2.88228 2.27091 3.36024 2.34354L6.14057 2.77096C6.53692 2.84358 6.82836 3.17576 6.86334 3.58057L7.08483 6.2475C7.1198 6.62967 7.4229 6.91541 7.79594 6.91541H23.5395ZM8.66419 22.0592C7.68496 22.0592 6.89225 22.8688 6.89225 23.8688C6.89225 24.8571 7.68496 25.6667 8.66419 25.6667C9.63178 25.6667 10.4245 24.8571 10.4245 23.8688C10.4245 22.8688 9.63178 22.0592 8.66419 22.0592ZM21.779 22.0592C20.7997 22.0592 20.007 22.8688 20.007 23.8688C20.007 24.8571 20.7997 25.6667 21.779 25.6667C22.7465 25.6667 23.5393 24.8571 23.5393 23.8688C23.5393 22.8688 22.7465 22.0592 21.779 22.0592Z" fill="#ED1C24"/>
+    </svg>
+    <span id="cart-total">{{ text_items }}</span>
+  </div>
+  <div class="head-title">
+    {{ text_shopping_cart }}
+  </div>
+</div>
+<div class="container-cart">
+  <ul>
+    <div class="title-mini-cart">{{ text_title_mini_cart }}</div>
+    {% if products or vouchers %}
+      <div class="list-product-cart">
+        {% for product in products %}
+          <div class="item-product-cart">
+            <div class="image-product-cart">
+              {% if product.thumb %} <a href="{{ product.href }}"><img src="{{ product.thumb }}" alt="{{ product.name }}" title="{{ product.name }}" class="img-thumbnail" /></a> {% endif %}
+            </div>
+            <div class="information-product-cart">
+              <div class="top-product-cart">
+                <div class="name-product">
+                  <a href="{{ product.href }}">{{ product.name }}</a> {% if product.option %}
+                    {% for option in product.option %} <br />
+                      - <small>{{ option.name }} {{ option.value }}</small> {% endfor %}
+                  {% endif %}
+                  {% if product.recurring %} <br />
+                    - <small>{{ text_recurring }} {{ product.recurring }}</small> {% endif %}
+                </div>
+                <div class="delete-product">
+                  <button type="button" onclick="cart.remove('{{ product.cart_id }}');" title="{{ button_remove }}" class="btn btn-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+                      <path d="M1.34326 11L6.17164 6.17165M6.17164 6.17165L11 1.34326M6.17164 6.17165L1.34326 1.34326M6.17164 6.17165L11 11" stroke="#8991A3" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="bottom-product-cart">
+                <div class="total-product">
+                  {{ product.total }}
+                </div>
+                <div class="quantity-product">
+                  <div class="qty-spinedit">
+                    <input type="button" onclick="minusQty(this,'{{ product.product_id }}', '{{ product.cart_id }}')" value="-" class="qty-minus btn-none" />
+                    <input type="text" disabled value="{{ product.quantity }}" size="2" class="quantity" name="quantity_{{ product.product_id }}">
+                    <input type="button" onclick="plusQty(this,'{{ product.product_id }}', '{{ product.cart_id }}')" value="+" class="qty-plus btn-none" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <table class="table table-striped">
+
+        {% for voucher in vouchers %}
+          <tr>
+            <td class="text-center"></td>
+            <td class="text-left">{{ voucher.description }}</td>
+            <td class="text-right">x&nbsp;1</td>
+            <td class="text-right">{{ voucher.amount }}</td>
+            <td class="text-center text-danger"><button type="button" onclick="voucher.remove('{{ voucher.key }}');" title="{{ button_remove }}" class="btn btn-danger btn-xs"><i class="fa fa-times"></i></button></td>
+          </tr>
+        {% endfor %}
+      </table>
+
+      <div class="cart-totals">
+        {% for total in totals %}
+          <div class="item-totals {{ total.code }}">
+            <div class="name-total"><strong>{{ total.title }}</strong></div>
+            <div class="value-total">{{ total.text }}</div>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="group-cart-button">
+        <a href="{{ checkout }}" class="btn-checkout">{{ text_checkout }}</a>
+        <button type="button" class="btn-exit"> {{ text_next_buy }}</button>
+      </div>
+    {% else %}
+      <div>
+        <p class="text-center">{{ text_empty }}</p>
+      </div>
+    {% endif %}
+  </ul>
+  <script>
+    function plusQty(q, product_id, key) {
+      var input=$(q).parent().find('input[type=text]');
+      if (isNaN(input.val())) {
+        input.val(1);
+      }
+      input.val(parseInt(input.val())+1);
+      q = input.val();
+      update(q, product_id, key)
+      input.change();
+    }
+
+    function minusQty(q, product_id, key) {
+      var input=$(q).parent().find('input[type=text]');
+      if (isNaN(input.val())) {
+        input.val(1);
+      }
+      if ($(input).val()>1) {
+        $(input).val(parseInt($(input).val())-1);
+      }
+      q = input.val();
+      update(q, product_id, key)
+      input.change();
+    }
+
+    /*function add(quantity, product_id) {
+        $.ajax({
+            url: 'index.php?route=checkout/cart/add',
+            type: 'post',
+            data: 'product_id=' + product_id + '&quantity=' + (typeof(quantity) != 'undefined' ? quantity : 1),
+            dataType: 'json',
+            success: function(json) {
+                console.log(json);
+                $('.alert, .text-danger').remove();
+
+                if (json['redirect']) {
+                    location = json['redirect'];
+                }
+
+                if (json['success']) {
+                    // Need to set timeout otherwise it wont update the total
+                    setTimeout(function () {
+                        $('#cart-total').html('' + json['total'] + '');
+                    }, 100);
+
+                    // $('html, body').animate({ scrollTop: 0 }, 'slow');
+
+                    $('.mini-cart .container-cart > ul').load('index.php?route=common/cart/info ul');
+
+                    setTimeout(function () {
+                        $('.alert.alert-success').remove();
+                    },2000);
+                }
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+        });
+    }*/
+
+    function update(quantity, product_id,cart_id) {
+      $.ajax({
+        url: 'index.php?route=common/cart/update',
+        type: 'post',
+        data: 'cart_id=' + cart_id + '&quantity=' + (typeof(quantity) != 'undefined' ? quantity : 1),
+        dataType: 'json',
+        success: function(json) {
+          console.log(json);
+          // Need to set timeout otherwise it wont update the total
+          setTimeout(function () {
+            $('#cart-total').html('' + json['total'] + '');
+          }, 100);
+
+          setTimeout(function () {
+            $('.alert.alert-success').remove();
+          },500);
+          $('.mini-cart .container-cart > ul').load('index.php?route=common/cart/info ul');
+        },
+        error: function(json) {
+          console.log(json);
+        }
+      });
+    }
+  </script>
+</div>
+

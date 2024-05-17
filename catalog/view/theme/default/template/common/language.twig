@@ -1,0 +1,40 @@
+{% if languages|length > 1 %}
+<div class="pull-left">
+  <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-language">
+    <div class="btn-group">
+      <button class="btn btn-link dropdown-toggle" data-toggle="dropdown">
+        {% if type_lang == 0 %}
+          {% for language in languages %}
+            {% if language.code == code %}
+                <img src="catalog/language/{{ language.code }}/{{ language.code }}.png" alt="{{ language.name }}" title="{{ language.name }}">
+            {% endif %}
+          {% endfor %}
+
+        {% else %}
+          {% for language in languages %}
+            {% if (prefix_full and language.code == code) or (not prefix_full and language.code[:2] == code) %}
+          <img src="catalog/language/{{ language.code }}/{{ language.code }}.png" alt="{{ language.name }}" title="{{ language.name }}">
+            {% endif %}
+        {% endfor %}
+      {% endif %}
+
+      <span class="hidden-xs hidden-sm hidden-md">{{ text_language }}</span>&nbsp;<i class="fa fa-caret-down"></i></button>
+      <ul class="dropdown-menu">
+        {% for language in languages %}
+        <li>
+          <button class="btn btn-link btn-block language-select" type="button" name="{{ language.code }}"><img src="catalog/language/{{ language.code }}/{{ language.code }}.png" alt="{{ language.name }}" title="{{ language.name }}" /> {{ language.name }}</button>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <input type="hidden" name="code" value="" />
+    {% if type_lang == 0 %}
+    <input type="hidden" name="redirect" value="{{ redirect }}" />
+    {% else %}
+    <input type="hidden" name="redirect_route" value="{{ redirect_route }}" />
+    <input type="hidden" name="redirect_query" value="{{ redirect_query ? redirect_query : '' }}" />
+    <input type="hidden" name="redirect_ssl" value="{{ redirect_ssl ? redirect_ssl : '' }}" />
+    {% endif %}
+  </form>
+</div>
+{% endif %}

@@ -1,0 +1,2093 @@
+{{ header }}{{ column_left }}
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="pull-right">
+                <button type="submit" form="form-module" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+                <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+            <h1>{{ heading_title }}</h1>
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="container-fluid">
+        {% if error_warning %}
+            <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+            </div>
+            <div class="panel-body">
+                <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-html" class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-name">{{ entry_name }}</label>
+                        <div class="col-sm-3">
+                            <input type="text" name="name" value="{{ name }}" placeholder="{{ entry_name }}" id="input-name" class="form-control" />
+                            {% if error_name %}
+                                <div class="text-danger">{{ error_name }}</div>
+                            {% endif %}
+                        </div>
+                        <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+                        <div class="col-sm-3">
+                            <select name="status" id="input-status" class="form-control">
+                                {% if status %}
+                                    <option value="1" selected="selected">{{ text_enabled }}</option>
+                                    <option value="0">{{ text_disabled }}</option>
+                                {% else %}
+                                    <option value="1">{{ text_enabled }}</option>
+                                    <option value="0" selected="selected">{{ text_disabled }}</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="tab-pane">
+                        <ul class="nav nav-tabs" id="language">
+                            {% for language in languages %}
+                                <li><a href="#language{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                        <div class="tab-content">
+                            {% for language in languages %}
+                                <div class="tab-pane" id="language{{ language.language_id }}">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label" for="input-title{{ language.language_id }}">{{ entry_title }}</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" name="module_description_title[{{ language.language_id }}][title]" placeholder="{{ entry_title }}" id="input-heading{{ language.language_id }}" value="{{ module_description_title[language.language_id] ? module_description_title[language.language_id].title }}" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">1 Блок</h3>
+                                    <div class="pull-right">
+                                        <button type="button" class="btn btn-xs btn-danger" onclick="del(1);">-</button>
+                                        <button type="button" class="btn btn-xs btn-success" onclick="maket(1);">+</button>
+                                    </div>
+                                </div>
+                                <div class="panel-body content_maket1">
+                                    {% if module_description.box1.maket and module_description.box1.maket == 1 %}
+                                    <div class="row flex-v">
+                                        <input type="hidden" name="module_description[box1][maket]" value="1">
+                                        <div class="col-sm-12">
+                                            <div class="content-block">
+                                                <div class="row">
+                                                <div class="color col-sm-9">
+                                                    <label>{{ entry_color }}</label>
+                                                    <input type="text" value="{{ module_description.box1.category_info.1.color }}" class="form-control color" name="module_description[box1][category_info][1][color]">
+                                                </div>
+                                                <div class="col-sm-3">
+                                                <p><label>{{ entry_image }}</label></p>
+                                                <a href="" id="thumb-image-maket-1-1-1" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box1.category_info.1.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                <input type="hidden" name="module_description[box1][category_info][1][image]" value="{{ module_description.box1.category_info.1.image }}" id="input-image-maket-1-1-1" />
+                                                </div>
+                                                </div>
+                                                <div class="category">
+                                                    <label>{{ entry_category }}</label>
+                                                    <select class="form-control" name="module_description[box1][category_info][1][main_category_id]">
+                                                        <option value="0" selected="selected">{{ text_none }}</option>
+                                                        {% for category in categories %}
+                                                            {% if category.category_id == module_description.box1.category_info.1.main_category_id %}
+                                                                <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                            {% else %}
+                                                                <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% elseif module_description.box1.maket and module_description.box1.maket == 2 %}
+                                        <div class="row flex-v">
+                                            <input type="hidden" name="module_description[box1][maket]" value="2">
+                                            <div class="col-sm-6">
+                                                <div class="content-block">
+                                                    <div class="row">
+                                                    <div class="color col-sm-9">
+                                                        <label>{{ entry_color }}</label>
+                                                        <input type="text" value="{{ module_description.box1.category_info.1.color }}" class="form-control color" name="module_description[box1][category_info][1][color]">
+                                                    </div>
+                                                        <div class="col-sm-3">
+                                                            <p><label>{{ entry_image }}</label></p>
+                                                            <a href="" id="thumb-image-maket-1-2-1" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box1.category_info.1.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                            <input type="hidden" name="module_description[box1][category_info][1][image]" value="{{ module_description.box1.category_info.1.image }}" id="input-image-maket-1-2-1" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="category">
+                                                        <label>{{ entry_category }}</label>
+                                                        <select class="form-control" name="module_description[box1][category_info][1][main_category_id]">
+                                                            <option value="0" selected="selected">{{ text_none }}</option>
+                                                            {% for category in categories %}
+                                                                {% if category.category_id == module_description.box1.category_info.1.main_category_id %}
+                                                                    <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                {% else %}
+                                                                    <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="content-block">
+                                                    <div class="row">
+                                                        <div class="color col-sm-9">
+                                                            <label>{{ entry_color }}</label>
+                                                            <input type="text" value="{{ module_description.box1.category_info.2.color }}" class="form-control color" name="module_description[box1][category_info][2][color]">
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <p><label>{{ entry_image }}</label></p>
+                                                            <a href="" id="thumb-image-maket-2-2-1" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box1.category_info.2.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                            <input type="hidden" name="module_description[box1][category_info][2][image]" value="{{ module_description.box1.category_info.2.image }}" id="input-image-maket-2-2-1" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="category">
+                                                        <label>{{ entry_category }}</label>
+                                                        <select class="form-control" name="module_description[box1][category_info][2][main_category_id]">
+                                                            <option value="0" selected="selected">{{ text_none }}</option>
+                                                            {% for category in categories %}
+                                                                {% if category.category_id == module_description.box1.category_info.2.main_category_id %}
+                                                                    <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                {% else %}
+                                                                    <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% elseif module_description.box1.maket and module_description.box1.maket == 3 %}
+                                        <div class="row flex-v">
+                                                <input type="hidden" name="module_description[box1][maket]" value="3">
+                                                <div class="col-sm-6">
+                                                    <div class="content-block">
+                                                        <div class="row">
+                                                            <div class="color col-sm-9">
+                                                                <label>{{ entry_color }}</label>
+                                                                <input type="text" value="{{ module_description.box1.category_info.1.color }}" class="form-control color" name="module_description[box1][category_info][1][color]">
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <p><label>{{ entry_image }}</label></p>
+                                                                <a href="" id="thumb-image-maket-1-3-1" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box1.category_info.1.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                                <input type="hidden" name="module_description[box1][category_info][1][image]" value="{{ module_description.box1.category_info.1.image }}" id="input-image-maket-1-3-1" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="category">
+                                                            <label>{{ entry_category }}</label>
+                                                            <select class="form-control" name="module_description[box1][category_info][1][main_category_id]">
+                                                                <option value="0" selected="selected">{{ text_none }}</option>
+                                                                {% for category in categories %}
+                                                                    {% if category.category_id == module_description.box1.category_info.1.main_category_id %}
+                                                                        <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                    {% else %}
+                                                                        <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="content-block">
+                                                        <div class="row">
+                                                            <div class="color col-sm-9">
+                                                                <label>{{ entry_color }}</label>
+                                                                <input type="text" value="{{ module_description.box1.category_info.2.color }}" class="form-control color" name="module_description[box1][category_info][2][color]">
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <p><label>{{ entry_image }}</label></p>
+                                                                <a href="" id="thumb-image-maket-2-3-1" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box1.category_info.2.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                                <input type="hidden" name="module_description[box1][category_info][2][image]" value="{{ module_description.box1.category_info.2.image }}" id="input-image-maket-2-3-1" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="category">
+                                                            <label>{{ entry_category }}</label>
+                                                            <select class="form-control" name="module_description[box1][category_info][2][main_category_id]">
+                                                                <option value="0" selected="selected">{{ text_none }}</option>
+                                                                {% for category in categories %}
+                                                                    {% if category.category_id == module_description.box1.category_info.2.main_category_id %}
+                                                                        <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                    {% else %}
+                                                                        <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="content-block">
+                                                        <div class="row">
+                                                            <div class="color col-sm-9">
+                                                                <label>{{ entry_color }}</label>
+                                                                <input type="text" value="{{ module_description.box1.category_info.3.color }}" class="form-control color" name="module_description[box1][category_info][3][color]">
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <p><label>{{ entry_image }}</label></p>
+                                                                <a href="" id="thumb-image-maket-3-3-1" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box1.category_info.3.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                                <input type="hidden" name="module_description[box1][category_info][3][image]" value="{{ module_description.box1.category_info.3.image }}" id="input-image-maket-3-3-1" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="category">
+                                                            <label>{{ entry_category }}</label>
+                                                            <select class="form-control" name="module_description[box1][category_info][3][main_category_id]">
+                                                                <option value="0" selected="selected">{{ text_none }}</option>
+                                                                {% for category in categories %}
+                                                                    {% if category.category_id == module_description.box1.category_info.3.main_category_id %}
+                                                                        <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                    {% else %}
+                                                                        <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    {% elseif module_description.box1.maket and module_description.box1.maket == 4 %}
+                                       <div class="row flex-v">
+                                                    <input type="hidden" name="module_description[box1][maket]" value="4">
+                                                    <div class="col-sm-6">
+                                                        <div class="content-block">
+                                                            <div class="row">
+                                                                <div class="color col-sm-9">
+                                                                    <label>{{ entry_color }}</label>
+                                                                    <input type="text" value="{{ module_description.box1.category_info.1.color }}" class="form-control color" name="module_description[box1][category_info][1][color]">
+                                                                </div>
+                                                                <div class="col-sm-3">
+                                                                    <p><label>{{ entry_image }}</label></p>
+                                                                    <a href="" id="thumb-image-maket-1-4-1" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box1.category_info.1.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                                    <input type="hidden" name="module_description[box1][category_info][1][image]" value="{{ module_description.box1.category_info.1.image }}" id="input-image-maket-1-4-1" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="category">
+                                                                <label>{{ entry_category }}</label>
+                                                                <select class="form-control" name="module_description[box1][category_info][1][main_category_id]">
+                                                                    <option value="0" selected="selected">{{ text_none }}</option>
+                                                                    {% for category in categories %}
+                                                                        {% if category.category_id == module_description.box1.category_info.1.main_category_id %}
+                                                                            <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                        {% else %}
+                                                                            <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="content-block">
+                                                            <div class="row">
+                                                                <div class="color col-sm-9">
+                                                                    <label>{{ entry_color }}</label>
+                                                                    <input type="text" value="{{ module_description.box1.category_info.2.color }}" class="form-control color" name="module_description[box1][category_info][2][color]">
+                                                                </div>
+                                                                <div class="col-sm-3">
+                                                                    <p><label>{{ entry_image }}</label></p>
+                                                                    <a href="" id="thumb-image-maket-2-4-1" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box1.category_info.2.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                                    <input type="hidden" name="module_description[box1][category_info][2][image]" value="{{ module_description.box1.category_info.2.image }}" id="input-image-maket-2-4-1" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="category">
+                                                                <label>{{ entry_category }}</label>
+                                                                <select class="form-control" name="module_description[box1][2][main_category_id]">
+                                                                    <option value="0" selected="selected">{{ text_none }}</option>
+                                                                    {% for category in categories %}
+                                                                        {% if category.category_id == module_description.box1.category_info.2.main_category_id %}
+                                                                            <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                        {% else %}
+                                                                            <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="content-block">
+                                                            <div class="row">
+                                                                <div class="color col-sm-9">
+                                                                    <label>{{ entry_color }}</label>
+                                                                    <input type="text" value="{{ module_description.box1.category_info.3.color }}" class="form-control color" name="module_description[box1][category_info][3][color]">
+                                                                </div>
+                                                                <div class="col-sm-3">
+                                                                    <p><label>{{ entry_image }}</label></p>
+                                                                    <a href="" id="thumb-image-maket-3-4-1" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box1.category_info.3.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                                    <input type="hidden" name="module_description[box1][category_info][3][image]" value="{{ module_description.box1.category_info.3.image }}" id="input-image-maket-3-4-1" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="category">
+                                                                <label>{{ entry_category }}</label>
+                                                                <select class="form-control" name="module_description[box1][category_info][3][main_category_id]">
+                                                                    <option value="0" selected="selected">{{ text_none }}</option>
+                                                                    {% for category in categories %}
+                                                                        {% if category.category_id == module_description.box1.category_info.3.main_category_id %}
+                                                                            <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                        {% else %}
+                                                                            <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                    {% elseif module_description.box1.maket and  module_description.box1.maket == 5 %}
+                                       <div class="row flex-v">
+                                                        <input type="hidden" name="module_description[box1][maket]" value="5">
+                                                        <div class="col-sm-6">
+                                                            <div class="content-block">
+                                                                <div class="row">
+                                                                    <div class="color col-sm-9">
+                                                                        <label>{{ entry_color }}</label>
+                                                                        <input type="text" value="{{ module_description.box1.category_info.1.color }}" class="form-control color" name="module_description[box1][category_info][1][color]">
+                                                                    </div>
+                                                                    <div class="col-sm-3">
+                                                                        <p><label>{{ entry_image }}</label></p>
+                                                                        <a href="" id="thumb-image-maket-1-5-1" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box1.category_info.1.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                                        <input type="hidden" name="module_description[box1][category_info][1][image]" value="{{ module_description.box1.category_info.1.image }}" id="input-image-maket-1-5-1" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="category">
+                                                                    <label>{{ entry_category }}</label>
+                                                                    <select class="form-control" name="module_description[box1][1][main_category_id]">
+                                                                        <option value="0" selected="selected">{{ text_none }}</option>
+                                                                        {% for category in categories %}
+                                                                            {% if category.category_id == module_description.box1.category_info.1.main_category_id %}
+                                                                                <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                            {% else %}
+                                                                                <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                            {% endif %}
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="content-block">
+                                                                <div class="row">
+                                                                <div class="color col-sm-9">
+                                                                    <label>{{ entry_color }}</label>
+                                                                    <input type="text" value="{{ module_description.box1.category_info.2.color }}" class="form-control color" name="module_description[box1]['category_info'][2][color]">
+                                                                </div>
+                                                                    <div class="col-sm-3">
+                                                                        <p><label>{{ entry_image }}</label></p>
+                                                                        <a href="" id="thumb-image-maket-2-5-1" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box1.category_info.2.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                                        <input type="hidden" name="module_description[box1][category_info][2][image]" value="{{ module_description.box1.category_info.2.image }}" id="input-image-maket-2-5-1" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="category">
+                                                                    <label>{{ entry_category }}</label>
+                                                                    <select class="form-control" name="module_description[box1][category_info][2][main_category_id]">
+                                                                        <option value="0" selected="selected">{{ text_none }}</option>
+                                                                        {% for category in categories %}
+                                                                            {% if category.category_id == module_description.box1.category_info.2.main_category_id %}
+                                                                                <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                            {% else %}
+                                                                                <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                            {% endif %}
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <div class="content-block">
+                                                                <div class="row">
+                                                                    <div class="color col-sm-9">
+                                                                        <label>{{ entry_color }}</label>
+                                                                        <input type="text" value="{{ module_description.box1.category_info.3.color }}" class="form-control color" name="module_description[box1][category_info][3][color]">
+                                                                    </div>
+                                                                    <div class="col-sm-3">
+                                                                        <p><label>{{ entry_image }}</label></p>
+                                                                        <a href="" id="thumb-image-maket-3-5-1" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box1.category_info.3.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                                        <input type="hidden" name="module_description[box1][category_info][3][image]" value="{{ module_description.box1.category_info.3.image }}" id="input-image-maket-3-5-1" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="category">
+                                                                    <label>{{ entry_category }}</label>
+                                                                    <select class="form-control" name="module_description[box1][category_info][3][main_category_id]">
+                                                                        <option value="0" selected="selected">{{ text_none }}</option>
+                                                                        {% for category in categories %}
+                                                                            {% if category.category_id == module_description.box1.category_info.3.main_category_id %}
+                                                                                <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                            {% else %}
+                                                                                <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                            {% endif %}
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="content-block">
+                                                                <div class="row">
+                                                                    <div class="color col-sm-9">
+                                                                        <label>{{ entry_color }}</label>
+                                                                        <input type="text" value="{{ module_description.box1.category_info.4.color }}" class="form-control color" name="module_description[box1][category_info][4][color]">
+                                                                    </div>
+                                                                    <div class="col-sm-3">
+                                                                        <p><label>{{ entry_image }}</label></p>
+                                                                        <a href="" id="thumb-image-maket-4-5-1" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box1.category_info.4.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                                        <input type="hidden" name="module_description[box1][category_info][4][image]" value="{{ module_description.box1.category_info.4.image }}" id="input-image-maket-4-5-1" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="category">
+                                                                    <label>{{ entry_category }}</label>
+                                                                    <select class="form-control" name="module_description[box1][category_info][4][main_category_id]">
+                                                                        <option value="0" selected="selected">{{ text_none }}</option>
+                                                                        {% for category in categories %}
+                                                                            {% if category.category_id == module_description.box1.category_info.4.main_category_id %}
+                                                                                <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                            {% else %}
+                                                                                <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                            {% endif %}
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                    {% else %}
+                                        {{ text_add_block }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">2 Блок</h3>
+                                    <div class="pull-right">
+                                        <button type="button" class="btn btn-xs btn-danger" onclick="del(2);">-</button>
+                                        <button type="button" class="btn btn-xs btn-success" onclick="maket(2);">+</button>
+                                    </div>
+                                </div>
+                                <div class="panel-body content_maket2">
+                                    {% if module_description.box2.maket and module_description.box2.maket == 1 %}
+                                        <div class="row flex-v">
+                                        <input type="hidden" name="module_description[box2][maket]" value="1">
+                                        <div class="col-sm-12">
+                                            <div class="content-block">
+                                                <div class="row">
+                                                    <div class="color col-sm-9">
+                                                        <label>{{ entry_color }}</label>
+                                                        <input type="text" value="{{ module_description.box2.category_info.1.color }}" class="form-control color" name="module_description[box2][category_info][1][color]">
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <p><label>{{ entry_image }}</label></p>
+                                                        <a href="" id="thumb-image-maket-1-1-2" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box2.category_info.1.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                        <input type="hidden" name="module_description[box2][category_info][1][image]" value="{{ module_description.box2.category_info.1.image }}" id="input-image-maket-1-1-2" />
+                                                    </div>
+                                                </div>
+                                                <div class="category">
+                                                    <label>{{ entry_category }}</label>
+                                                    <select class="form-control" name="module_description[box2][category_info][1][main_category_id]">
+                                                        <option value="0" selected="selected">{{ text_none }}</option>
+                                                        {% for category in categories %}
+                                                            {% if category.category_id == module_description.box2.category_info.1.main_category_id %}
+                                                                <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                            {% else %}
+                                                                <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% elseif module_description.box2.maket and module_description.box2.maket == 2 %}
+                                        <div class="row flex-v">
+                                            <input type="hidden" name="module_description[box2][maket]" value="2">
+                                            <div class="col-sm-6">
+                                                <div class="content-block">
+                                                    <div class="row">
+                                                        <div class="color col-sm-9">
+                                                            <label>{{ entry_color }}</label>
+                                                            <input type="text" value="{{ module_description.box2.category_info.1.color }}" class="form-control color" name="module_description[box2][category_info][1][color]">
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <p><label>{{ entry_image }}</label></p>
+                                                            <a href="" id="thumb-image-maket-1-2-2" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box2.category_info.1.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                            <input type="hidden" name="module_description[box2][category_info][1][image]" value="{{ module_description.box2.category_info.1.image }}" id="input-image-maket-1-2-2" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="category">
+                                                        <label>{{ entry_category }}</label>
+                                                        <select class="form-control" name="module_description[box2][category_info][1][main_category_id]">
+                                                            <option value="0" selected="selected">{{ text_none }}</option>
+                                                            {% for category in categories %}
+                                                                {% if category.category_id == module_description.box2.category_info.1.main_category_id %}
+                                                                    <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                {% else %}
+                                                                    <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="content-block">
+                                                    <div class="row">
+                                                        <div class="color col-sm-9">
+                                                            <label>{{ entry_color }}</label>
+                                                            <input type="text" value="{{ module_description.box2.category_info.2.color }}" class="form-control color" name="module_description[box2][category_info][2][color]">
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <p><label>{{ entry_image }}</label></p>
+                                                            <a href="" id="thumb-image-maket-2-2-2" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box2.category_info.2.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                            <input type="hidden" name="module_description[box2][category_info][2][image]" value="{{ module_description.box2.category_info.2.image }}" id="input-image-maket-2-2-2" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="category">
+                                                        <label>{{ entry_category }}</label>
+                                                        <select class="form-control" name="module_description[box2][category_info][2][main_category_id]">
+                                                            <option value="0" selected="selected">{{ text_none }}</option>
+                                                            {% for category in categories %}
+                                                                {% if category.category_id == module_description.box2.category_info.2.main_category_id %}
+                                                                    <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                {% else %}
+                                                                    <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% elseif module_description.box2.maket and module_description.box2.maket == 3 %}
+                                        <div class="row flex-v">
+                                                <input type="hidden" name="module_description[box2][maket]" value="3">
+                                                <div class="col-sm-6">
+                                                    <div class="content-block">
+                                                        <div class="row">
+                                                            <div class="color col-sm-9">
+                                                                <label>{{ entry_color }}</label>
+                                                                <input type="text" value="{{ module_description.box2.category_info.1.color }}" class="form-control color" name="module_description[box2][category_info][1][color]">
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <p><label>{{ entry_image }}</label></p>
+                                                                <a href="" id="thumb-image-maket-1-3-2" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box2.category_info.1.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                                <input type="hidden" name="module_description[box2][category_info][1][image]" value="{{ module_description.box2.category_info.1.image }}" id="input-image-maket-1-3-2" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="category">
+                                                            <label>{{ entry_category }}</label>
+                                                            <select class="form-control" name="module_description[box2][category_info][1][main_category_id]">
+                                                                <option value="0" selected="selected">{{ text_none }}</option>
+                                                                {% for category in categories %}
+                                                                    {% if category.category_id == module_description.box2.category_info.1.main_category_id %}
+                                                                        <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                    {% else %}
+                                                                        <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="content-block">
+                                                        <div class="row">
+                                                            <div class="color col-sm-9">
+                                                                <label>{{ entry_color }}</label>
+                                                                <input type="text" value="{{ module_description.box2.category_info.2.color }}" class="form-control color" name="module_description[box2][category_info][2][color]">
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <p><label>{{ entry_image }}</label></p>
+                                                                <a href="" id="thumb-image-maket-2-3-2" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box2.category_info.2.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                                <input type="hidden" name="module_description[box2][category_info][2][image]" value="{{ module_description.box2.category_info.2.image }}" id="input-image-maket-2-3-2" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="category">
+                                                            <label>{{ entry_category }}</label>
+                                                            <select class="form-control" name="module_description[box2][category_info][2][main_category_id]">
+                                                                <option value="0" selected="selected">{{ text_none }}</option>
+                                                                {% for category in categories %}
+                                                                    {% if category.category_id == module_description.box2.category_info.2.main_category_id %}
+                                                                        <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                    {% else %}
+                                                                        <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="content-block">
+                                                        <div class="row">
+                                                            <div class="color col-sm-9">
+                                                                <label>{{ entry_color }}</label>
+                                                                <input type="text" value="{{ module_description.box2.category_info.3.color }}" class="form-control color" name="module_description[box2][category_info][3][color]">
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <p><label>{{ entry_image }}</label></p>
+                                                                <a href="" id="thumb-image-maket-3-3-2" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box2.category_info.3.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                                <input type="hidden" name="module_description[box2][category_info][3][image]" value="{{ module_description.box2.category_info.3.image }}" id="input-image-maket-3-3-2" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="category">
+                                                            <label>{{ entry_category }}</label>
+                                                            <select class="form-control" name="module_description[box2][category_info][3][main_category_id]">
+                                                                <option value="0" selected="selected">{{ text_none }}</option>
+                                                                {% for category in categories %}
+                                                                    {% if category.category_id == module_description.box2.category_info.3.main_category_id %}
+                                                                        <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                    {% else %}
+                                                                        <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                    {% elseif module_description.box2.maket and module_description.box2.maket == 4 %}
+                                        <div class="row flex-v">
+                                                    <input type="hidden" name="module_description[box2][maket]" value="4">
+                                                    <div class="col-sm-6">
+                                                        <div class="content-block">
+                                                            <div class="row">
+                                                                <div class="color col-sm-9">
+                                                                    <label>{{ entry_color }}</label>
+                                                                    <input type="text" value="{{ module_description.box2.category_info.1.color }}" class="form-control color" name="module_description[box2][category_info][1][color]">
+                                                                </div>
+                                                                <div class="col-sm-3">
+                                                                    <p><label>{{ entry_image }}</label></p>
+                                                                    <a href="" id="thumb-image-maket-1-4-2" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box2.category_info.1.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                                    <input type="hidden" name="module_description[box2][category_info][1][image]" value="{{ module_description.box2.category_info.1.image }}" id="input-image-maket-1-4-2" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="category">
+                                                                <label>{{ entry_category }}</label>
+                                                                <select class="form-control" name="module_description[box2][category_info][1][main_category_id]">
+                                                                    <option value="0" selected="selected">{{ text_none }}</option>
+                                                                    {% for category in categories %}
+                                                                        {% if category.category_id == module_description.box2.category_info.1.main_category_id %}
+                                                                            <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                        {% else %}
+                                                                            <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="content-block">
+                                                            <div class="row">
+                                                                <div class="color col-sm-9">
+                                                                    <label>{{ entry_color }}</label>
+                                                                    <input type="text" value="{{ module_description.box2.category_info.2.color }}" class="form-control color" name="module_description[box2][category_info][2][color]">
+                                                                </div>
+                                                                <div class="col-sm-3">
+                                                                    <p><label>{{ entry_image }}</label></p>
+                                                                    <a href="" id="thumb-image-maket-2-4-2" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box2.category_info.2.image }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                                    <input type="hidden" name="module_description[box2][category_info][2][image]" value="{{ module_description.box2.category_info.2.image }}" id="input-image-maket-2-4-2" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="category">
+                                                                <label>{{ entry_category }}</label>
+                                                                <select class="form-control" name="module_description[box2][category_info][2][main_category_id]">
+                                                                    <option value="0" selected="selected">{{ text_none }}</option>
+                                                                    {% for category in categories %}
+                                                                        {% if category.category_id == module_description.box2.category_info.2.main_category_id %}
+                                                                            <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                        {% else %}
+                                                                            <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="content-block">
+                                                            <div class="row">
+                                                                <div class="color col-sm-9">
+                                                                    <label>{{ entry_color }}</label>
+                                                                    <input type="text" value="{{ module_description.box2.category_info.3.color }}" class="form-control color" name="module_description[box2][category_info][3][color]">
+                                                                </div>
+                                                                <div class="col-sm-3">
+                                                                    <p><label>{{ entry_image }}</label></p>
+                                                                    <a href="" id="thumb-image-maket-3-4-2" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box2.category_info.3.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                                    <input type="hidden" name="module_description[box2][category_info][1][image]" value="{{ module_description.box2.category_info.3.image }}" id="input-image-maket-3-4-2" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="category">
+                                                                <label>{{ entry_category }}</label>
+                                                                <select class="form-control" name="module_description[box2][category_info][3][main_category_id]">
+                                                                    <option value="0" selected="selected">{{ text_none }}</option>
+                                                                    {% for category in categories %}
+                                                                        {% if category.category_id == module_description.box2.category_info.3.main_category_id %}
+                                                                            <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                        {% else %}
+                                                                            <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                    {% elseif module_description.box2.maket and  module_description.box2.maket == 5 %}
+                                        <div class="row flex-v">
+                                                        <input type="hidden" name="module_description[box2][maket]" value="5">
+                                                        <div class="col-sm-6">
+                                                            <div class="content-block">
+                                                                <div class="row">
+                                                                    <div class="color col-sm-9">
+                                                                        <label>{{ entry_color }}</label>
+                                                                        <input type="text" value="{{ module_description.box2.category_info.1.color }}" class="form-control color" name="module_description[box2][category_info][1][color]">
+                                                                    </div>
+                                                                    <div class="col-sm-3">
+                                                                        <p><label>{{ entry_image }}</label></p>
+                                                                        <a href="" id="thumb-image-maket-1-5-2" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box2.category_info.1.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                                        <input type="hidden" name="module_description[box2][category_info][1][image]" value="{{ module_description.box2.category_info.1.image }}" id="input-image-maket-1-5-2" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="category">
+                                                                    <label>{{ entry_category }}</label>
+                                                                    <select class="form-control" name="module_description[box2][category_info][1][main_category_id]">
+                                                                        <option value="0" selected="selected">{{ text_none }}</option>
+                                                                        {% for category in categories %}
+                                                                            {% if category.category_id == module_description.box2.category_info.1.main_category_id %}
+                                                                                <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                            {% else %}
+                                                                                <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                            {% endif %}
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="content-block">
+                                                                <div class="row">
+                                                                    <div class="color col-sm-9">
+                                                                        <label>{{ entry_color }}</label>
+                                                                        <input type="text" value="{{ module_description.box2.category_info.2.color }}" class="form-control color" name="module_description[box2][category_info][2][color]">
+                                                                    </div>
+                                                                    <div class="col-sm-3">
+                                                                        <p><label>{{ entry_image }}</label></p>
+                                                                        <a href="" id="thumb-image-maket-2-5-2" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box2.category_info.2.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                                        <input type="hidden" name="module_description[box2][category_info][2][image]" value="{{ module_description.box2.category_info.2.image }}" id="input-image-maket-2-5-2" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="category">
+                                                                    <label>{{ entry_category }}</label>
+                                                                    <select class="form-control" name="module_description[box2][category_info][2][main_category_id]">
+                                                                        <option value="0" selected="selected">{{ text_none }}</option>
+                                                                        {% for category in categories %}
+                                                                            {% if category.category_id == module_description.box2.category_info.2.main_category_id %}
+                                                                                <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                            {% else %}
+                                                                                <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                            {% endif %}
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <div class="content-block">
+                                                                <div class="row">
+                                                                    <div class="color col-sm-9">
+                                                                        <label>{{ entry_color }}</label>
+                                                                        <input type="text" value="{{ module_description.box2.category_info.3.color }}" class="form-control color" name="module_description[box2][category_info][3][color]">
+                                                                    </div>
+                                                                    <div class="col-sm-3">
+                                                                        <p><label>{{ entry_image }}</label></p>
+                                                                        <a href="" id="thumb-image-maket-3-5-2" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box2.category_info.3.image }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                                        <input type="hidden" name="module_description[box2][category_info][3][image]" value="{{ module_description.box2.category_info.3.image }}" id="input-image-maket-3-5-2" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="category">
+                                                                    <label>{{ entry_category }}</label>
+                                                                    <select class="form-control" name="module_description[box2][category_info][3][main_category_id]">
+                                                                        <option value="0" selected="selected">{{ text_none }}</option>
+                                                                        {% for category in categories %}
+                                                                            {% if category.category_id == module_description.box2.3.main_category_id %}
+                                                                                <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                            {% else %}
+                                                                                <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                            {% endif %}
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="content-block">
+                                                                <div class="row">
+                                                                    <div class="color col-sm-9">
+                                                                        <label>{{ entry_color }}</label>
+                                                                        <input type="text" value="{{ module_description.box2.category_info.4.color }}" class="form-control color" name="module_description[box2][category_info][4][color]">
+                                                                    </div>
+                                                                    <div class="col-sm-3">
+                                                                        <p><label>{{ entry_image }}</label></p>
+                                                                        <a href="" id="thumb-image-maket-4-5-2" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box2.category_info.4.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                                        <input type="hidden" name="module_description[box2][category_info][4][image]" value="{{ module_description.box2.category_info.4.image }}" id="input-image-maket-4-5-2" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="category">
+                                                                    <label>{{ entry_category }}</label>
+                                                                    <select class="form-control" name="module_description[box2][category_info][4][main_category_id]">
+                                                                        <option value="0" selected="selected">{{ text_none }}</option>
+                                                                        {% for category in categories %}
+                                                                            {% if category.category_id == module_description.box2.category_info.4.main_category_id %}
+                                                                                <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                            {% else %}
+                                                                                <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                            {% endif %}
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                    {% else %}
+                                                        {{ text_add_block }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">3 Блок</h3>
+                                    <div class="pull-right">
+                                        <button type="button" class="btn btn-xs btn-danger" onclick="del(3);">-</button>
+                                        <button type="button" class="btn btn-xs btn-success" onclick="maket(3);">+</button>
+                                    </div>
+                                </div>
+                                <div class="panel-body content_maket3">
+                                    {% if module_description.box3.maket and module_description.box3.maket == 1 %}
+                                    <div class="row flex-v">
+                                        <input type="hidden" name="module_description[box3][maket]" value="1">
+                                        <div class="col-sm-12">
+                                            <div class="content-block">
+                                                <div class="row">
+                                                    <div class="color col-sm-9">
+                                                        <label>{{ entry_color }}</label>
+                                                        <input type="text" value="{{ module_description.box3.category_info.1.color }}" class="form-control color" name="module_description[box3][category_info][1][color]">
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <p><label>{{ entry_image }}</label></p>
+                                                        <a href="" id="thumb-image-maket-1-1-3" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box3.category_info.1.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                        <input type="hidden" name="module_description[box3][category_info][1][image]" value="{{ module_description.box3.category_info.1.image }}" id="input-image-maket-1-1-3" />
+                                                    </div>
+                                                </div>
+                                                <div class="category">
+                                                    <label>{{ entry_category }}</label>
+                                                    <select class="form-control" name="module_description[box3][category_info][1][main_category_id]">
+                                                        <option value="0" selected="selected">{{ text_none }}</option>
+                                                        {% for category in categories %}
+                                                            {% if category.category_id == module_description.box3.category_info.1.main_category_id %}
+                                                                <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                            {% else %}
+                                                                <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% elseif module_description.box3.maket and module_description.box3.maket == 2 %}
+                                        <div class="row flex-v">
+                                            <input type="hidden" name="module_description[box3][maket]" value="2">
+                                            <div class="col-sm-6">
+                                                <div class="content-block">
+                                                    <div class="row">
+                                                    <div class="color col-sm-9">
+                                                        <label>{{ entry_color }}</label>
+                                                        <input type="text" value="{{ module_description.box3.category_info.1.color }}" class="form-control color" name="module_description[box3][category_info][1][color]">
+                                                    </div>
+                                                        <div class="col-sm-3">
+                                                            <p><label>{{ entry_image }}</label></p>
+                                                            <a href="" id="thumb-image-maket-1-2-3" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box3.category_info.1.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                            <input type="hidden" name="module_description[box3][category_info][1][image]" value="{{ module_description.box3.category_info.1.image }}" id="input-image-maket-1-2-3" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="category">
+                                                        <label>{{ entry_category }}</label>
+                                                        <select class="form-control" name="module_description[box3][category_info][1][main_category_id]">
+                                                            <option value="0" selected="selected">{{ text_none }}</option>
+                                                            {% for category in categories %}
+                                                                {% if category.category_id == module_description.box3.category_info.1.main_category_id %}
+                                                                    <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                {% else %}
+                                                                    <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="content-block">
+                                                    <div class="row">
+                                                        <div class="color col-sm-9">
+                                                            <label>{{ entry_color }}</label>
+                                                            <input type="text" value="{{ module_description.box3.category_info.2.color }}" class="form-control color" name="module_description[box3][category_info][2][color]">
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <p><label>{{ entry_image }}</label></p>
+                                                            <a href="" id="thumb-image-maket-1-1-3" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box3.category_info.2.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                            <input type="hidden" name="module_description[box3][category_info][1][image]" value="{{ module_description.box3.category_info.2.image }}" id="input-image-maket-1-1-3" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="category">
+                                                        <label>{{ entry_category }}</label>
+                                                        <select class="form-control" name="module_description[box3][category_info][2][main_category_id]">
+                                                            <option value="0" selected="selected">{{ text_none }}</option>
+                                                            {% for category in categories %}
+                                                                {% if category.category_id == module_description.box3.category_info.2.main_category_id %}
+                                                                    <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                {% else %}
+                                                                    <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    {% elseif module_description.box3.maket and module_description.box3.maket == 3 %}
+                                            <div class="row flex-v">
+                                                <input type="hidden" name="module_description[box3][maket]" value="3">
+                                                <div class="col-sm-6">
+                                                    <div class="content-block">
+                                                        <div class="row">
+                                                            <div class="color col-sm-9">
+                                                                <label>{{ entry_color }}</label>
+                                                                <input type="text" value="{{ module_description.box3.category_info.1.color }}" class="form-control color" name="module_description[box3][category_info][1][color]">
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <p><label>{{ entry_image }}</label></p>
+                                                                <a href="" id="thumb-image-maket-1-3-3" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box3.category_info.1.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                                <input type="hidden" name="module_description[box3][category_info][1][image]" value="{{ module_description.box3.category_info.1.image }}" id="input-image-maket-1-3-3" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="category">
+                                                            <label>{{ entry_category }}</label>
+                                                            <select class="form-control" name="module_description[box3][category_info][1][main_category_id]">
+                                                                <option value="0" selected="selected">{{ text_none }}</option>
+                                                                {% for category in categories %}
+                                                                    {% if category.category_id == module_description.box3.category_info.1.main_category_id %}
+                                                                        <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                    {% else %}
+                                                                        <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="content-block">
+                                                        <div class="row">
+                                                            <div class="color col-sm-9">
+                                                                <label>{{ entry_color }}</label>
+                                                                <input type="text" value="{{ module_description.box3.category_info.2.color }}" class="form-control color" name="module_description[box3][category_info][2][color]">
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <p><label>{{ entry_image }}</label></p>
+                                                                <a href="" id="thumb-image-maket-2-3-3" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box3.category_info.2.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                                <input type="hidden" name="module_description[box3][category_info][2][image]" value="{{ module_description.box3.category_info.2.image }}" id="input-image-maket-2-3-3" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="category">
+                                                            <label>{{ entry_category }}</label>
+                                                            <select class="form-control" name="module_description[box3][category_info][2][main_category_id]">
+                                                                <option value="0" selected="selected">{{ text_none }}</option>
+                                                                {% for category in categories %}
+                                                                    {% if category.category_id == module_description.box3.category_info.2.main_category_id %}
+                                                                        <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                    {% else %}
+                                                                        <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="content-block">
+                                                        <div class="row">
+                                                            <div class="color col-sm-9">
+                                                                <label>{{ entry_color }}</label>
+                                                                <input type="text" value="{{ module_description.box3.category_info.3.color }}" class="form-control color" name="module_description[box3][category_info][3][color]">
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <p><label>{{ entry_image }}</label></p>
+                                                                <a href="" id="thumb-image-maket-3-3-3" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box3.category_info.3.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                                <input type="hidden" name="module_description[box3][category_info][3][image]" value="{{ module_description.box3.category_info.3.image }}" id="input-image-maket-3-3-3" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="category">
+                                                            <label>{{ entry_category }}</label>
+                                                            <select class="form-control" name="module_description[box3][category_info][3][main_category_id]">
+                                                                <option value="0" selected="selected">{{ text_none }}</option>
+                                                                {% for category in categories %}
+                                                                    {% if category.category_id == module_description.box3.category_info.3.main_category_id %}
+                                                                        <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                    {% else %}
+                                                                        <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                    {% elseif module_description.box3.maket and module_description.box3.maket == 4 %}
+                                                <div class="row flex-v">
+                                                    <input type="hidden" name="module_description[box3][maket]" value="4">
+                                                    <div class="col-sm-6">
+                                                        <div class="content-block">
+                                                            <div class="row">
+                                                                <div class="color col-sm-9">
+                                                                    <label>{{ entry_color }}</label>
+                                                                    <input type="text" value="{{ module_description.box3.category_info.1.color }}" class="form-control color" name="module_description[box3][category_info][1][color]">
+                                                                </div>
+                                                                <div class="col-sm-3">
+                                                                    <p><label>{{ entry_image }}</label></p>
+                                                                    <a href="" id="thumb-image-maket-1-4-3" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box3.category_info.1.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                                    <input type="hidden" name="module_description[box3][category_info][1][image]" value="{{ module_description.box3.category_info.1.image }}" id="input-image-maket-1-4-3" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="category">
+                                                                <label>{{ entry_category }}</label>
+                                                                <select class="form-control" name="module_description[box3][category_info][1][main_category_id]">
+                                                                    <option value="0" selected="selected">{{ text_none }}</option>
+                                                                    {% for category in categories %}
+                                                                        {% if category.category_id == module_description.box3.category_info.1.main_category_id %}
+                                                                            <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                        {% else %}
+                                                                            <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="content-block">
+                                                            <div class="row">
+                                                                <div class="color col-sm-9">
+                                                                    <label>{{ entry_color }}</label>
+                                                                    <input type="text" value="{{ module_description.box3.category_info.2.color }}" class="form-control color" name="module_description[box3][category_info][2][color]">
+                                                                </div>
+                                                                <div class="col-sm-3">
+                                                                    <p><label>{{ entry_image }}</label></p>
+                                                                    <a href="" id="thumb-image-maket-2-4-3" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box3.category_info.2.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                                    <input type="hidden" name="module_description[box3][category_info][2][image]" value="{{ module_description.box3.category_info.2.image }}" id="input-image-maket-2-4-3" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="category">
+                                                                <label>{{ entry_category }}</label>
+                                                                <select class="form-control" name="module_description[box3][category_info][2][main_category_id]">
+                                                                    <option value="0" selected="selected">{{ text_none }}</option>
+                                                                    {% for category in categories %}
+                                                                        {% if category.category_id == module_description.box3.category_info.2.main_category_id %}
+                                                                            <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                        {% else %}
+                                                                            <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="content-block">
+                                                            <div class="row">
+                                                                <div class="color col-sm-9">
+                                                                    <label>{{ entry_color }}</label>
+                                                                    <input type="text" value="{{ module_description.box3.category_info.3.color }}" class="form-control color" name="module_description[box3][category_info][3][color]">
+                                                                </div>
+                                                                <div class="col-sm-3">
+                                                                    <p><label>{{ entry_image }}</label></p>
+                                                                    <a href="" id="thumb-image-maket-3-4-3" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box3.category_info.3.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                                    <input type="hidden" name="module_description[box3][category_info][3][image]" value="{{ module_description.box3.category_info.3.image }}" id="input-image-maket-3-4-3" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="category">
+                                                                <label>{{ entry_category }}</label>
+                                                                <select class="form-control" name="module_description[box3][category_info][3][main_category_id]">
+                                                                    <option value="0" selected="selected">{{ text_none }}</option>
+                                                                    {% for category in categories %}
+                                                                        {% if category.category_id == module_description.box3.category_info.3.main_category_id %}
+                                                                            <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                        {% else %}
+                                                                            <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                    {% elseif module_description.box3.maket and  module_description.box3.maket == 5 %}
+                                                    <div class="row flex-v">
+                                                        <input type="hidden" name="module_description[box3][maket]" value="5">
+                                                        <div class="col-sm-6">
+                                                            <div class="content-block">
+                                                                <div class="row">
+                                                                    <div class="color col-sm-9">
+                                                                        <label>{{ entry_color }}</label>
+                                                                        <input type="text" value="{{ module_description.box3.category_info.1.color }}" class="form-control color" name="module_description[box3][category_info][1][color]">
+                                                                    </div>
+                                                                    <div class="col-sm-3">
+                                                                        <p><label>{{ entry_image }}</label></p>
+                                                                        <a href="" id="thumb-image-maket-1-5-3" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box3.category_info.1.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                                        <input type="hidden" name="module_description[box3][category_info][1][image]" value="{{ module_description.box3.category_info.1.image }}" id="input-image-maket-1-5-3" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="category">
+                                                                    <label>{{ entry_category }}</label>
+                                                                    <select class="form-control" name="module_description[box3][category_info][1][main_category_id]">
+                                                                        <option value="0" selected="selected">{{ text_none }}</option>
+                                                                        {% for category in categories %}
+                                                                            {% if category.category_id == module_description.box3.category_info.1.main_category_id %}
+                                                                                <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                            {% else %}
+                                                                                <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                            {% endif %}
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="content-block">
+                                                                <div class="row">
+                                                                    <div class="color col-sm-9">
+                                                                        <label>{{ entry_color }}</label>
+                                                                        <input type="text" value="{{ module_description.box3.category_info.2.color }}" class="form-control color" name="module_description[box3][category_info][2][color]">
+                                                                    </div>
+                                                                    <div class="col-sm-3">
+                                                                        <p><label>{{ entry_image }}</label></p>
+                                                                        <a href="" id="thumb-image-maket-2-5-3" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box3.category_info.2.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                                        <input type="hidden" name="module_description[box3][category_info][2][image]" value="{{ module_description.box3.category_info.2.image }}" id="input-image-maket-2-5-3" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="category">
+                                                                    <label>{{ entry_category }}</label>
+                                                                    <select class="form-control" name="module_description[box3][category_info][2][main_category_id]">
+                                                                        <option value="0" selected="selected">{{ text_none }}</option>
+                                                                        {% for category in categories %}
+                                                                            {% if category.category_id == module_description.box3.category_info.2.main_category_id %}
+                                                                                <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                            {% else %}
+                                                                                <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                            {% endif %}
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <div class="content-block">
+                                                                <div class="row">
+                                                                    <div class="color col-sm-9">
+                                                                        <label>{{ entry_color }}</label>
+                                                                        <input type="text" value="{{ module_description.box3.category_info.3.color }}" class="form-control color" name="module_description[box3][category_info][3][color]">
+                                                                    </div>
+                                                                    <div class="col-sm-3">
+                                                                        <p><label>{{ entry_image }}</label></p>
+                                                                        <a href="" id="thumb-image-maket-3-5-3" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box3.category_info.3.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                                        <input type="hidden" name="module_description[box3][category_info][3][image]" value="{{ module_description.box3.category_info.3.image }}" id="input-image-maket-3-5-3" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="category">
+                                                                    <label>{{ entry_category }}</label>
+                                                                    <select class="form-control" name="module_description[box3][category_info][3][main_category_id]">
+                                                                        <option value="0" selected="selected">{{ text_none }}</option>
+                                                                        {% for category in categories %}
+                                                                            {% if category.category_id == module_description.box3.category_info.3.main_category_id %}
+                                                                                <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                            {% else %}
+                                                                                <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                            {% endif %}
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="content-block">
+                                                                <div class="row">
+                                                                    <div class="color col-sm-9">
+                                                                        <label>{{ entry_color }}</label>
+                                                                        <input type="text" value="{{ module_description.box3.category_info.4.color }}" class="form-control color" name="module_description[box3][category_info][4][color]">
+                                                                    </div>
+                                                                    <div class="col-sm-3">
+                                                                        <p><label>{{ entry_image }}</label></p>
+                                                                        <a href="" id="thumb-image-maket-4-5-3" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box3.category_info.4.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                                        <input type="hidden" name="module_description[box3][category_info][4][image]" value="{{ module_description.box3.category_info.4.image }}" id="input-image-maket-4-5-3" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="category">
+                                                                    <label>{{ entry_category }}</label>
+                                                                    <select class="form-control" name="module_description[box3][category_info][4][main_category_id]">
+                                                                        <option value="0" selected="selected">{{ text_none }}</option>
+                                                                        {% for category in categories %}
+                                                                            {% if category.category_id == module_description.box3.category_info.4.main_category_id %}
+                                                                                <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                            {% else %}
+                                                                                <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                            {% endif %}
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    {% else %}
+                                                        {{ text_add_block }}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">4 Блок</h3>
+                                    <div class="pull-right">
+                                        <button type="button" class="btn btn-xs btn-danger" onclick="del(4);">-</button>
+                                        <button type="button" class="btn btn-xs btn-success" onclick="maket(4);">+</button>
+                                    </div>
+                                </div>
+                                <div class="panel-body content_maket4">
+                                    {% if module_description.box4.maket and module_description.box4.maket == 1 %}
+                                    <div class="row flex-v">
+                                        <input type="hidden" name="module_description[box4][maket]" value="1">
+                                        <div class="col-sm-12">
+                                            <div class="content-block">
+                                                <div class="row">
+                                                    <div class="color col-sm-9">
+                                                        <label>{{ entry_color }}</label>
+                                                        <input type="text" value="{{ module_description.box4.category_info.1.color }}" class="form-control color" name="module_description[box4][category_info][1][color]">
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <p><label>{{ entry_image }}</label></p>
+                                                        <a href="" id="thumb-image-maket-1-1-4" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box4.category_info.1.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                        <input type="hidden" name="module_description[box4][category_info][1][image]" value="{{ module_description.box4.category_info.1.image }}" id="input-image-maket-1-1-4" />
+                                                    </div>
+                                                </div>
+                                                <div class="category">
+                                                    <label>{{ entry_category }}</label>
+                                                    <select class="form-control" name="module_description[box4][category_info][1][main_category_id]">
+                                                        <option value="0" selected="selected">{{ text_none }}</option>
+                                                        {% for category in categories %}
+                                                            {% if category.category_id == module_description.box4.category_info.1.main_category_id %}
+                                                                <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                            {% else %}
+                                                                <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% elseif module_description.box4.maket and module_description.box4.maket == 2 %}
+                                        <div class="row flex-v">
+                                            <input type="hidden" name="module_description[box4][maket]" value="2">
+                                            <div class="col-sm-6">
+                                                <div class="content-block">
+                                                    <div class="row">
+                                                        <div class="color col-sm-9">
+                                                            <label>{{ entry_color }}</label>
+                                                            <input type="text" value="{{ module_description.box4.category_info.1.color }}" class="form-control color" name="module_description[box4][category_info][1][color]">
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <p><label>{{ entry_image }}</label></p>
+                                                            <a href="" id="thumb-image-maket-1-2-4" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box4.category_info.1.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                            <input type="hidden" name="module_description[box4][category_info][1][image]" value="{{ module_description.box4.category_info.1.image }}" id="input-image-maket-1-2-4" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="category">
+                                                        <label>{{ entry_category }}</label>
+                                                        <select class="form-control" name="module_description[box4][category_info][1][main_category_id]">
+                                                            <option value="0" selected="selected">{{ text_none }}</option>
+                                                            {% for category in categories %}
+                                                                {% if category.category_id == module_description.box4.category_info.1.main_category_id %}
+                                                                    <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                {% else %}
+                                                                    <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="content-block">
+                                                    <div class="row">
+                                                        <div class="color col-sm-9">
+                                                            <label>{{ entry_color }}</label>
+                                                            <input type="text" value="{{ module_description.box4.category_info.2.color }}" class="form-control color" name="module_description[box4][category_info][2][color]">
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <p><label>{{ entry_image }}</label></p>
+                                                            <a href="" id="thumb-image-maket-2-2-4" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box4.category_info.2.image }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                            <input type="hidden" name="module_description[box4][category_info][2][image]" value="{{ module_description.box4.category_info.2.image }}" id="input-image-maket-2-2-4" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="category">
+                                                        <label>{{ entry_category }}</label>
+                                                        <select class="form-control" name="module_description[box4][category_info][2][main_category_id]">
+                                                            <option value="0" selected="selected">{{ text_none }}</option>
+                                                            {% for category in categories %}
+                                                                {% if category.category_id == module_description.box4.category_info.2.main_category_id %}
+                                                                    <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                {% else %}
+                                                                    <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% elseif module_description.box4.maket and module_description.box4.maket == 3 %}
+                                            <div class="row flex-v">
+                                                <input type="hidden" name="module_description[box4][maket]" value="3">
+                                                <div class="col-sm-6">
+                                                    <div class="content-block">
+                                                        <div class="row">
+                                                            <div class="color col-sm-9">
+                                                                <label>{{ entry_color }}</label>
+                                                                <input type="text" value="{{ module_description.box4.category_info.1.color }}" class="form-control color" name="module_description[box4][category_info][1][color]">
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <p><label>{{ entry_image }}</label></p>
+                                                                <a href="" id="thumb-image-maket-1-3-4" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box4.category_info.1.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                                <input type="hidden" name="module_description[box4][category_info][1][image]" value="{{ module_description.box4.category_info.1.image }}" id="input-image-maket-1-3-4" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="category">
+                                                            <label>{{ entry_category }}</label>
+                                                            <select class="form-control" name="module_description[box4][category_info][1][main_category_id]">
+                                                                <option value="0" selected="selected">{{ text_none }}</option>
+                                                                {% for category in categories %}
+                                                                    {% if category.category_id == module_description.box4.category_info.1.main_category_id %}
+                                                                        <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                    {% else %}
+                                                                        <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="content-block">
+                                                        <div class="row">
+                                                            <div class="color col-sm-9">
+                                                                <label>{{ entry_color }}</label>
+                                                                <input type="text" value="{{ module_description.box4.category_info.2.color }}" class="form-control color" name="module_description[box4][category_info][2][color]">
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <p><label>{{ entry_image }}</label></p>
+                                                                <a href="" id="thumb-image-maket-2-3-4" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box4.category_info.2.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                                <input type="hidden" name="module_description[box4][category_info][2][image]" value="{{ module_description.box4.category_info.2.image }}" id="input-image-maket-2-3-4" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="category">
+                                                            <label>{{ entry_category }}</label>
+                                                            <select class="form-control" name="module_description[box4][category_info][2][main_category_id]">
+                                                                <option value="0" selected="selected">{{ text_none }}</option>
+                                                                {% for category in categories %}
+                                                                    {% if category.category_id == module_description.box4.category_info.2.main_category_id %}
+                                                                        <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                    {% else %}
+                                                                        <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="content-block">
+                                                        <div class="row">
+                                                            <div class="color col-sm-9">
+                                                                <label>{{ entry_color }}</label>
+                                                                <input type="text" value="{{ module_description.box4.category_info.3.color }}" class="form-control color" name="module_description[box4]['category_info'][3][color]">
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <p><label>{{ entry_image }}</label></p>
+                                                                <a href="" id="thumb-image-maket-3-3-4" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box4.category_info.3.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                                <input type="hidden" name="module_description[box4][category_info][3][image]" value="{{ module_description.box4.category_info.3.image }}" id="input-image-maket-3-3-4" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="category">
+                                                            <label>{{ entry_category }}</label>
+                                                            <select class="form-control" name="module_description[box4][category_info][3][main_category_id]">
+                                                                <option value="0" selected="selected">{{ text_none }}</option>
+                                                                {% for category in categories %}
+                                                                    {% if category.category_id == module_description.box4.category_info.3.main_category_id %}
+                                                                        <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                    {% else %}
+                                                                        <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {% elseif module_description.box4.maket and module_description.box4.maket == 4 %}
+                                                <div class="row flex-v">
+                                                    <input type="hidden" name="module_description[box4][maket]" value="4">
+                                                    <div class="col-sm-6">
+                                                        <div class="content-block">
+                                                            <div class="row">
+                                                                <div class="color col-sm-9">
+                                                                    <label>{{ entry_color }}</label>
+                                                                    <input type="text" value="{{ module_description.box4.category_info.1.color }}" class="form-control color" name="module_description[box4][category_info][1][color]">
+                                                                </div>
+                                                                <div class="col-sm-3">
+                                                                    <p><label>{{ entry_image }}</label></p>
+                                                                    <a href="" id="thumb-image-maket-1-4-4" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box4.category_info.1.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                                    <input type="hidden" name="module_description[box4][category_info][1][image]" value="{{ module_description.box4.category_info.1.image }}" id="input-image-maket-1-4-4" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="category">
+                                                                <label>{{ entry_category }}</label>
+                                                                <select class="form-control" name="module_description[box4][category_info][1][main_category_id]">
+                                                                    <option value="0" selected="selected">{{ text_none }}</option>
+                                                                    {% for category in categories %}
+                                                                        {% if category.category_id == module_description.box4.category_info.1.main_category_id %}
+                                                                            <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                        {% else %}
+                                                                            <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="content-block">
+                                                            <div class="row">
+                                                                <div class="color col-sm-9">
+                                                                    <label>{{ entry_color }}</label>
+                                                                    <input type="text" value="{{ module_description.box4.category_info.2.color }}" class="form-control color" name="module_description[box4][category_info][2][color]">
+                                                                </div>
+                                                                <div class="col-sm-3">
+                                                                    <p><label>{{ entry_image }}</label></p>
+                                                                    <a href="" id="thumb-image-maket-2-4-4" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box4.category_info.2.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                                    <input type="hidden" name="module_description[box4][category_info][2][image]" value="{{ module_description.box4.category_info.2.image }}" id="input-image-maket-2-4-4" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="category">
+                                                                <label>{{ entry_category }}</label>
+                                                                <select class="form-control" name="module_description[box4][category_info][2][main_category_id]">
+                                                                    <option value="0" selected="selected">{{ text_none }}</option>
+                                                                    {% for category in categories %}
+                                                                        {% if category.category_id == module_description.box4.category_info.2.main_category_id %}
+                                                                            <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                        {% else %}
+                                                                            <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="content-block">
+                                                            <div class="row">
+                                                                <div class="color col-sm-9">
+                                                                    <label>{{ entry_color }}</label>
+                                                                    <input type="text" value="{{ module_description.box4.category_info.3.color }}" class="form-control color" name="module_description[box4][category_info][3][color]">
+                                                                </div>
+                                                                <div class="col-sm-3">
+                                                                    <p><label>{{ entry_image }}</label></p>
+                                                                    <a href="" id="thumb-image-maket-3-4-4" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box4.category_info.3.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                                    <input type="hidden" name="module_description[box4][category_info][3][image]" value="{{ module_description.box4.category_info.3.image }}" id="input-image-maket-3-4-4" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="category">
+                                                                <label>{{ entry_category }}</label>
+                                                                <select class="form-control" name="module_description[box4][category_info][3][main_category_id]">
+                                                                    <option value="0" selected="selected">{{ text_none }}</option>
+                                                                    {% for category in categories %}
+                                                                        {% if category.category_id == module_description.box4.category_info.3.main_category_id %}
+                                                                            <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                        {% else %}
+                                                                            <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {% elseif module_description.box4.maket and  module_description.box4.maket == 5 %}
+                                                    <div class="row flex-v">
+                                                        <input type="hidden" name="module_description[box4][maket]" value="5">
+                                                        <div class="col-sm-6">
+                                                            <div class="content-block">
+                                                                <div class="row">
+                                                                    <div class="color col-sm-9">
+                                                                        <label>{{ entry_color }}</label>
+                                                                        <input type="text" value="{{ module_description.box4.category_info.1.color }}" class="form-control color" name="module_description[box4][category_info][1][color]">
+                                                                    </div>
+                                                                    <div class="col-sm-3">
+                                                                        <p><label>{{ entry_image }}</label></p>
+                                                                        <a href="" id="thumb-image-maket-1-5-4" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box4.category_info.1.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                                        <input type="hidden" name="module_description[box4][category_info][1][image]" value="{{ module_description.box4.category_info.1.image }}" id="input-image-maket-1-5-4" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="category">
+                                                                    <label>{{ entry_category }}</label>
+                                                                    <select class="form-control" name="module_description[box4][category_info][1][main_category_id]">
+                                                                        <option value="0" selected="selected">{{ text_none }}</option>
+                                                                        {% for category in categories %}
+                                                                            {% if category.category_id == module_description.box4.category_info.1.main_category_id %}
+                                                                                <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                            {% else %}
+                                                                                <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                            {% endif %}
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="content-block">
+                                                                <div class="row">
+                                                                    <div class="color col-sm-9">
+                                                                        <label>{{ entry_color }}</label>
+                                                                        <input type="text" value="{{ module_description.box4.category_info.2.color }}" class="form-control color" name="module_description[box4][category_info][2][color]">
+                                                                    </div>
+                                                                    <div class="col-sm-3">
+                                                                        <p><label>{{ entry_image }}</label></p>
+                                                                        <a href="" id="thumb-image-maket-2-5-4" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box4.category_info.2.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                                        <input type="hidden" name="module_description[box4][category_info][2][image]" value="{{ module_description.box4.category_info.2.image }}" id="input-image-maket-2-5-4" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="category">
+                                                                    <label>{{ entry_category }}</label>
+                                                                    <select class="form-control" name="module_description[box4][category_info][2][main_category_id]">
+                                                                        <option value="0" selected="selected">{{ text_none }}</option>
+                                                                        {% for category in categories %}
+                                                                            {% if category.category_id == module_description.box4.category_info.2.main_category_id %}
+                                                                                <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                            {% else %}
+                                                                                <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                            {% endif %}
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <div class="content-block">
+                                                                <div class="row">
+                                                                    <div class="color col-sm-9">
+                                                                        <label>{{ entry_color }}</label>
+                                                                        <input type="text" value="{{ module_description.box4.category_info.3.color }}" class="form-control color" name="module_description[box4][category_info][3][color]">
+                                                                    </div>
+                                                                    <div class="col-sm-3">
+                                                                        <p><label>{{ entry_image }}</label></p>
+                                                                        <a href="" id="thumb-image-maket-3-5-4" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box4.category_info.3.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                                        <input type="hidden" name="module_description[box4][category_info][3][image]" value="{{ module_description.box4.category_info.3.image }}" id="input-image-maket-3-5-4" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="category">
+                                                                    <label>{{ entry_category }}</label>
+                                                                    <select class="form-control" name="module_description[box4][category_info][3][main_category_id]">
+                                                                        <option value="0" selected="selected">{{ text_none }}</option>
+                                                                        {% for category in categories %}
+                                                                            {% if category.category_id == module_description.box4.category_info.3.main_category_id %}
+                                                                                <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                            {% else %}
+                                                                                <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                            {% endif %}
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="content-block">
+                                                                <div class="row">
+                                                                    <div class="color col-sm-9">
+                                                                        <label>{{ entry_color }}</label>
+                                                                        <input type="text" value="{{ module_description.box4.category_info.4.color }}" class="form-control color" name="module_description[box4][category_info][4][color]">
+                                                                    </div>
+                                                                    <div class="col-sm-3">
+                                                                        <p><label>{{ entry_image }}</label></p>
+                                                                        <a href="" id="thumb-image-maket-4-5-4" data-toggle="image" class="img-thumbnail"><img src="{{ module_description.box4.category_info.4.thumb }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                                                                        <input type="hidden" name="module_description[box4][category_info][4][image]" value="{{ module_description.box4.category_info.4.image }}" id="input-image-maket-4-5-4" />
+                                                                    </div>
+                                                                </div>
+                                                                <div class="category">
+                                                                    <label>{{ entry_category }}</label>
+                                                                    <select class="form-control" name="module_description[box4][category_info][4][main_category_id]">
+                                                                        <option value="0" selected="selected">{{ text_none }}</option>
+                                                                        {% for category in categories %}
+                                                                            {% if category.category_id == module_description.box4.category_info.4.main_category_id %}
+                                                                                <option value="{{ category.category_id }}" selected="selected">{{ category.name }}</option>
+                                                                            {% else %}
+                                                                                <option value="{{ category.category_id }}">{{ category.name }}</option>
+                                                                            {% endif %}
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    {% else %}
+                                                        {{ text_add_block }}
+                                    {% endif %}
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="Maket" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <input type="hidden" id="type_box">
+                <h5 class="modal-title">Выберите макет отображения</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="list-maket">
+                    <div id="maket1"><img src="/admin/view/image/maket/full.jpg"></div>
+                    <div id="maket2"><img src="/admin/view/image/maket/maket_2.jpg"></div>
+                    <div id="maket3"><img src="/admin/view/image/maket/3_right.jpg"></div>
+                    <div id="maket4"><img src="/admin/view/image/maket/3_left.jpg"></div>
+                    <div id="maket5"><img src="/admin/view/image/maket/maket_4.jpg"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function maket(box) {
+        $('#Maket').modal('show');
+        $('#type_box').val(box);
+    }
+    $('#maket1').on('click', function(){
+        let type_box = $('#type_box').val();
+        var html = '';
+        html +='<div class="row flex-v">';
+        html +='<input type="hidden" name="module_description[box'+type_box+'][maket]" value="1">';
+        html +='  <div class="col-sm-12">';
+        html +='    <div class="content-block">';
+        html +='    <div class="row">';
+        html +='    <div class="color col-sm-9">';
+        html +='    <label>{{ entry_color }}</label>';
+        html +='    <input type="text" value="" class="form-control color" name="module_description[box'+type_box+'][category_info][1][color]">';
+        html +='    </div>';
+        html +='    <div class="col-sm-3">';
+        html +='    <p><label>{{ entry_image }}</label></p>';
+        html +='  <a href="" id="thumb-image-maket-1-1-'+type_box+'" data-toggle="image" class="img-thumbnail"><img src="{{ placeholder }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>';
+        html +='<input type="hidden" name="module_description[box'+type_box+'][category_info][1][image]" value="" id="input-image-maket-1-1-'+type_box+'" />';
+        html +='    </div>';
+        html +='    </div>';
+
+        html +='    <div class="category">';
+        html +='    <label>{{ entry_category }}</label>';
+        html +='    <select class="form-control" name="module_description[box'+type_box+'][category_info][1][main_category_id]">';
+        html +='     <option value="0" selected="selected">{{ text_none }}</option>';
+        {% for category in categories %}
+            html +='<option value="{{ category.category_id }}">{{ category.name }}</option>';
+        {% endfor %}
+        html +='   </select>';
+        html +='    </div>';
+        html +='    </div>';
+        html +='  </div>';
+        html +='</div>';
+        $('.content_maket'+type_box).html(html);
+        $('.close').click();
+        color();
+    });
+
+    $('#maket2').on('click', function(){
+        let type_box = $('#type_box').val();
+        var html = '';
+        html +='<div class="row flex-v">';
+        html +='<input type="hidden" name="module_description[box'+type_box+'][maket]" value="2">';
+        html +='  <div class="col-sm-6">';
+        html +='    <div class="content-block">';
+        html +='    <div class="row">';
+        html +='    <div class="color col-sm-9">';
+        html +='    <label>{{ entry_color }}</label>';
+        html +='    <input type="text" value="" class="form-control color" name="module_description[box'+type_box+'][category_info][1][color]">';
+        html +='    </div>';
+        html +='    <div class="col-sm-3">';
+        html +='    <p><label>{{ entry_image }}</label></p>';
+        html +='  <a href="" id="thumb-image-maket-1-2-'+type_box+'" data-toggle="image" class="img-thumbnail"><img src="{{ placeholder }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>';
+        html +='<input type="hidden" name="module_description[box'+type_box+'][category_info][1][image]" value="" id="input-image-maket-1-2-'+type_box+'" />';
+        html +='    </div>';
+        html +='    </div>';
+        html +='    <div class="category">';
+        html +='    <label>{{ entry_category }}</label>';
+        html +='    <select class="form-control" name="module_description[box'+type_box+'][category_info][1][main_category_id]">';
+        html +='     <option value="0" selected="selected">{{ text_none }}</option>';
+        {% for category in categories %}
+            html +='<option value="{{ category.category_id }}">{{ category.name }}</option>';
+        {% endfor %}
+        html +='   </select>';
+        html +='    </div>';
+        html +='    </div>';
+        html +='  </div>';
+        html +='  <div class="col-sm-6">';
+        html +='    <div class="content-block">';
+        html +='    <div class="row">';
+        html +='    <div class="color col-sm-9">';
+        html +='    <label>{{ entry_color }}</label>';
+        html +='    <input type="text" value="" class="form-control color" name="module_description[box'+type_box+'][category_info][2][color]">';
+        html +='    </div>';
+        html +='    <div class="col-sm-3">';
+        html +='    <p><label>{{ entry_image }}</label></p>';
+        html +='  <a href="" id="thumb-image-maket-2-2-'+type_box+'" data-toggle="image" class="img-thumbnail"><img src="{{ placeholder }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>';
+        html +='<input type="hidden" name="module_description[box'+type_box+'][category_info][2][image]" value="" id="input-image-maket-2-2-'+type_box+'" />';
+        html +='    </div>';
+        html +='    </div>';
+        html +='    <div class="category">';
+        html +='    <label>{{ entry_category }}</label>';
+        html +='    <select class="form-control" name="module_description[box'+type_box+'][category_info][2][main_category_id]">';
+        html +='     <option value="0" selected="selected">{{ text_none }}</option>';
+    {% for category in categories %}
+            html +='<option value="{{ category.category_id }}">{{ category.name }}</option>';
+        {% endfor %}
+        html +='   </select>';
+        html +='    </div>';
+        html +='    </div>';
+        html +='  </div>';
+
+
+        html +='</div>';
+        $('.content_maket'+type_box).html(html);
+        $('.close').click();
+        color();
+    });
+
+    $('#maket3').on('click', function(){
+        let type_box = $('#type_box').val();
+        var html = '';
+        html +='<div class="row flex-v">';
+        html +='<input type="hidden" name="module_description[box'+type_box+'][maket]" value="3">';
+        html +='  <div class="col-sm-6">';
+        html +='    <div class="content-block">';
+        html +='    <div class="row">';
+        html +='    <div class="color col-sm-9">';
+        html +='    <label>{{ entry_color }}</label>';
+        html +='    <input type="text" value="" class="form-control color" name="module_description[box'+type_box+'][category_info][1][color]">';
+        html +='    </div>';
+        html +='    <div class="col-sm-3">';
+        html +='    <p><label>{{ entry_image }}</label></p>';
+        html +='  <a href="" id="thumb-image-maket-1-3-'+type_box+'" data-toggle="image" class="img-thumbnail"><img src="{{ placeholder }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>';
+        html +='<input type="hidden" name="module_description[box'+type_box+'][category_info][1][image]" value="" id="input-image-maket-1-3-'+type_box+'" />';
+        html +='    </div>';
+        html +='    </div>';
+        html +='    <div class="category">';
+        html +='    <label>{{ entry_category }}</label>';
+        html +='    <select class="form-control" name="module_description[box'+type_box+'][category_info][1][main_category_id]">';
+        html +='     <option value="0" selected="selected">{{ text_none }}</option>';
+        {% for category in categories %}
+            html +='<option value="{{ category.category_id }}">{{ category.name }}</option>';
+        {% endfor %}
+        html +='   </select>';
+        html +='    </div>';
+        html +='    </div>';
+
+        html +='    <div class="content-block">';
+        html +='    <div class="row">';
+        html +='    <div class="color col-sm-9">';
+        html +='    <label>{{ entry_color }}</label>';
+        html +='    <input type="text" value="" class="form-control color" name="module_description[box'+type_box+'][category_info][2][color]">';
+        html +='    </div>';
+        html +='    <div class="col-sm-3">';
+        html +='    <p><label>{{ entry_image }}</label></p>';
+        html +='  <a href="" id="thumb-image-maket-2-3-'+type_box+'" data-toggle="image" class="img-thumbnail"><img src="{{ placeholder }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>';
+        html +='<input type="hidden" name="module_description[box'+type_box+'][category_info][2][image]" value="" id="input-image-maket-2-3-'+type_box+'" />';
+        html +='    </div>';
+        html +='    </div>';
+        html +='    <div class="category">';
+        html +='    <label>{{ entry_category }}</label>';
+        html +='    <select class="form-control" name="module_description[box'+type_box+'][category_info][2][main_category_id]">';
+        html +='     <option value="0" selected="selected">{{ text_none }}</option>';
+    {% for category in categories %}
+            html +='<option value="{{ category.category_id }}">{{ category.name }}</option>';
+        {% endfor %}
+        html +='   </select>';
+        html +='    </div>';
+        html +='    </div>';
+
+        html +='  </div>';
+        html +='  <div class="col-sm-6">';
+        html +='    <div class="content-block">';
+        html +='    <div class="row">';
+        html +='    <div class="color col-sm-9">';
+        html +='    <label>{{ entry_color }}</label>';
+        html +='    <input type="text" value="" class="form-control color" name="module_description[box'+type_box+'][category_info][3][color]">';
+        html +='    </div>';
+        html +='    <div class="col-sm-3">';
+        html +='    <p><label>{{ entry_image }}</label></p>';
+        html +='  <a href="" id="thumb-image-maket-3-3-'+type_box+'" data-toggle="image" class="img-thumbnail"><img src="{{ placeholder }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>';
+        html +='<input type="hidden" name="module_description[box'+type_box+'][category_info][3][image]" value="" id="input-image-maket-3-3-'+type_box+'" />';
+        html +='    </div>';
+        html +='    </div>';
+        html +='    <div class="category">';
+        html +='    <label>{{ entry_category }}</label>';
+        html +='    <select class="form-control" name="module_description[box'+type_box+'][category_info][3][main_category_id]">';
+        html +='     <option value="0" selected="selected">{{ text_none }}</option>';
+    {% for category in categories %}
+            html +='<option value="{{ category.category_id }}">{{ category.name }}</option>';
+        {% endfor %}
+        html +='   </select>';
+        html +='    </div>';
+        html +='    </div>';
+        html +='  </div>';
+
+        html +='</div>';
+        $('.content_maket'+type_box).html(html);
+        $('.close').click();
+        color();
+    });
+
+    $('#maket4').on('click', function(){
+        let type_box = $('#type_box').val();
+        var html = '';
+        html +='<div class="row flex-v">';
+        html +='<input type="hidden" name="module_description[box'+type_box+'][maket]" value="4">';
+        html +='  <div class="col-sm-6">';
+        html +='    <div class="content-block">';
+        html +='    <div class="row">';
+        html +='    <div class="color col-sm-9">';
+        html +='    <label>{{ entry_color }}</label>';
+        html +='    <input type="text" value="" class="form-control color" name="module_description[box'+type_box+'][category_info][1][color]">';
+        html +='    </div>';
+        html +='    <div class="col-sm-3">';
+        html +='    <p><label>{{ entry_image }}</label></p>';
+        html +='  <a href="" id="thumb-image-maket-1-4-'+type_box+'" data-toggle="image" class="img-thumbnail"><img src="{{ placeholder }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>';
+        html +='<input type="hidden" name="module_description[box'+type_box+'][category_info][1][image]" value="" id="input-image-maket-1-4-'+type_box+'" />';
+        html +='    </div>';
+        html +='    </div>';
+        html +='    <div class="category">';
+        html +='    <label>{{ entry_category }}</label>';
+        html +='    <select class="form-control" name="module_description[box'+type_box+'][category_info][1][main_category_id]">';
+        html +='     <option value="0" selected="selected">{{ text_none }}</option>';
+        {% for category in categories %}
+            html +='<option value="{{ category.category_id }}">{{ category.name }}</option>';
+        {% endfor %}
+        html +='   </select>';
+        html +='    </div>';
+        html +='    </div>';
+        html +='    </div>';
+        html +='  <div class="col-sm-6">';
+        html +='    <div class="content-block">';
+        html +='    <div class="row">';
+        html +='    <div class="color col-sm-9">';
+        html +='    <label>{{ entry_color }}</label>';
+        html +='    <input type="text" value="" class="form-control color" name="module_description[box'+type_box+'][category_info][2][color]">';
+        html +='    </div>';
+        html +='    <div class="col-sm-3">';
+        html +='    <p><label>{{ entry_image }}</label></p>';
+        html +='  <a href="" id="thumb-image-maket-2-4-'+type_box+'" data-toggle="image" class="img-thumbnail"><img src="{{ placeholder }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>';
+        html +='<input type="hidden" name="module_description[box'+type_box+'][category_info][2][image]" value="" id="input-image-maket-2-4-'+type_box+'" />';
+        html +='    </div>';
+        html +='    </div>';
+        html +='    <div class="category">';
+        html +='    <label>{{ entry_category }}</label>';
+        html +='    <select class="form-control" name="module_description[box'+type_box+'][category_info][2][main_category_id]">';
+        html +='     <option value="0" selected="selected">{{ text_none }}</option>';
+    {% for category in categories %}
+            html +='<option value="{{ category.category_id }}">{{ category.name }}</option>';
+        {% endfor %}
+        html +='   </select>';
+        html +='    </div>';
+        html +='    </div>';
+
+        html +='    <div class="content-block">';
+        html +='    <div class="row">';
+        html +='    <div class="color col-sm-9">';
+        html +='    <label>{{ entry_color }}</label>';
+        html +='    <input type="text" value="" class="form-control color" name="module_description[box'+type_box+'][category_info][3][color]">';
+        html +='    </div>';
+        html +='    <div class="col-sm-3">';
+        html +='    <p><label>{{ entry_image }}</label></p>';
+        html +='  <a href="" id="thumb-image-maket-3-4-'+type_box+'" data-toggle="image" class="img-thumbnail"><img src="{{ placeholder }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>';
+        html +='<input type="hidden" name="module_description[box'+type_box+'][category_info][3][image]" value="" id="input-image-maket-3-4-'+type_box+'" />';
+        html +='    </div>';
+        html +='    </div>';
+        html +='    <div class="category">';
+        html +='    <label>{{ entry_category }}</label>';
+        html +='    <select class="form-control" name="module_description[box'+type_box+'][category_info][3][main_category_id]">';
+        html +='     <option value="0" selected="selected">{{ text_none }}</option>';
+    {% for category in categories %}
+            html +='<option value="{{ category.category_id }}">{{ category.name }}</option>';
+        {% endfor %}
+        html +='   </select>';
+        html +='    </div>';
+        html +='    </div>';
+
+        html +='  </div>';
+        html +='  </div>';
+
+
+        html +='</div>';
+        $('.content_maket'+type_box).html(html);
+        $('.close').click();
+        color();
+    });
+
+    $('#maket5').on('click', function(){
+        let type_box = $('#type_box').val();
+        var html = '';
+        html +='<div class="row flex-v">';
+        html +='<input type="hidden" name="module_description[box'+type_box+'][maket]" value="5">';
+        html +='  <div class="col-sm-6">';
+        html +='    <div class="content-block">';
+        html +='    <div class="row">';
+        html +='    <div class="color col-sm-9">';
+        html +='    <label>{{ entry_color }}</label>';
+        html +='    <input type="text" value="" class="form-control color" name="module_description[box'+type_box+'][category_info][1][color]">';
+        html +='    </div>';
+        html +='    <div class="col-sm-3">';
+        html +='    <p><label>{{ entry_image }}</label></p>';
+        html +='  <a href="" id="thumb-image-maket-1-5-'+type_box+'" data-toggle="image" class="img-thumbnail"><img src="{{ placeholder }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>';
+        html +='<input type="hidden" name="module_description[box'+type_box+'][category_info][1][image]" value="" id="input-image-maket-1-5-'+type_box+'" />';
+        html +='    </div>';
+        html +='    </div>';
+        html +='    <div class="category">';
+        html +='    <label>{{ entry_category }}</label>';
+        html +='    <select class="form-control" name="module_description[box'+type_box+'][category_info][1][main_category_id]">';
+        html +='     <option value="0" selected="selected">{{ text_none }}</option>';
+        {% for category in categories %}
+            html +='<option value="{{ category.category_id }}">{{ category.name }}</option>';
+        {% endfor %}
+        html +='   </select>';
+        html +='    </div>';
+        html +='    </div>';
+
+        html +='    <div class="content-block">';
+        html +='    <div class="row">';
+        html +='    <div class="color col-sm-9">';
+        html +='    <label>{{ entry_color }}</label>';
+        html +='    <input type="text" value="" class="form-control color" name="module_description[box'+type_box+'][category_info][2][color]">';
+        html +='    </div>';
+        html +='    <div class="col-sm-3">';
+        html +='    <p><label>{{ entry_image }}</label></p>';
+        html +='  <a href="" id="thumb-image-maket-2-5-'+type_box+'" data-toggle="image" class="img-thumbnail"><img src="{{ placeholder }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>';
+        html +='<input type="hidden" name="module_description[box'+type_box+'][category_info][2][image]" value="" id="input-image-maket-2-5-'+type_box+'" />';
+        html +='    </div>';
+        html +='    </div>';
+        html +='    <div class="category">';
+        html +='    <label>{{ entry_category }}</label>';
+        html +='    <select class="form-control" name="module_description[box'+type_box+'][category_info][2][main_category_id]">';
+        html +='     <option value="0" selected="selected">{{ text_none }}</option>';
+    {% for category in categories %}
+            html +='<option value="{{ category.category_id }}">{{ category.name }}</option>';
+        {% endfor %}
+        html +='   </select>';
+        html +='    </div>';
+        html +='    </div>';
+
+        html +='  </div>';
+        html +='  <div class="col-sm-6">';
+        html +='    <div class="content-block">';
+        html +='    <div class="row">';
+        html +='    <div class="color col-sm-9">';
+        html +='    <label>{{ entry_color }}</label>';
+        html +='    <input type="text" value="" class="form-control color" name="module_description[box'+type_box+'][category_info][3][color]">';
+        html +='    </div>';
+        html +='    <div class="col-sm-3">';
+        html +='    <p><label>{{ entry_image }}</label></p>';
+        html +='  <a href="" id="thumb-image-maket-3-5-'+type_box+'" data-toggle="image" class="img-thumbnail"><img src="{{ placeholder }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>';
+        html +='<input type="hidden" name="module_description[box'+type_box+'][category_info][3][image]" value="" id="input-image-maket-3-5-'+type_box+'" />';
+        html +='    </div>';
+        html +='    </div>';
+        html +='    <div class="category">';
+        html +='    <label>{{ entry_category }}</label>';
+        html +='    <select class="form-control" name="module_description[box'+type_box+'][category_info][3][main_category_id]">';
+        html +='     <option value="0" selected="selected">{{ text_none }}</option>';
+    {% for category in categories %}
+            html +='<option value="{{ category.category_id }}">{{ category.name }}</option>';
+        {% endfor %}
+        html +='   </select>';
+        html +='    </div>';
+        html +='    </div>';
+
+        html +='    <div class="content-block">';
+        html +='    <div class="row">';
+        html +='    <div class="color col-sm-9">';
+        html +='    <label>{{ entry_color }}</label>';
+        html +='    <input type="text" value="" class="form-control color" name="module_description[box'+type_box+'][category_info][4][color]">';
+        html +='    </div>';
+        html +='    <div class="col-sm-3">';
+        html +='    <p><label>{{ entry_image }}</label></p>';
+        html +='  <a href="" id="thumb-image-maket-4-5-'+type_box+'" data-toggle="image" class="img-thumbnail"><img src="{{ placeholder }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>';
+        html +='<input type="hidden" name="module_description[box'+type_box+'][category_info][4][image]" value="" id="input-image-maket-4-5-'+type_box+'" />';
+        html +='    </div>';
+        html +='    </div>';
+        html +='    <div class="category">';
+        html +='    <label>{{ entry_category }}</label>';
+        html +='    <select class="form-control" name="module_description[box'+type_box+'][category_info][4][main_category_id]">';
+        html +='     <option value="0" selected="selected">{{ text_none }}</option>';
+    {% for category in categories %}
+            html +='<option value="{{ category.category_id }}">{{ category.name }}</option>';
+        {% endfor %}
+        html +='   </select>';
+        html +='    </div>';
+        html +='    </div>';
+        html +='  </div>';
+
+        html +='</div>';
+        $('.content_maket'+type_box).html(html);
+        $('.close').click();
+        color();
+    });
+
+    function color() {
+        $(function(){
+            $('input.color').minicolors();
+        });
+    }
+    $(function(){
+        $('input.color').minicolors();
+    });
+
+    function del(maket) {
+        $('.content_maket'+maket).html('{{ text_add_block }}');
+    }
+</script>
+<script type="text/javascript"><!--
+    $('#language a:first').tab('show');
+    //--></script>
+<style>
+    .list-maket {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .list-maket>div {
+        width: 50%;
+        cursor: pointer;
+        border:1px dotted #ccc;
+        padding: 5px;
+    }
+    .list-maket img{
+        width: 100%;
+    }
+    .content-block {
+        border: 1px dotted #ccc;
+        padding: 5px;
+        background: gainsboro;
+    }
+    .row.flex-v {
+        display: flex;
+        align-items: center;
+    }
+</style>
+{{ footer }}

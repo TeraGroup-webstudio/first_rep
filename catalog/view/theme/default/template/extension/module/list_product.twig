@@ -1,0 +1,398 @@
+<style>
+    .item-product-image img{
+        height:{{ img_height }}px;
+        border-radius: 20px;
+    }
+    .title-section{
+        position: relative;
+        color: #000;
+        font-size: 24px;
+        font-style: normal;
+        line-height: 16px;
+        margin-bottom: 48px;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 74px;
+    }
+    .img-title img {
+        margin-right: 5px;
+    }
+    a.page-title-link {
+        color: #000;
+        font-size: 14px;
+        position: absolute;
+        right: 20px;
+        margin-top: 0px;
+    }
+    a.page-title-link span {
+        margin-left: 10px;
+    }
+</style>
+<div class="title-section">
+    <span class="img-title"><img src="/image/template/logo_title.png"></span><span>{{ heading_title }}</span>
+    {% if page_status == 1 %}
+        {% if page_title != '' %}
+            <a href="{{ page_url }}" class="page-title-link">{{ page_title }}
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="5" height="9" viewBox="0 0 5 9" fill="none">
+                      <path d="M1 1L4 4.5L1 8" stroke="black" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </span>
+            </a>
+        {% endif %}
+    {% endif %}
+</div>
+{% if type_slide == 0 %}
+    <div id="ftProductsCarousel_{{ module }}" class="products-carousel product-items card">
+        {% if heading_title or 'arrows' in controls %}
+            <div class="card-header">
+                <div class="h6 card-title">
+                    <div class="row align-items-center">
+                        <div class="col">
+
+                        </div>
+                        {% if 'arrows' in controls %}
+                            <div class="col-auto">
+                                <button class="btn btn-prev rounded-pill">
+                                    <svg class="block" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path>
+                                    </svg>
+                                </button>
+                                <button class="btn btn-next">
+                                    <svg class="block" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+        <div class="card-body">
+            <!--noindex-->
+            <!--googleoff: all-->
+            <div class="carousel-placeholder flex">
+                <script>
+
+                    items = {{ items }};
+                    breakpoints = [];
+                    base_width = window.innerWidth;
+
+                    {% if responsive_items %}
+                    {% for item in responsive_items %}
+                    breakpoints[{{ loop.index0 }}] = { ww: {{ item.breakpoint }}, count: {{ item.amount }} };
+                    {% endfor %}
+                    {% endif %}
+
+                    breakpoints.sort((a, b) => a.ww > b.ww ? 1 : -1);
+                    breakpoints.forEach(function(breakpoint, i, breakpoints) {
+
+                        next_bp_vw = breakpoints[i + 1] != null ? breakpoints[i + 1].ww : 9999;
+
+                        if (breakpoint.ww <= base_width && next_bp_vw > base_width) {
+                            items = breakpoint.count;
+                        }
+                    });
+
+                </script>
+                <div class="item product-item flex align-items-start flex-column h-100">
+                    <script>
+
+                        item = document.querySelector('#ftProductsCarousel_{{ module }} .carousel-placeholder .item');
+                        item.style.width = items > 0 ? 100 / items + '%' : 100 + '%';
+
+                    </script>
+                    <div class="w-100 px-2 px-sm-3 pt-2 pb-1">
+                        <div class="product-name">
+                            <span class="bg-light"><span class="invisible" role="status">Loading product name...</span></span>
+                        </div>
+                    </div>
+                    <div class="w-100 mt-auto px-2 px-sm-3 pb-2 pb-sm-3 pt-0">
+                        <div class="price">
+                            <div class="h6 mb-1">
+							<span class="d-inline-block">
+								<span class="bg-light "><span class="invisible" role="status">Load...</span></span>
+							</span>
+                            </div>
+                            {% if products[0].tax %}
+                                <small class="font-weight-light text-muted d-block">
+                                    <span class="bg-light"><span class="invisible" role="status">{{ text_tax }} Loading...</span></span>
+                                </small>
+                            {% endif %}
+                        </div>
+                        <button type="button" class="btn btn-light btn-cart-add py-1 pl-2 pr-1 mt-2" disabled>
+                            <span class="invisible"><span class="invisible" role="status">Loading...</span></span>
+                        </button>
+                    </div>
+                </div>
+                <script>
+
+                    for(let i = 1; i < items && i < {{ products|length }}; i++)  {
+                        clone = item.cloneNode(true);
+                        item.parentNode.appendChild(clone);
+                    }
+
+                    items = null;
+                    item = null;
+                    clone = null;
+                    breakpoints = null;
+                    base_width = null;
+                    prev_bp_vw = null;
+
+                </script>
+            </div>
+            <!--googleon: all-->
+            <!--/noindex-->
+
+            <div class="owl-carousel">
+                {% for product in products %}
+                    {% if not (product.quantity <= 0 and hide_out_of_stock_products) %}
+                        {{ product }}
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        {% if 'pagination' in controls %}
+            <div class="card-footer px-3 py-2">
+                <div class="owl-pagination text-center text-sm-left">
+                    <button class="btn btn-dot bg-dark shadow-none rounded-pill border-0 bg-secondary p-0 mr-0"><span></span></button>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    <script>
+        $(function () {
+
+            var ftProductsCarousel_{{ module }} = $('#ftProductsCarousel_{{ module }} .owl-carousel');
+
+            ftProductsCarousel_{{ module }}.owlCarousel({
+                mouseDrag: false,
+                touchDrag: true,
+                loop: false,
+                rewind: true,
+
+                items: {{ items }},
+
+                {% if responsive_items %}
+                responsive: {
+            {% for item in responsive_items %}
+            {{ item.breakpoint }} : { items: {{ item.amount }} },
+            {% endfor %}
+        },
+            {% endif %}
+
+            stageClass: 'owl-stage flex',
+                itemClass: 'owl-item float-none',
+
+                nav: false,
+                    {% if 'pagination' in controls %}
+                dots: true,
+                dotsContainer: '#ftProductsCarousel_{{ module }} .owl-pagination',
+                dotClass: 'btn btn-dot bg-dark shadow-none rounded-pill border-0 bg-secondary p-0',
+                    {% else %}
+                dots: false,
+                    {% endif %}
+                    {% if autoplay %}
+                autoplay: true,
+                autoplayTimeout: {{ autoplay_speed }},
+            autoplayHoverPause: true,
+                    {% endif %}
+
+                    {% if lazyload_imgs %}
+                lazyLoad: true,
+                    {% else %}
+                lazyLoad: false,
+                    {% endif %}
+
+                lazyLoadEager: 0,
+
+                onLoadedLazy: function(e) { e.element.parent().parent().find('.lazy-spinner').remove() },
+            onInitialized: function(e) { $(e.target).parent().find('.carousel-placeholder').remove() },
+            onRefreshed: function(e) {
+
+                $(e.target).find('.owl-item').each(function() { this.style.minWidth = this.style.width });
+                let arrows = $('#ftProductsCarousel_{{ module }} .btn-prev, #ftProductsCarousel_{{ module }} .btn-next ');
+                if (e.item.count <= e.page.size) { arrows.attr('disabled','disabled') } else { arrows.removeAttr('disabled') }
+
+            },
+        });
+
+            $('#ftProductsCarousel_{{ module }} .btn-prev').click(function() { ftProductsCarousel_{{ module }}.trigger('prev.owl.carousel'); });
+            $('#ftProductsCarousel_{{ module }} .btn-next').click(function() { ftProductsCarousel_{{ module }}.trigger('next.owl.carousel'); });
+
+        });
+    </script>
+{% else %}
+    <div class="carousel_wraper">
+        <div class="container" style="position: relative;">
+            <div class="swiper-container" id="carousel{{ module }}" style="overflow: hidden;">
+
+                <div class="swiper-wrapper">
+                    {% for product in products %}
+                        {% if not (product.quantity <= 0 and hide_out_of_stock_products) %}
+                            {{ product }}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="carousel-pagination_{{ module }}"></div>
+            <div class="carousel_slider_next_{{ module }}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="36" viewBox="0 0 40 36" fill="none">
+                    <g filter="url(#filter0_dddd_28_967)">
+                        <circle cx="24" cy="18" r="15" fill="white"></circle>
+                    </g>
+                    <path d="M22 14L26.5034 18.5034L22 23.0068" stroke="#E3E3E3" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <defs>
+                        <filter id="filter0_dddd_28_967" x="0" y="0" width="40" height="36" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                            <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood>
+                            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"></feColorMatrix>
+                            <feOffset></feOffset>
+                            <feGaussianBlur stdDeviation="0.5"></feGaussianBlur>
+                            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"></feColorMatrix>
+                            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_28_967"></feBlend>
+                            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"></feColorMatrix>
+                            <feOffset dx="-2"></feOffset>
+                            <feGaussianBlur stdDeviation="1"></feGaussianBlur>
+                            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.09 0"></feColorMatrix>
+                            <feBlend mode="normal" in2="effect1_dropShadow_28_967" result="effect2_dropShadow_28_967"></feBlend>
+                            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"></feColorMatrix>
+                            <feOffset dx="-4"></feOffset>
+                            <feGaussianBlur stdDeviation="1"></feGaussianBlur>
+                            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0"></feColorMatrix>
+                            <feBlend mode="normal" in2="effect2_dropShadow_28_967" result="effect3_dropShadow_28_967"></feBlend>
+                            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"></feColorMatrix>
+                            <feOffset dx="-6"></feOffset>
+                            <feGaussianBlur stdDeviation="1.5"></feGaussianBlur>
+                            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.01 0"></feColorMatrix>
+                            <feBlend mode="normal" in2="effect3_dropShadow_28_967" result="effect4_dropShadow_28_967"></feBlend>
+                            <feBlend mode="normal" in="SourceGraphic" in2="effect4_dropShadow_28_967" result="shape"></feBlend>
+                        </filter>
+                    </defs>
+                </svg>
+            </div>
+            <div class="carousel_slider_prev_{{ module }}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="36" viewBox="0 0 40 36" fill="none">
+                    <g filter="url(#filter0_dddd_28_964)">
+                        <circle cx="16" cy="18" r="15" fill="white"></circle>
+                    </g>
+                    <path d="M17.0034 14L12.5 18.5034L17.0034 23.0068" stroke="#E3E3E3" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <defs>
+                        <filter id="filter0_dddd_28_964" x="0" y="0" width="40" height="36" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                            <feFlood flood-opacity="0" result="BackgroundImageFix"></feFlood>
+                            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"></feColorMatrix>
+                            <feOffset></feOffset>
+                            <feGaussianBlur stdDeviation="0.5"></feGaussianBlur>
+                            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"></feColorMatrix>
+                            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_28_964"></feBlend>
+                            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"></feColorMatrix>
+                            <feOffset dx="2"></feOffset>
+                            <feGaussianBlur stdDeviation="1"></feGaussianBlur>
+                            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.09 0"></feColorMatrix>
+                            <feBlend mode="normal" in2="effect1_dropShadow_28_964" result="effect2_dropShadow_28_964"></feBlend>
+                            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"></feColorMatrix>
+                            <feOffset dx="4"></feOffset>
+                            <feGaussianBlur stdDeviation="1"></feGaussianBlur>
+                            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.05 0"></feColorMatrix>
+                            <feBlend mode="normal" in2="effect2_dropShadow_28_964" result="effect3_dropShadow_28_964"></feBlend>
+                            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"></feColorMatrix>
+                            <feOffset dx="6"></feOffset>
+                            <feGaussianBlur stdDeviation="1.5"></feGaussianBlur>
+                            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.01 0"></feColorMatrix>
+                            <feBlend mode="normal" in2="effect3_dropShadow_28_964" result="effect4_dropShadow_28_964"></feBlend>
+                            <feBlend mode="normal" in="SourceGraphic" in2="effect4_dropShadow_28_964" result="shape"></feBlend>
+                        </filter>
+                    </defs>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const swiperCarousel_{{ module }} = new Swiper('#carousel{{ module }}', {
+            // Optional parameters
+            effect: 'slide',
+            loop: false,
+            freeMode: true,
+            speed: 900,
+            slidesPerView: {{ items }},
+            simulateTouch: true,
+            pagination: {
+                el: '.carousel-pagination_{{ module }}',
+                clickable: true
+            },
+
+
+            // Navigation arrows
+            navigation: {
+                nextEl: '.carousel_slider_next_{{ module }}',
+                prevEl: '.carousel_slider_prev_{{ module }}',
+            },
+            {% if responsive_items %}
+            breakpoints: {
+        {% for item in responsive_items %}
+        {{ item.breakpoint }} : { slidesPerView: {{ item.amount }} },
+        {% endfor %}
+        },
+        {% endif %}
+        });
+
+    </script>
+    <style>
+        .carousel_slider_prev_{{ module }}{
+            position: absolute;
+            top: calc(50% - 6px);
+            transform: translateY(-50%);
+            -webkit-transform: translateY(-50%);
+            -moz-transform: translateY(-50%);
+            -ms-transform: translateY(-50%);
+            -o-transform: translateY(-50%);
+            left: -20px;
+        }
+        .carousel_slider_next_{{ module }}{
+            position: absolute;
+            top: calc(50% - 6px);
+            transform: translateY(-50%);
+            -webkit-transform: translateY(-50%);
+            -moz-transform: translateY(-50%);
+            -ms-transform: translateY(-50%);
+            -o-transform: translateY(-50%);
+            right: -20px;
+        }
+        .carousel_wraper {
+            margin-bottom: 49px;
+            margin-left: -13px;
+            margin-right: -13px;
+        }
+        .carousel_wraper .swiper-container{
+            margin-bottom: 30px;
+            margin-left: 16px;
+            margin-right: 16px;
+        }
+        .swiper-pagination-clickable {
+            text-align: center;
+        }
+        .item-product-image {
+            width: 193px;
+        }
+        .swiper-pagination-clickable {
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .swiper-pagination-horizontal span.swiper-pagination-bullet {
+            background: #000;
+            height: 7px;
+            width: 7px;
+        }
+
+        .swiper-pagination-horizontal span.swiper-pagination-bullet.swiper-pagination-bullet-active {
+            width: 11px;
+            height: 11px;
+        }
+    </style>
+{% endif %}

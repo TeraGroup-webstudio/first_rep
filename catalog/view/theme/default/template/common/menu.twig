@@ -1,0 +1,108 @@
+{% if catalog_categories %}
+  <ul class="categoriesList">
+    {% if url_special %}
+      <li class="link-hard"><a href="{{ url_special }}">{{ text_special }}</a></li>
+    {% endif %}
+    {% if url_manufacturer %}
+      <li class="link-hard"><a href="{{ url_manufacturer }}">{{ text_manufacturer }}</a></li>
+    {% endif %}
+    {% for category in catalog_categories %}
+      {% if category.children %}
+        <li class="cetegories_lvl1">
+          <div class="categoriesBox categories_lvl1Box">
+            <a a href="{{ category.href }}" class="{% if category.category_id == category_id  %} opened {% endif %}">{{ category.name }}</a>
+            <div class="open {% if category.category_id == category_id  %} opened {% endif %}">
+              <svg xmlns="http://www.w3.org/2000/svg" width="9" height="15" viewBox="0 0 9 15" fill="none">
+                <path d="M1 0.511047L7.75552 7.26657L1 14.0221" stroke="#848680" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </div>
+          <ul class="categories_lvl2 {% if category.category_id == category_id  %} opencat {% endif %} {% if category.children|length > 8 %}column-count{% endif %}">
+            <div class="main-title-category">
+              <div class="prev-catalog">
+                <svg xmlns="http://www.w3.org/2000/svg" width="9" height="15" viewBox="0 0 9 15" fill="none">
+                  <path d="M7.7793 14.4991L1.00005 7.76743L7.73176 0.988186" stroke="black" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="categories_listTitle">{{ category.name }}</div>
+            </div>
+            {% for child in category.children %}
+              {% if child.children2 %}
+                <li class="categories_lvl2_item">
+                  <div class="categoriesBox categories_lvl2Box">
+                    <a class="{% if child.category_id == child_id  %} opened {% endif %}">{{ child.name  }}</a>
+                    {#<div class="open {% if child.category_id == child_id %} opened {% endif %}">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
+                    </div>#}
+                  </div>
+                  {#<ul class="categories_lvl3 {% if child.category_id == child_id  %} opencat {% endif %}">
+                    {% for child2 in child.children2 %}
+                    {% if child2.children3 %}
+                    <li class="categories_lvl3_item">
+                      <div class="categoriesBox categories_lvl3Box">
+                        <a class="{% if child2.category_id == child_id2 %} openedlink {% endif %}" href="{{ child2.href }} ">{{ child2.name }}</a>
+                        <div class="open {% if child2.category_id == child_id2 %} opened {% endif %}">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"/></svg>
+                        </div>
+                      </div>
+                      <ul class="categories_lvl4 {% if child2.category_id == child_id2 %} opencat {% endif %}">
+                        {% for child3 in child2.children3 %}
+                        <li class="categories_lvl4_item">
+                          <a class="{% if child3.category_id == child_id3 %} openedlink {% endif %}" href="{{ child3.href  }}">{{ child3.name }}</a>
+                        </li>
+                        {% endfor %}
+                      </ul>
+                    </li>
+                    {% else %}
+                    <li class="categories_lvl3_item"><a href="{{ child2.href }}">{{ child2.name }}</a></li>
+                    {% endif %}
+                    {% endfor %}
+                  </ul>#}
+                </li>
+              {% else %}
+                <li class="categories_lvl2_item"><div class="categoriesBox categories_lvl2Box">
+                    <a class="{% if child.category_id == child_id  %} opened {% endif %}" href="{{ child.href  }}">{{ child.name  }}</a>
+                  </div></li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </li>
+      {% else %}
+        <li><a href="{{ category.href }}">{{ category.name }}</a></li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+{% endif %}
+
+{#
+{% if categories %}
+<div class="container">
+  <nav id="menu" class="navbar">
+    <div class="navbar-header"><span id="category" class="visible-xs">{{ text_category }}</span>
+      <button type="button" class="btn btn-navbar navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse"><i class="fa fa-bars"></i></button>
+    </div>
+    <div class="collapse navbar-collapse navbar-ex1-collapse">
+      <ul class="nav navbar-nav">
+
+        {% for category in categories %}
+        {% if category.children %}
+        <li class="dropdown"><a href="{{ category.href }}" class="dropdown-toggle" data-toggle="dropdown">{{ category.name }}</a>
+          <div class="dropdown-menu">
+            <div class="dropdown-inner"> {% for children in category.children|batch(category.children|length / category.column|round(1, 'ceil')) %}
+              <ul class="list-unstyled">
+                {% for child in children %}
+                <li><a href="{{ child.href }}">{{ child.name }}</a></li>
+                {% endfor %}
+              </ul>
+              {% endfor %}</div>
+            <a href="{{ category.href }}" class="see-all">{{ text_all }} {{ category.name }}</a> </div>
+        </li>
+        {% else %}
+        <li><a href="{{ category.href }}">{{ category.name }}</a></li>
+        {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+  </nav>
+</div>
+{% endif %} #}

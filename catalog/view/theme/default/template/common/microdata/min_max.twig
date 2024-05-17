@@ -1,0 +1,42 @@
+{% if prices and prices|length > 1%}
+{% if config_item_syntax == "ld" or config_item_syntax == "all" %}
+<script type="application/ld+json">
+{
+"@context": "http://schema.org",
+"@type": "Product",
+"name": "{{ microdata_heading_title }}",
+"description": "{{ microdata_description }}",	
+"url": "{{ microdata_url }}",
+{% if microdata_category_rating%}"aggregateRating": {
+"@type": "AggregateRating", 
+"ratingValue": "{{ microdata_category_rating }}", 
+"reviewCount": "{{ microdata_category_rating_count }}"
+},{% endif %}
+"offers": { 
+"@type": "AggregateOffer", 
+"priceCurrency": "{{ microdata_code }}",
+"lowPrice": "{{ min(prices) }}",
+"highPrice": "{{ max(prices) }}",
+"offerCount": "{{ prices|length }}"
+}
+}		 
+</script>
+{% endif %}
+{% if config_item_syntax == "md" or config_item_syntax == "all" %}
+<span itemscope itemtype="http://schema.org/Product">
+<meta itemprop="name" content="{{ microdata_heading_title }}" />
+<link itemprop="url" href="{{ microdata_url }}" />
+<meta itemprop="description" content="{{ microdata_description }}" />
+{% if microdata_category_rating%}<span itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+<meta itemprop="ratingValue" content="{{ microdata_category_rating }}">
+<meta itemprop="reviewCount" content="{{ microdata_category_rating_count }}">
+</span>{% endif %}
+<span itemtype="http://schema.org/AggregateOffer" itemscope itemprop="offers">
+<meta content="{{ prices|length }}" itemprop="offerCount">
+<meta content="{{ max(prices) }}" itemprop="highPrice">
+<meta content="{{ min(prices) }}" itemprop="lowPrice">
+<meta content="{{ microdata_code }}" itemprop="priceCurrency">
+</span>
+</span>
+{% endif %}
+{% endif %}

@@ -1,0 +1,736 @@
+<!DOCTYPE html prefix="og: http://ogp.me/ns#">
+<!--[if IE]><![endif]-->
+<!--[if IE 8 ]><html dir="{{ direction }}" lang="{{ lang }}" class="ie8"><![endif]-->
+<!--[if IE 9 ]><html dir="{{ direction }}" lang="{{ lang }}" class="ie9"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html dir="{{ direction }}" lang="{{ lang }}">
+<!--<![endif]-->
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% if(no_index == 1) %}
+    <meta name="robots" content="noindex nofollow ">
+  {% endif %}
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>{{ title }}</title>
+  <base href="{{ base }}" />
+  {% if description %}
+    <meta name="description" content="{{ description }}" />
+  {% endif %}
+  {% if keywords %}
+    <meta name="keywords" content="{{ keywords }}" />
+  {% endif %}
+  <script src="catalog/view/javascript/jquery/jquery-2.1.1.min.js" type="text/javascript"></script>
+  {% if version_bootstrap == 1 %}
+    <link href="catalog/view/javascript/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />
+    <script src="catalog/view/javascript/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+  {% else  %}
+  <link href="catalog/view/javascript/bootstrap_4_5_0/css/bootstrap.min.css" rel="stylesheet" media="screen" />
+    <script src="catalog/view/javascript/bootstrap_4_5_0/js/bootstrap.min.js" type="text/javascript"></script>
+  {% endif %}
+  {% for style in styles %}
+    <link href="{{ style.href }}" type="text/css" rel="{{ style.rel }}" media="{{ style.media }}" />
+  {% endfor %}
+  {% for script in scripts %}
+    <script src="{{ script }}" type="text/javascript"></script>
+  {% endfor %}
+  <script src="catalog/view/javascript/common.js" type="text/javascript"></script>
+  {% if webfont and webfont_link %}
+    {{ webfont_link }}
+    {% if(webfont_style != '') %}
+      <style>
+        body {
+        {{ webfont_style }}
+        }
+      </style>
+    {% endif %}
+  {% endif %}
+  {% if lazy_load_status == 1 %}
+    <script src="catalog/view/javascript/lazyload/jquery.lazyload.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      $(document).ready(function() {
+        $('img.lazy-load').lazyload({
+          effect: "fadeIn",
+          effectspeed: 500,
+          threshold: 0,
+          skip_invisible  : false,
+          placeholder : "{{ lazy_image }}"
+        });
+      });
+    </script>
+  {% endif %}
+  {% for lang,href in alter_lang  %}
+    <link rel="alternate" hreflang="{{ lang }}" href="{{ href }}" />
+  {% endfor %}
+  {% for link in links %}
+    <link href="{{ link.href }}" rel="{{ link.rel }}" />
+  {% endfor %}
+  {% for analytic in analytics %}
+    {{ analytic }}
+  {% endfor %}
+  <meta property="og:title" content="{{ title }}" >
+  <meta property="og:description" content="{{ description ? description : '' }}" >
+  {% if class == 'common-home' %}
+    <meta property="og:url" content="{{ base }}" >
+  {% endif %}
+  {% if ('product-product' not in class) and ('product-category' not in class) and ('product-manufacturer-info' not in class) %}
+    <meta property="og:image" content="{{ logo_meta }}" >
+    <meta property="og:image:width" content="300" >
+    <meta property="og:image:height" content="300" >
+  {% endif %}
+  <meta property="og:site_name" content="{{ name }}" >
+  {% for meta_tag in ogmeta %}
+    <meta {{ meta_tag.meta_name}} content="{{ meta_tag.content }}" >
+  {% endfor %}
+  {{ tc_og }}
+  {{ microdata }}
+</head>
+<body>
+<style>
+  header{
+    background: #fff;
+  }
+  .content-header, .head-1, .head-2, .head-3 {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100px;
+  }
+  .head-2, .search {
+    width: 100%;
+  }
+  .head-ico {
+    position: relative;
+  }
+  #search {
+    position: relative;
+    margin: 0 auto;
+  }
+  div#search button {
+    position: absolute;
+    right: 10px;
+    top: 7px;
+    background: none;
+    border: none;
+  }
+  .input-main-search {
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid #ED1C24;
+    background: var(--1-basic-fill-02200, #F4F4F4);
+    height: 40px;
+    padding-left: 14px;
+  }
+  .main-menu-content, .container-cart {
+    position: absolute;
+    overflow: hidden;
+    top: 100px;
+    right: 0;
+    z-index: 9;
+    min-width: 320px;
+    margin-top: 11px;
+    border-radius: 10px;
+    background: #FFF;
+    box-shadow: 0px 3px 7px 0px rgba(0, 0, 0, 0.10), 0px 13px 13px 0px rgba(0, 0, 0, 0.09), 0px 29px 17px 0px rgba(0, 0, 0, 0.05), 0px 51px 20px 0px rgba(0, 0, 0, 0.01), 0px 80px 22px 0px rgba(0, 0, 0, 0.00);
+    height: 0;
+    visibility: hidden;
+    opacity: 0;
+    transition: 1s;
+  }
+  .main-menu-content{
+    padding: 0px 50px;
+  }
+  .container-cart{
+    padding: 0px 15px;
+  }
+  .main-menu-content.in{
+    height: auto;
+    visibility: visible;
+    opacity: 1;
+    transition: 1s;
+    padding: 30px 50px;
+  }
+  .container-cart.in{
+    height: auto;
+    visibility: visible;
+    opacity: 1;
+    transition: 1s;
+    padding: 30px 15px;
+  }
+  #form-language {
+    margin: 0;
+  }
+  #cart-total , .whishlist-total{
+    background: #000;
+    width: 15px;
+    height: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    border-radius: 100%;
+    color: #FFF;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 20px;
+  }
+  button.btn-cart {
+    background: no-repeat;
+    border: none;
+  }
+  .account li {
+    list-style-type: none;
+  }
+  .main-menu, .wishlist a, .account li a, .mini-cart, #cart a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .head-3 > div {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+  .head-3 .head-ico {
+    position: relative;
+    height: 30px;
+    width: 30px;
+  }
+  .main-menu{
+    cursor:pointer;
+  }
+  button#show_categories {
+    border-radius: 10px;
+    background: #ED1C24;
+    border: 1px solid #ED1C24;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 154px;
+    height: 40px;
+  }
+  button#show_categories span{
+    color: #FFF;
+    text-align: center;
+    font-size: 16px;
+    font-style: normal;
+    line-height: 15px;
+    letter-spacing: -1px;
+    text-transform: uppercase;
+  }
+  button#show_categories svg {
+    margin-right: 17px;
+    margin-left: 7px;
+  }
+  .head-title {
+    color: #000;
+    text-align: center;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 15px;
+    text-transform: uppercase;
+  }
+  #form-language > div button {
+    color: #000;
+    text-align: center;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 15px;
+  }
+  .catalog {
+    margin-left: 10px;
+  }
+  /* breadcrumb */
+  .breadcrumb {
+    /*margin: 0 0 20px 0;*/
+    margin: 53px 0 41px 0;
+    padding: 8px 0;
+    display: flex;
+    overflow: auto;
+  }
+  .breadcrumb i {
+    font-size: 15px;
+  }
+  .breadcrumb > li {
+    list-style-type: none;
+    position: relative;
+    padding-right: 18px;
+    white-space: nowrap;
+  }
+  .breadcrumb > li + li:before {
+    content: '';
+    padding: 0;
+  }
+  .breadcrumb > li:after {
+    content: '';
+    display: block;
+    position: absolute;
+    background: #ED1C24;
+    top: 6px;
+    right: 9px;
+    width: 1px;
+    height: 8px;
+  }
+  .breadcrumb > li a {
+    color: #000;
+  }
+  .breadcrumb > li a svg {
+    margin-right: 10px;
+  }
+  .pagination {
+    margin: 0;
+  }
+  /* categories menu */
+  .categories_listWraper{
+    position: fixed;
+    z-index: 10;
+    left: -100%;
+    width: 100%;
+    /*background-color: rgba(0, 0, 0, 0.6);*/
+  }
+  .categories_listWraper.open{
+    left: 0;
+    margin-top: 17px;
+  }
+  .categories_listButtonClose{
+    position: absolute;
+    cursor: pointer;
+    right: 10px;
+    top: 10px;
+    width: 20px;
+    height: 20px;
+  }
+  .categories_listButtonClose svg{
+    width: 20px;
+    height: 20px;
+    display: none;
+  }
+  .categories_listButtonClose svg path{
+    fill: #fff;
+  }
+  .categories_listButtonClose:hover svg path{
+    fill: #ED1C24;
+  }
+  .categories_listWraperBox{
+    width: 100%;
+    height: 100%;
+    padding: 41px 14px 60px 41px;
+    overflow: auto;
+    border-radius: 20px;
+    background: #FFF;
+    box-shadow: 0px 6px 14px 0px rgba(125, 125, 125, 0.10), 0px 26px 26px 0px rgba(125, 125, 125, 0.09), 0px 58px 35px 0px rgba(125, 125, 125, 0.05), 0px 103px 41px 0px rgba(125, 125, 125, 0.01), 0px 161px 45px 0px rgba(125, 125, 125, 0.00);
+    /*max-height: 375px;*/
+    margin-left: -15px;
+    margin-left: -15px;
+  }
+  .categories_listWraperBox.mobile{
+    width: 90%;
+  }
+  .categories_listTitle a,
+  .categories_listTitle{
+    color: #ED1C24;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 22px;
+  }
+  .categories_listWraperBox ul{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    width: max-content;
+  }
+  .categories_listWraperBox.mobile ul{
+    width: 100%;
+  }
+  ul.categoriesList{
+    position: relative;
+    font-weight: 400;
+    padding-right: 30px;
+    border-right: 1px solid #D9D9D9;
+  }
+  ul.categoriesList.mobile{
+    border-right: none;
+  }
+  ul.categories_lvl2 {
+    font-weight: 400;
+  }
+  .categories_listWraperBox ul li {
+    padding: 5px 10px 5px 0;
+  }
+  .categories_listWraperBox ul.categories_lvl3 li{
+    padding-left: 10px;
+  }
+  .categories_listWraperBox ul li a{
+    font-size: 16px;
+    line-height: 2;
+  }
+  .categories_listWraperBox ul.categories_lvl3 li a{
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .categories_listWraperBox ul li a:hover{
+    color: #ED1C24;
+  }
+  .categories_listWraperBox ul li a:hover ~ div svg path{
+    stroke: #000;
+  }
+
+  .categoriesBox{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .categoriesBox .open{
+    width: 15px;
+    height: 15px;
+    margin-left: 10px;
+  }
+  .categoriesBox .open svg{
+    width: 15px;
+    height: 15px;
+  }
+  .categories_lvl2{
+    position: absolute;
+    top: 0;
+    display: none;
+    left: calc(100% + 47px);
+    z-index: -1;
+  }
+  .categories_lvl2.mobile{
+    top: -33px;
+    left: 0;
+    width: 100%;
+    height: calc(100% + 33px);
+    background-color: #fff;
+  }
+  .cetegories_lvl1.open .categories_lvl2{
+    display: block;
+    z-index: 11;
+  }
+  .categoriesBox a.opened{
+    color: #ED1C24;
+  }
+  .categoriesBox .opened svg path{
+    stroke: #000;
+  }
+  .subcategoryButtonClose{
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 0;
+    top: -10px;
+  }
+  .subcategoryButtonClose svg{
+    width: 20px;
+    height: 20px;
+  }
+  .lock, .lockburger {
+    overflow: hidden;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    padding-right: 17px;
+  }
+  .categories_listWraperBox a {
+    color: #000;
+    cursor:pointer;
+  }
+  span.price-old {
+    color: #888;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    text-decoration: line-through;
+  }
+  span.price-new {
+    color: #FF2D55;
+    font-size: 15px;
+    font-style: normal;
+    line-height: 20px;
+    margin-left: 11px;
+  }
+  .btn-none {
+    border: none !important;
+    background: none !important;
+    box-shadow: none !important;
+  }
+  @media(min-width: 768px){
+    div#logo {
+      width: 155px;
+    }
+
+  }
+  @media(min-width: 992px){
+
+
+  }
+  @media(min-width: 1024px){
+    div#logo {
+      width: 234px;
+    }
+    #search {
+      max-width: 450px;
+    }
+  }
+  @media(min-width: 1400px){
+    #search {
+      max-width: 640px;
+    }
+    .categories_listWraperBox{
+      width: 1085px;
+      float: right;
+    }
+  }
+
+  @media(max-width: 1200px){
+    .search {
+      margin-left: 15px;
+      margin-right: 15px;
+    }
+    .catalog button span {
+      display: none;
+    }
+    button#show_categories {
+      width: auto;
+    }
+    button#show_categories svg {
+      margin-right: 10px;
+      margin-left: 10px;
+    }
+  }
+</style>
+{% if header_box_info_status == 1 %}
+  <div class="section-information {% if header_box_info_image != '' %} bg-section {% endif %}">
+    <a {% if header_box_info_url != '' %} href="{{ header_box_info_url }}" {% endif %} >
+      <div class="box-info">
+        {% if header_box_info_text != '' %}
+          <div class="title-info">{{ header_box_info_text }}</div>
+        {% endif %}
+        {% if header_box_info_price != '' %}
+          <div class="price-info">
+            {% if header_box_info_price_ot != '' %}
+              <span class="text_ot">
+            {{ header_box_info_price_ot }}
+          </span>
+            {% endif %}
+            <span class="prices">
+        {{ header_box_info_price }}
+        </span>
+
+            {% if header_box_info_price_symbol != '' %}
+              <span class="symbol">{{ header_box_info_price_symbol }}</span>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    </a>
+  </div>
+  <style>
+    .section-information{
+      height: 40px;
+      width: 100%;
+    }
+    .bg-section {
+      background: url('image/{{ header_box_info_image }}') no-repeat;
+      background-size: cover;
+      background-position: center;
+    }
+    .box-info {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 40px;
+      overflow: hidden;
+    }
+    .title-info {
+      color: #FFF;
+      font-size: 16px;
+      font-style: normal;
+      line-height: 16px;
+    }
+    .price-info {
+      background: #fff;
+      width: 105px;
+      height: 124px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 100%;
+    }
+    span.text_ot, span.symbol {
+      color: #000;
+      font-size: 10px;
+      font-style: normal;
+      line-height: 15px;
+    }
+    span.prices {
+      color: #000;
+      font-size: 14px;
+      font-style: normal;
+      line-height: 16px;
+      margin-left: 5px;
+      margin-right: 3px;
+    }
+    header{
+      box-shadow: 0px 3px 7px 0px rgba(0, 0, 0, 0.10), 0px 12px 12px 0px rgba(0, 0, 0, 0.09), 0px 27px 16px 0px rgba(0, 0, 0, 0.05), 0px 48px 19px 0px rgba(0, 0, 0, 0.01), 0px 76px 21px 0px rgba(0, 0, 0, 0.00);
+    }
+    @media(min-width:1400px){
+      .title-info {
+        margin-right: 60px;
+      }
+    }
+    @media(min-width:1200px){
+      .title-info {
+        margin-right: 60px;
+      }
+    }
+  </style>
+{% endif %}
+<header>
+  <div class="container">
+    <div class="content-header">
+      <div class="head-1">
+        <div id="logo">{% if logo %}<a href="{{ home }}"><img src="{{ logo }}" title="{{ name }}" alt="{{ name }}" class="img-responsive" /></a>{% else %}
+            <h1><a href="{{ home }}">{{ name }}</a></h1>
+          {% endif %}
+        </div>
+        <div class="language">
+          {{ language }}
+        </div>
+        <div class="catalog">
+          <button type="button" id="show_categories"  aria-label="{{ text_catalog }}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="23" height="19" viewBox="0 0 23 19" fill="none">
+              <path d="M2 2H11.6429" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M2 9.88962H16.9026" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M2 17H21.2857" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>{{ text_catalog }}</span>
+          </button>
+        </div>
+      </div>
+      <div class="head-2">
+        <div class="search">
+          {{ search }}
+        </div>
+      </div>
+      <div class="head-3">
+        <div class="main-menu">
+          <div class="head-ico">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28" fill="none">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M9.34922 2.33334H5.80519C3.8862 2.33334 2.3335 3.89952 2.3335 5.82812V9.40291C2.3335 11.3307 3.88653 12.8976 5.80519 12.8976H9.34922C11.2679 12.8976 12.8209 11.3307 12.8209 9.40291V5.82812C12.8209 3.89952 11.2682 2.33334 9.34922 2.33334ZM5.80519 3.96125H9.34922C10.366 3.96125 11.193 4.79547 11.193 5.82812V9.40291C11.193 10.4349 10.3655 11.2698 9.34922 11.2698H5.80519C4.78887 11.2698 3.9614 10.4349 3.9614 9.40291V5.82812C3.9614 4.79547 4.78843 3.96125 5.80519 3.96125ZM22.1962 2.33334H18.6511C16.7321 2.33334 15.1794 3.89952 15.1794 5.82812V9.40291C15.1794 11.3307 16.7325 12.8976 18.6511 12.8976H22.1962C24.114 12.8976 25.6668 11.3305 25.6668 9.40291V5.82812C25.6668 3.89976 24.1143 2.33334 22.1962 2.33334ZM18.6511 3.96125H22.1962C23.212 3.96125 24.039 4.79558 24.039 5.82812V9.40291C24.039 10.4348 23.2116 11.2698 22.1962 11.2698H18.6511C17.6348 11.2698 16.8073 10.4349 16.8073 9.40291V5.82812C16.8073 4.79547 17.6343 3.96125 18.6511 3.96125ZM5.80519 15.1024H9.34922C11.2684 15.1024 12.8209 16.6688 12.8209 18.5982V22.1719C12.8209 24.1005 11.2682 25.6667 9.34922 25.6667H5.80519C3.8862 25.6667 2.3335 24.1005 2.3335 22.1719V18.5982C2.3335 16.6688 3.88598 15.1024 5.80519 15.1024ZM9.34922 16.7302H5.80519C4.78831 16.7302 3.9614 17.5645 3.9614 18.5982V22.1719C3.9614 23.2045 4.78843 24.0388 5.80519 24.0388H9.34922C10.366 24.0388 11.193 23.2045 11.193 22.1719V18.5982C11.193 17.5645 10.3661 16.7302 9.34922 16.7302ZM22.1962 15.1024H18.6511C16.7319 15.1024 15.1794 16.6688 15.1794 18.5982V22.1719C15.1794 24.1005 16.7321 25.6667 18.6511 25.6667H22.1962C24.1143 25.6667 25.6668 24.1003 25.6668 22.1719V18.5982C25.6668 16.669 24.1146 15.1024 22.1962 15.1024ZM18.6511 16.7302H22.1962C23.2122 16.7302 24.039 17.5646 24.039 18.5982V22.1719C24.039 23.2044 23.212 24.0388 22.1962 24.0388H18.6511C17.6343 24.0388 16.8073 23.2045 16.8073 22.1719V18.5982C16.8073 17.5645 17.6342 16.7302 18.6511 16.7302Z" fill="#121924"/>
+            </svg>
+          </div>
+          <div class="head-title">
+            {{ text_menu }}
+          </div>
+        </div>
+        <div class="wishlist">
+          <a href="{{ wishlist }}" id="wishlist-total" title="{{ text_wishlist }}"  aria-label="{{ text_wishlist }}">
+            <div class="head-ico">
+              {% if wishlist_count > 0  %}<span class="whishlist-total" style="display: flex;">{{ wishlist_count }}</span>{% else %}<span class="whishlist-total" style="display: none;">{{ wishlist_count }}</span>{% endif %}
+              <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.10389 3.51911C3.5144 4.99673 1.46733 10.0071 3.00603 14.7869C3.78684 17.0376 5.05668 19.0606 6.72505 20.7203C9.01376 22.9431 11.5282 24.8993 14.2311 26.5614L14.538 26.7451C14.832 26.9211 15.1998 26.918 15.4908 26.7371L15.7773 26.5591C18.4765 24.8993 20.9909 22.9431 23.2718 20.728C24.948 19.0606 26.2179 17.0376 26.9921 14.8065C28.5364 10.01 26.4809 4.99725 21.89 3.51919L21.5579 3.42029C19.453 2.84136 17.2163 3.12663 15.3306 4.19419L14.9955 4.39286L14.6663 4.19529C12.6774 3.0668 10.3005 2.81254 8.10389 3.51911ZM14.2183 6.06784L14.4643 6.24423C14.7884 6.47639 15.2258 6.47178 15.545 6.23281C17.2075 4.98821 19.3591 4.62603 21.3301 5.25836C24.8871 6.40355 26.5059 10.3512 25.258 14.2275C24.5813 16.1771 23.4609 17.962 21.9895 19.4256L21.3295 20.0526C19.5513 21.7053 17.6283 23.2013 15.5864 24.5195L15.0016 24.8873L15.18 24.9998C12.6006 23.4135 10.1922 21.5399 8.00728 19.4179C6.54381 17.962 5.42346 16.1771 4.74009 14.208C3.4976 10.3475 5.10933 6.40265 8.66441 5.25808C10.5416 4.65424 12.5883 4.95361 14.2183 6.06784Z" fill="black"/>
+              </svg>
+            </div>
+            <div class="head-title">
+              {{ text_wishlist }}
+            </div>
+          </a>
+        </div>
+        <div class="account">
+
+          <li class="dropdown">
+            <a href="{{ account }}" title="{{ text_account }}" class="dropdown-toggle" data-toggle="dropdown">
+              <div class="head-ico">
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
+                  <path fill-rule="evenodd" clip-rule="evenodd" d="M15.0054 2.5C11.3378 2.5 8.36471 5.4858 8.36471 9.16896C8.36471 12.8521 11.3378 15.8379 15.0054 15.8379C18.6729 15.8379 21.646 12.8521 21.646 9.16896C21.646 5.4858 18.6729 2.5 15.0054 2.5ZM15.0054 4.30959C17.6778 4.30959 19.8441 6.4852 19.8441 9.16896C19.8441 11.8527 17.6778 14.0284 15.0054 14.0284C12.333 14.0284 10.1666 11.8527 10.1666 9.16896C10.1666 6.4852 12.333 4.30959 15.0054 4.30959ZM12.2876 18.5261C11.3154 18.5936 10.3328 18.7324 9.3635 18.9401C7.49273 19.3255 5.99606 20.0954 5.35905 21.3749C5.11879 21.8753 4.99799 22.411 5.00003 22.9534C4.9993 23.4919 5.11913 24.0284 5.35078 24.5191C5.96243 25.7839 7.28475 26.4996 9.0703 26.8964L9.39016 26.9631C10.3331 27.1759 11.3161 27.3191 12.3056 27.3862C12.3899 27.411 12.5907 27.434 12.81 27.4451L12.9902 27.4519C13.083 27.4541 13.1882 27.4546 13.345 27.4546C14.7672 27.5329 16.2417 27.5101 17.7094 27.3851C18.4915 27.3316 19.2789 27.2294 20.0596 27.0795L20.6439 26.9583C22.572 26.5779 24.0157 25.8545 24.6482 24.5205C25.1171 23.5301 25.1171 22.3809 24.6485 21.3909C24.0175 20.0604 22.5921 19.343 20.6292 18.9386C19.8591 18.7743 19.0765 18.6525 18.2884 18.5749L17.7121 18.5261C15.9074 18.3669 14.0922 18.3669 12.2876 18.5261ZM17.5545 20.3288L17.5703 20.33C18.4749 20.3936 19.3739 20.5206 20.2609 20.71C21.7189 21.0104 22.7084 21.5084 23.0214 22.1685C23.2571 22.6663 23.2571 23.2448 23.0211 23.743C22.7286 24.3599 21.84 24.8364 20.5556 25.1276L20.2744 25.1873C19.37 25.389 18.4739 25.519 17.572 25.5809C16.1724 25.6999 14.7811 25.7214 13.3935 25.6464L12.9015 25.6379C12.7649 25.631 12.6498 25.6178 12.5431 25.5964C11.6984 25.5326 10.9383 25.4318 10.2003 25.2854L9.75969 25.1921C8.29714 24.9055 7.29894 24.4054 6.9753 23.7362C6.86205 23.4963 6.80156 23.2254 6.80193 22.9511C6.80091 22.6785 6.8606 22.4137 6.97648 22.1724C7.29116 21.5405 8.34899 20.9964 9.73258 20.7113C10.6259 20.5199 11.5245 20.393 12.4287 20.33C14.145 20.1788 15.8546 20.1788 17.5545 20.3288Z" fill="black"/>
+                </svg>
+              </div>
+              <div class="head-title">
+                {{ text_account }}
+              </div>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-right">
+              {% if logged %}
+                <li><a href="{{ account }}">{{ text_account }}</a></li>
+                <li><a href="{{ logout }}">{{ text_logout }}</a></li>
+              {% else %}
+                <li><a href="{{ register }}">{{ text_register }}</a></li>
+                <li><a href="{{ login }}">{{ text_login }}</a></li>
+              {% endif %}
+            </ul>
+          </li>
+
+
+
+        </div>
+        <div class="mini-cart">{{ cart }}</div>
+      </div>
+      <div class="main-menu-content">
+        <div class="box-link">
+          {% if informations %}
+            <ul class="list-unstyled">
+              {% for information in informations %}
+                <li><a href="{{ information.href }}">{{ information.title }}</a></li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </div>
+        <div class="box-contacts-menu">
+          <div class="title-contacts">{{ text_phone }}</div>
+          {% for phone in list_phones %}
+            {% set i = i + 1 %}
+
+            <div class="header_tel">
+              {% if phone.image %}
+                <img class="d-block" src="{{ phone.image }}" {% if phone.image2x %} srcset="{{ phone.image }} 1x, {{ phone.image2x }} 2x, {{ phone.image3x }} 3x, {{ phone.image4x }} 4x"{% endif %} alt="" />
+              {% endif %}
+              <a class="header_tellink" href="tel:{{ phone.title }}"><span>{{ phone.title }}</span></a>
+            </div>
+            {% if phone.href or phone.hint_text %}
+              {% if phone.hint_text %}
+                <a href="#clarification-{{ i }}" data-toggle="collapse" class="btn btn-sm btn-link {% if not phone.hint_show %} collapsed {% endif %}">
+                  <svg class="d-block ft-icon-18 m-0 text-info" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11 17h2v-6h-2v6zm1-15C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM11 9h2V7h-2v2z"/>
+                  </svg>
+                </a>
+              {% endif %}
+            {% endif %}
+
+            {% if phone.hint_text %}
+              <div class="collapse {% if phone.hint_show %} show {% endif %}" id="clarification-{{ i }}">
+                <small class="d-block text-muted mt-1">{{ phone.hint_text }}</small>
+              </div>
+            {% endif %}
+          {% endfor %}
+          <div class="messanger">
+            {% for messenger in list_messenger %}
+              {% set a = a + 1 %}
+
+              <div class="header_tel">
+                {% if messenger.image %}
+                  <a class="header_tellink" href="{{ messenger.title }}"><img class="d-block" src="{{ messenger.image }}" alt="{{ messenger.hint_text }}" /></a>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+<div class="categories_listWraper" id="categories_listWraper">
+  <div class="container">
+    <div class="categories_listButtonClose" id="categories_listButtonClose"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M310.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 210.7 54.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L114.7 256 9.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 301.3 265.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L205.3 256 310.6 150.6z"/></svg></div>
+    <div class="categories_listWraperBox">
+      <div class="categories_listTitle"><?php echo $text_catalog ?></div>
+      {{ menu }}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,613 @@
+<!DOCTYPE html prefix="og: http://ogp.me/ns#">
+<!--[if IE]><![endif]-->
+<!--[if IE 8 ]><html dir="{{ direction }}" lang="{{ lang }}" class="ie8"><![endif]-->
+<!--[if IE 9 ]><html dir="{{ direction }}" lang="{{ lang }}" class="ie9"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html dir="{{ direction }}" lang="{{ lang }}">
+<!--<![endif]-->
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% if(no_index == 1) %}
+<meta name="robots" content="noindex nofollow ">
+{% endif %}
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>{{ title }}</title>
+<base href="{{ base }}" />
+{% if description %}
+<meta name="description" content="{{ description }}" />
+{% endif %}
+{% if keywords %}
+<meta name="keywords" content="{{ keywords }}" />
+{% endif %}
+<script src="catalog/view/javascript/jquery/jquery-2.1.1.min.js" type="text/javascript"></script>
+  {% if version_bootstrap == 1 %}
+    <link href="catalog/view/javascript/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen" />
+    <script src="catalog/view/javascript/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+  {% else  %}
+    <link href="catalog/view/javascript/bootstrap_4_5_0/css/bootstrap.min.css" rel="stylesheet" media="screen" />
+    <script src="catalog/view/javascript/bootstrap_4_5_0/js/bootstrap.min.js" type="text/javascript"></script>
+  {% endif %}
+{#<link href="catalog/view/javascript/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />#}
+  <link href="catalog/view/theme/default/stylesheet/fonts.css" rel="stylesheet">
+{% for style in styles %}
+<link href="{{ style.href }}" type="text/css" rel="{{ style.rel }}" media="{{ style.media }}" />
+{% endfor %}
+{% for script in scripts %}
+<script src="{{ script }}" type="text/javascript"></script>
+{% endfor %}
+<script src="catalog/view/javascript/common.js" type="text/javascript"></script>
+{% if webfont and webfont_link %}
+  {{ webfont_link }}
+  {% if(webfont_style != '') %}
+    <style>
+    body {
+    {{ webfont_style }}
+    }
+    </style>
+  {% endif %}
+{% endif %}
+{% if lazy_load_status == 1 %}
+  <script src="catalog/view/javascript/lazyload/jquery.lazyload.min.js" type="text/javascript"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $('img.lazy-load').lazyload({
+          effect: "fadeIn",
+          effectspeed: 500,
+          threshold:0,
+          skip_invisible  : false,
+          placeholder : "{{ lazy_image }}"
+      });
+    });
+  </script>
+{% endif %}
+{% for lang,href in alter_lang  %}
+  <link rel="alternate" hreflang="{{ lang }}" href="{{ href }}" />
+{% endfor %}
+{% for link in links %}
+<link href="{{ link.href }}" rel="{{ link.rel }}" />
+{% endfor %}
+{% for analytic in analytics %}
+{{ analytic }}
+{% endfor %}
+  <meta property="og:title" content="{{ title }}" >
+  <meta property="og:description" content="{{ description ? description : '' }}" >
+  {% if class == 'common-home' %}
+    <meta property="og:url" content="{{ base }}" >
+  {% endif %}
+  {% if ('product-product' not in class) and ('product-category' not in class) and ('product-manufacturer-info' not in class) %}
+    <meta property="og:image" content="{{ logo_meta }}" >
+    <meta property="og:image:width" content="300" >
+    <meta property="og:image:height" content="300" >
+  {% endif %}
+  <meta property="og:site_name" content="{{ name }}" >
+  {% for meta_tag in ogmeta %}
+    <meta {{ meta_tag.meta_name}} content="{{ meta_tag.content }}" >
+  {% endfor %}
+  {{ tc_og }}
+  {{ microdata }}
+</head>
+<body class="{% if is_home %}home{% else %}other{% endif %}">
+<style>
+    body{
+        margin-bottom: 65px;
+    }
+    body.fixbody {
+        overflow: hidden;
+    }
+    .mobile_panel {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 65px;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        left: 0;
+        z-index: 18;
+        background: #fff;
+        /*padding-left: 24px;
+        padding-right: 24px;*/
+        border-top: 1px solid #C5CEE0;
+    }
+    .mobile_panel > div {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 20%;
+    }
+    .text-panel {
+        color: #000;
+        text-align: center;
+        font-size: 10px;
+        font-style: normal;
+        line-height: 15px;
+        text-transform: uppercase;
+    }
+    .ico-panel {
+        width: 30px;
+        height: 30px;
+    }
+    .content-header {
+        margin-left: -5px;
+        margin-right: -5px;
+    }
+    #logo {
+        max-width: 181px;
+    }
+    .mini-cart {
+        margin-right: 8px;
+    }
+    .container-cart {
+        position: absolute;
+        overflow: hidden;
+        margin-left: 10px;
+        margin-right: 10px;
+        top: 100px;
+        right: 0;
+        z-index: 9;
+        min-width: 320px;
+        margin-top: 11px;
+        border-radius: 10px;
+        background: #FFF;
+        box-shadow: 0px 3px 7px 0px rgba(0, 0, 0, 0.10), 0px 13px 13px 0px rgba(0, 0, 0, 0.09), 0px 29px 17px 0px rgba(0, 0, 0, 0.05), 0px 51px 20px 0px rgba(0, 0, 0, 0.01), 0px 80px 22px 0px rgba(0, 0, 0, 0.00);
+        height: 0;
+        visibility: hidden;
+        opacity: 0;
+        transition: 1s;
+    }
+    .container-cart.in {
+        height: auto;
+        visibility: visible;
+        opacity: 1;
+        transition: 1s;
+        padding: 30px 15px;
+    }
+  #cart-total {
+    background: #000;
+    width: 15px;
+    height: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    border-radius: 100%;
+    color: #FFF;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 20px;
+  }
+  button.btn-cart {
+    background: no-repeat;
+    border: none;
+  }
+  .main-menu, .wishlist a, .account li a, .mini-cart, #cart a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  #cart {
+      position: relative;
+  }
+    form#form-language {
+        margin: 0;
+        position: absolute;
+        right: 50px;
+    }
+  .head-title{
+      display: none;
+  }
+    #form-language > div button {
+        color: #000;
+        text-align: center;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 300;
+        line-height: 15px;
+    }
+  #search {
+      position: relative;
+      margin: 0 auto;
+      background: linear-gradient(to left, hwb(309deg 18% 0% / 50%), hsl(256deg 96% 59% / 60%));
+      padding: 1px;
+      border-radius: 11px;
+      margin-bottom: 12px;
+  }
+  div#search button {
+      position: absolute;
+      right: 10px;
+      top: 7px;
+      background: none;
+      border: none;
+  }
+  .input-main-search {
+      width: 100%;
+      border-radius: 10px;
+      border: 1px solid #F4F4F4;
+      background: var(--1-basic-fill-02200, #F4F4F4);
+      height: 40px;
+      padding-left: 14px;
+  }
+    .other .head-bottom {
+        position: fixed;
+        width: 100%;
+        left: 0;
+        padding-left: 10px;
+        padding-right: 10px;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        background: #fff;
+        bottom: -100vh;
+    }
+    header.fixed .head-bottom {
+        display: none;
+    }
+    header.fixed .head-bottom.active{
+        display: block;
+    }
+    span.price-old {
+        color: #888;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 20px;
+        text-decoration: line-through;
+    }
+
+    span.price-new {
+        color: #FF2D55;
+        font-size: 15px;
+        font-style: normal;
+        line-height: 20px;
+        margin-left: 11px;
+    }
+    form#form-language {
+        margin: 0;
+    }
+    /* breadcrumb */
+    .breadcrumb {
+        /* margin: 0 0 20px 0; */
+        margin: 10px 0 24px 0;
+        padding: 8px 0;
+        display: flex;
+        overflow: auto;
+    }
+    .breadcrumb i {
+        font-size: 15px;
+    }
+    .breadcrumb > li {
+        list-style-type: none;
+        position: relative;
+        padding-right: 18px;
+        white-space: nowrap;
+    }
+    .breadcrumb > li + li:before {
+        content: '';
+        padding: 0;
+    }
+    .breadcrumb > li:after {
+        content: '';
+        display: block;
+        position: absolute;
+        background: #ED1C24;
+        top: 6px;
+        right: 9px;
+        width: 1px;
+        height: 8px;
+    }
+    .breadcrumb > li a {
+        color: #000;
+        font-size: 12px;
+    }
+    .breadcrumb > li a svg {
+        margin-right: 10px;
+    }
+    .pagination {
+        margin: 0;
+    }
+    .btn-none {
+        border: none !important;
+        background: none !important;
+        box-shadow: none !important;
+    }
+  .btn-none {
+      border: none !important;
+      background: none !important;
+  }
+  .swiper-viewport {
+      margin-bottom: 25px;
+  }
+  .content-header {
+    display: flex;
+    flex-direction: column;
+  }
+  .head-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+    .categories_listWraper{
+        left: -100%;
+        transition: 1s;
+        position: fixed;
+        height: calc(100vh - 65px);
+        background: #fff;
+        top: 0;
+        z-index: 16;
+        width: 100%;
+    }
+    .categories_listWraper.in {
+        left: 0;
+        /*position: fixed;*/
+        transition: 1s;
+    }
+    .main-menu-content {
+        position: fixed;
+        width: 100% !important;
+        bottom: -100vh;
+        background: #fff;
+        transition: 1s;
+        z-index: 6;
+        padding: 25px 25px;
+        box-shadow: 0px 0px 20px 0px hsl(0deg 0% 0% / 36%);
+    }
+    .main-menu-content.in{
+        bottom: 65px;
+        transition: 1s;
+    }
+</style>
+<div class="mobile_panel">
+    <div class="item-catalog-panel">
+        <div class="ico-panel">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="23" viewBox="0 0 28 23" fill="none">
+                <path d="M2 2H14.2143" stroke="#ED1C24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M2 11.9935H20.8766" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M2 21H26.4286" stroke="#ED1C24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+        <div class="text-panel">
+            {{ text_catalog }}
+        </div>
+    </div>
+    <div class="item-search-panel">
+        <div class="ico-panel">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M14.5144 2.5C7.87904 2.5 2.5 7.76024 2.5 14.2491C2.5 20.7379 7.87904 25.9981 14.5144 25.9981C17.3524 25.9981 19.9605 25.0359 22.0163 23.4269L25.9214 27.2358L26.0252 27.3232C26.3878 27.5856 26.9017 27.5557 27.2299 27.2341C27.5907 26.8804 27.59 26.3074 27.2281 25.9545L23.369 22.1904C25.3311 20.0993 26.5289 17.3109 26.5289 14.2491C26.5289 7.76024 21.1497 2.5 14.5144 2.5ZM14.5144 4.30967C20.1278 4.30967 24.6782 8.7597 24.6782 14.2491C24.6782 19.7385 20.1278 24.1885 14.5144 24.1885C8.90107 24.1885 4.35055 19.7385 4.35055 14.2491C4.35055 8.7597 8.90107 4.30967 14.5144 4.30967Z" fill="black"/>
+            </svg>
+        </div>
+        <div class="text-panel">
+            {{ text_search }}
+        </div>
+    </div>
+    <div class="item-menu-panel main-menu">
+        <div class="ico-panel">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28" fill="none">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M9.34922 2.33337H5.80519C3.8862 2.33337 2.3335 3.89955 2.3335 5.82815V9.40294C2.3335 11.3307 3.88653 12.8977 5.80519 12.8977H9.34922C11.2679 12.8977 12.8209 11.3307 12.8209 9.40294V5.82815C12.8209 3.89955 11.2682 2.33337 9.34922 2.33337ZM5.80519 3.96128H9.34922C10.366 3.96128 11.193 4.7955 11.193 5.82815V9.40294C11.193 10.4349 10.3655 11.2698 9.34922 11.2698H5.80519C4.78887 11.2698 3.9614 10.4349 3.9614 9.40294V5.82815C3.9614 4.7955 4.78843 3.96128 5.80519 3.96128ZM22.1962 2.33337H18.6511C16.7321 2.33337 15.1794 3.89955 15.1794 5.82815V9.40294C15.1794 11.3307 16.7325 12.8977 18.6511 12.8977H22.1962C24.114 12.8977 25.6668 11.3305 25.6668 9.40294V5.82815C25.6668 3.89979 24.1143 2.33337 22.1962 2.33337ZM18.6511 3.96128H22.1962C23.212 3.96128 24.039 4.79561 24.039 5.82815V9.40294C24.039 10.4348 23.2116 11.2698 22.1962 11.2698H18.6511C17.6348 11.2698 16.8073 10.4349 16.8073 9.40294V5.82815C16.8073 4.7955 17.6343 3.96128 18.6511 3.96128ZM5.80519 15.1024H9.34922C11.2684 15.1024 12.8209 16.6688 12.8209 18.5982V22.172C12.8209 24.1006 11.2682 25.6667 9.34922 25.6667H5.80519C3.8862 25.6667 2.3335 24.1006 2.3335 22.172V18.5982C2.3335 16.6688 3.88598 15.1024 5.80519 15.1024ZM9.34922 16.7303H5.80519C4.78831 16.7303 3.9614 17.5646 3.9614 18.5982V22.172C3.9614 23.2046 4.78843 24.0389 5.80519 24.0389H9.34922C10.366 24.0389 11.193 23.2046 11.193 22.172V18.5982C11.193 17.5646 10.3661 16.7303 9.34922 16.7303ZM22.1962 15.1024H18.6511C16.7319 15.1024 15.1794 16.6688 15.1794 18.5982V22.172C15.1794 24.1006 16.7321 25.6667 18.6511 25.6667H22.1962C24.1143 25.6667 25.6668 24.1003 25.6668 22.172V18.5982C25.6668 16.669 24.1146 15.1024 22.1962 15.1024ZM18.6511 16.7303H22.1962C23.2122 16.7303 24.039 17.5647 24.039 18.5982V22.172C24.039 23.2045 23.212 24.0389 22.1962 24.0389H18.6511C17.6343 24.0389 16.8073 23.2046 16.8073 22.172V18.5982C16.8073 17.5646 17.6342 16.7303 18.6511 16.7303Z" fill="#121924"/>
+            </svg>
+        </div>
+        <div class="text-panel">
+            {{ text_menu }}
+        </div>
+    </div>
+    <div class="item-wishlist-panel">
+        <div class="ico-panel">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.10389 3.51911C3.5144 4.99673 1.46733 10.0071 3.00603 14.7869C3.78684 17.0376 5.05668 19.0606 6.72505 20.7203C9.01376 22.9431 11.5282 24.8993 14.2311 26.5614L14.538 26.7451C14.832 26.9211 15.1998 26.918 15.4908 26.7371L15.7773 26.5591C18.4765 24.8993 20.9909 22.9431 23.2718 20.728C24.948 19.0606 26.2179 17.0376 26.9921 14.8065C28.5364 10.01 26.4809 4.99725 21.89 3.51919L21.5579 3.42029C19.453 2.84136 17.2163 3.12663 15.3306 4.19419L14.9955 4.39286L14.6663 4.19529C12.6774 3.0668 10.3005 2.81254 8.10389 3.51911ZM14.2183 6.06784L14.4643 6.24423C14.7884 6.47639 15.2258 6.47178 15.545 6.23281C17.2075 4.98821 19.3591 4.62603 21.3301 5.25836C24.8871 6.40355 26.5059 10.3512 25.258 14.2275C24.5813 16.1771 23.4609 17.962 21.9895 19.4256L21.3295 20.0526C19.5513 21.7053 17.6283 23.2013 15.5864 24.5195L15.0016 24.8873L15.18 24.9998C12.6006 23.4135 10.1922 21.5399 8.00728 19.4179C6.54381 17.962 5.42346 16.1771 4.74009 14.208C3.4976 10.3475 5.10933 6.40265 8.66441 5.25808C10.5416 4.65424 12.5883 4.95361 14.2183 6.06784Z" fill="black"/>
+            </svg>
+        </div>
+        <div class="text-panel">
+            {{ text_wishlist }}
+        </div>
+    </div>
+    <div class="item-account-panel">
+        <div class="ico-panel">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M15.0054 2.5C11.3378 2.5 8.36471 5.4858 8.36471 9.16896C8.36471 12.8521 11.3378 15.8379 15.0054 15.8379C18.6729 15.8379 21.646 12.8521 21.646 9.16896C21.646 5.4858 18.6729 2.5 15.0054 2.5ZM15.0054 4.30959C17.6778 4.30959 19.8441 6.4852 19.8441 9.16896C19.8441 11.8527 17.6778 14.0284 15.0054 14.0284C12.333 14.0284 10.1666 11.8527 10.1666 9.16896C10.1666 6.4852 12.333 4.30959 15.0054 4.30959ZM12.2876 18.5261C11.3154 18.5936 10.3328 18.7324 9.3635 18.9401C7.49273 19.3255 5.99606 20.0954 5.35905 21.3749C5.11879 21.8753 4.99799 22.411 5.00003 22.9534C4.9993 23.4919 5.11913 24.0284 5.35078 24.5191C5.96243 25.7839 7.28475 26.4996 9.0703 26.8964L9.39016 26.9631C10.3331 27.1759 11.3161 27.3191 12.3056 27.3862C12.3899 27.411 12.5907 27.434 12.81 27.4451L12.9902 27.4519C13.083 27.4541 13.1882 27.4546 13.345 27.4546C14.7672 27.5329 16.2417 27.5101 17.7094 27.3851C18.4915 27.3316 19.2789 27.2294 20.0596 27.0795L20.6439 26.9583C22.572 26.5779 24.0157 25.8545 24.6482 24.5205C25.1171 23.5301 25.1171 22.3809 24.6485 21.3909C24.0175 20.0604 22.5921 19.343 20.6292 18.9386C19.8591 18.7743 19.0765 18.6525 18.2884 18.5749L17.7121 18.5261C15.9074 18.3669 14.0922 18.3669 12.2876 18.5261ZM17.5545 20.3288L17.5703 20.33C18.4749 20.3936 19.3739 20.5206 20.2609 20.71C21.7189 21.0104 22.7084 21.5084 23.0214 22.1685C23.2571 22.6663 23.2571 23.2448 23.0211 23.743C22.7286 24.3599 21.84 24.8364 20.5556 25.1276L20.2744 25.1873C19.37 25.389 18.4739 25.519 17.572 25.5809C16.1724 25.6999 14.7811 25.7214 13.3935 25.6464L12.9015 25.6379C12.7649 25.631 12.6498 25.6178 12.5431 25.5964C11.6984 25.5326 10.9383 25.4318 10.2003 25.2854L9.75969 25.1921C8.29714 24.9055 7.29894 24.4054 6.9753 23.7362C6.86205 23.4963 6.80156 23.2254 6.80193 22.9511C6.80091 22.6785 6.8606 22.4137 6.97648 22.1724C7.29116 21.5405 8.34899 20.9964 9.73258 20.7113C10.6259 20.5199 11.5245 20.393 12.4287 20.33C14.145 20.1788 15.8546 20.1788 17.5545 20.3288Z" fill="black"/>
+            </svg>
+        </div>
+        <div class="text-panel">
+            {{ text_account }}
+        </div>
+    </div>
+</div>
+<div class="main-menu-content">
+    <div class="box-link">
+        {% if informations %}
+            <ul class="list-unstyled">
+                {% for information in informations %}
+                    <li><a href="{{ information.href }}">{{ information.title }}</a></li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+    <div class="box-contacts-menu">
+        <div class="title-contacts">{{ text_phone }}</div>
+        {% for phone in list_phones %}
+            {% set i = i + 1 %}
+
+            <div class="header_tel">
+                {% if phone.image %}
+                    <img class="d-block" src="{{ phone.image }}" {% if phone.image2x %} srcset="{{ phone.image }} 1x, {{ phone.image2x }} 2x, {{ phone.image3x }} 3x, {{ phone.image4x }} 4x"{% endif %} alt="" />
+                {% endif %}
+                <a class="header_tellink" href="tel:{{ phone.title }}"><span>{{ phone.title }}</span></a>
+            </div>
+            {% if phone.href or phone.hint_text %}
+                {% if phone.hint_text %}
+                    <a href="#clarification-{{ i }}" data-toggle="collapse" class="btn btn-sm btn-link {% if not phone.hint_show %} collapsed {% endif %}">
+                        <svg class="d-block ft-icon-18 m-0 text-info" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M11 17h2v-6h-2v6zm1-15C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zM11 9h2V7h-2v2z"/>
+                        </svg>
+                    </a>
+                {% endif %}
+            {% endif %}
+
+            {% if phone.hint_text %}
+                <div class="collapse {% if phone.hint_show %} show {% endif %}" id="clarification-{{ i }}">
+                    <small class="d-block text-muted mt-1">{{ phone.hint_text }}</small>
+                </div>
+            {% endif %}
+        {% endfor %}
+        <div class="messanger">
+            {% for messenger in list_messenger %}
+                {% set a = a + 1 %}
+
+                <div class="header_tel">
+                    {% if messenger.image %}
+                        <a class="header_tellink" href="{{ messenger.title }}"><img class="d-block" src="{{ messenger.image }}" alt="{{ messenger.hint_text }}" /></a>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</div>
+<script>
+    $('.item-wishlist-panel').on('click', function () {
+        location = '{{ wishlist }}';
+    });
+    $('.item-account-panel').on('click', function () {
+        location = '{{ account }}';
+    });
+    $('.item-search-panel').on('click', function () {
+        var top =  $(window).scrollTop();
+        //location = '{{ search_link }}';
+        console.log(top);
+        //if(top > 150) {
+            $('.head-bottom').toggleClass('active');
+        /*} else {
+            $('#search input').focus();
+        }*/
+    });
+
+
+   /* $('.catalog-button').on('click', function () {
+         $('.categories_listWraper').toggleClass('in');
+         $('body').toggleClass('fixbody');
+    });*/
+    /*$('.item-menu-panel').on('click', function () {
+         $('.main-menu-content').toggleClass('in');
+    });*/
+</script>
+{% if header_box_info_status == 1 %}
+  <div class="section-information {% if header_box_info_image != '' %} bg-section {% endif %}">
+    <a {% if header_box_info_url != '' %} href="{{ header_box_info_url }}" {% endif %} >
+    <div class="box-info">
+      {% if header_box_info_text != '' %}
+      <div class="title-info">{{ header_box_info_text }}</div>
+      {% endif %}
+      {% if header_box_info_price != '' %}
+      <div class="price-info">
+        {% if header_box_info_price_ot != '' %}
+          <span class="text_ot">
+            {{ header_box_info_price_ot }}
+          </span>
+        {% endif %}
+        <span class="prices">
+        {{ header_box_info_price }}
+        </span>
+
+        {% if header_box_info_price_symbol != '' %}
+          <span class="symbol">{{ header_box_info_price_symbol }}</span>
+        {% endif %}
+      </div>
+      {% endif %}
+    </div>
+    </a>
+  </div>
+  <style>
+    .section-information{
+      height: 30px;
+      width: 100%;
+    }
+    .bg-section {
+      background: url('image/{{ header_box_info_image }}') no-repeat;
+      background-size: cover;
+      background-position: center;
+    }
+    .box-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 30px;
+      overflow: hidden;
+      margin-right: 10px;
+      margin-left: 18px;
+    }
+    .title-info {
+      color: #FFF;
+      font-size: 12px;
+      font-style: normal;
+      line-height: 16px;
+    }
+    .price-info {
+      background: #fff;
+      width: 105px;
+      height: 124px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 100%;
+    }
+    span.text_ot, span.symbol {
+      color: #000;
+      font-size: 10px;
+      font-style: normal;
+      line-height: 15px;
+    }
+    span.prices {
+      color: #000;
+      font-size: 12px;
+      font-style: normal;
+      line-height: 16px;
+      margin-left: 5px;
+      margin-right: 3px;
+    }
+  </style>
+{% endif %}
+<header>
+  <div class="container">
+    <div class="content-header">
+      <div class="head-top">
+        <div class="catalog-button">
+            <div class="mobile-catalog">
+                <svg xmlns="http://www.w3.org/2000/svg" width="23" height="19" viewBox="0 0 23 19" fill="none">
+                    <path d="M2 2H11.6429" stroke="#ED1C24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 9.88962H16.9026" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 17H21.2857" stroke="#ED1C24" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+        </div>
+        <div id="logo">{% if logo %}<a href="{{ home }}"><img src="{{ logo }}" title="{{ name }}" alt="{{ name }}" class="img-responsive" /></a>{% else %}
+            <h1><a href="{{ home }}">{{ name }}</a></h1>
+          {% endif %}
+        </div>
+          {{ language }}
+        <div class="mini-cart">{{ cart }}</div>
+      </div>
+      <div class="head-bottom">
+        <div class="search">
+          {{ search }}
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+<div class="categories_listWraper" id="categories_listWraper">
+  <div class="container">
+  <div class="categories_listButtonClose" id="categories_listButtonClose">
+      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M1.34326 11L6.17164 6.17165M6.17164 6.17165L11 1.34326M6.17164 6.17165L1.34326 1.34326M6.17164 6.17165L11 11" stroke="#8991A3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+  </div>
+  <div class="categories_listWraperBox">
+    <div class="title-category-menu">{{ text_catalog }}</div>
+    {{ menu }}
+  </div>
+  </div>
+</div>
+

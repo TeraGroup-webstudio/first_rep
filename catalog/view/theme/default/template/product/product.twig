@@ -1,0 +1,1267 @@
+{{ header }}
+<style>
+    section.main-product {
+        position: relative;
+        margin-left: 15px;
+        margin-right: 15px;
+        margin-bottom: 44px;
+    }
+    .main-slide{
+        position: relative;
+    }
+    .slider-nav{
+        width: 104px;
+        margin-right: 12px;
+    }
+    .arrow-main-slide svg {
+        cursor: pointer;
+        margin-right: 5px;
+        margin-left: 5px;
+    }
+    .image-thumb, .big-img {
+        border-radius: 10px;
+        border: 1px solid #CFCFCF;
+        background: #FBFBFB;
+        display: block;
+        transition: 0.5s;
+    }
+    .image-thumb {
+        margin-top: 5px;
+        margin-bottom: 4px;
+    }
+    .image-thumb:hover, .big-img:hover, .slick-active.slick-center .image-thumb{
+        border: 1px solid #15A74C;
+        transition: 0.5s;
+    }
+    .image-thumb img, .big-img img {
+        border-radius: 10px;
+    }
+    .main-product .image-thumb img{
+        width: 100%;
+        padding: 5px;
+    }
+    .slider-nav {
+        margin-top: -5px;
+        margin-bottom: -5px;
+    }
+    .slick-slide img{
+        width: 100%;
+    }
+    .arrow-main-slide {
+        position: absolute;
+        bottom: 16px;
+        right: 18px;
+        z-index: 999;
+    }
+    .points {
+        margin-top: 16px;
+    }
+    /* quantity */
+    .product_buttons {
+        display: flex;
+        align-items: center;
+        margin-bottom: 18px;
+        margin-top: 16px;
+    }
+    .product_buttons label {
+        margin-right: 31px;
+        margin-bottom: 0;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+    }
+    .number-spinner {
+        background-color: #fff;
+        display: flex;
+        align-items: center;
+        max-width: 96px;
+    }
+    .number-spinner button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 20px;
+        height: 20px;
+        border: 1px solid #C4C4C4;
+        background: #fff;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        -ms-border-radius: 4px;
+        -o-border-radius: 4px;
+        text-shadow: none;
+    }
+    .number-spinner button:hover{
+        background: #15A74C;
+        border: 1px solid #15A74C;
+    }
+    .number-spinner button:hover svg path{
+        fill: #fff;
+    }
+    .number-spinner input {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        min-width: 30px;
+        max-width: 40px;
+        height: 20px;
+        background: #fff;
+        border-radius: 0;
+        font-size: 16px;
+        -webkit-border-radius: 0;
+        -moz-border-radius: 0;
+        -ms-border-radius: 0;
+        -o-border-radius: 0;
+        border: none;
+        box-shadow: none;
+    }
+    .data-product h1 {
+        margin-top: 12px;
+        margin-bottom: 21px;
+    }
+    .new-price {
+        color: #15A74C;
+        text-align: center;
+        font-size: 32px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+    }
+    .old-price {
+        color: #C4C4C4;
+        text-align: center;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        text-decoration: line-through;
+    }
+    .list-price > div {
+        text-align: left;
+    }
+    .section-other {
+        display: flex;
+        flex-wrap: wrap;
+        line-height: 30px;
+    }
+    .section-other .col {
+        min-width: 170px;
+    }
+    .reward .red {
+        font-weight: 700;
+    }
+    .stock{
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 700;
+    }
+    .stock.green {
+        color: #15A74C;
+    }
+    .stock.red {
+        color: darkred;
+    }
+    .manufacturer a {
+        color: #1E1E1E;
+    }
+    .group-btn-buy{
+        display: flex;
+        margin-bottom: 17px;
+        margin-top: 10px;
+    }
+    .group-btn-buy button {
+        margin-right: 11px;
+    }
+    #button-cart {
+        border-radius: 10px;
+        background: #15A74C;
+        border: 1px solid #15A74C;
+        color: #FFF;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+        display: flex;
+        width: 170px;
+        height: 45px;
+        justify-content: center;
+        align-items: center;
+        flex-shrink: 0;
+    }
+    button.btn-buy-one {
+        color: #15A74C;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
+        background: #fff;
+        display: flex;
+        width: 170px;
+        height: 45px;
+        justify-content: center;
+        align-items: center;
+        flex-shrink: 0;
+        border-radius: 10px;
+        border: 1px solid #CDCDCD;
+    }
+    button.btn-buy-one svg {
+        width: 29px;
+        height: 28px;
+        margin-right: 10px;
+    }
+    .description-product {
+        color: #000;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 300;
+        line-height: 20px;
+    }
+    @media(min-width: 1440px){
+        .main-slide{
+            width: 558px;
+            height: 444px;
+        }
+        .list-main-image {
+            width: 442px;
+        }
+        .data-product{
+            max-width: 537px;
+        }
+    }
+    @media(min-width: 992px){
+        .main-slide{
+            /*width: 558px;*/
+            margin-right: 12px;
+        }
+        .data-product h1 {
+            color: #000;
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 20px;
+            letter-spacing: -1px;
+        }
+    }
+</style>
+
+<div id="product-product" class="container">
+  <ul class="breadcrumb">
+    {% for breadcrumb in breadcrumbs %}
+    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+    {% endfor %}
+  </ul>
+  <div class="row">{{ column_left }}
+    {% if column_left and column_right %}
+    {% set class = 'col-sm-6' %}
+    {% elseif column_left or column_right %}
+    {% set class = 'col-sm-9' %}
+    {% else %}
+    {% set class = 'col-sm-12' %}
+    {% endif %}
+    <div id="content" class="{{ class }}">{{ content_top }}
+      <div class="row"> {% if column_left or column_right %}
+        {% set class = 'col-sm-6' %}
+        {% else %}
+        {% set class = 'main-slide' %}
+        {% endif %}
+          <section class="main-product d-flex">
+            <div class="{{ class }} d-flex">
+                {% if stickers %}
+                    <ul class="stickers_image stickers_image_product" style="position: absolute;top: 10px;right: 10px;z-index: 2;left: unset;">
+                        {% for sticker in stickers %}
+                            <li><img src="{{ sticker.image }}" title="{{ heading_title }}" alt="{{ heading_title }}" /></li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                <div class="arrow-main-slide"></div>
+                    {% if images %}
+                    <div class="slider-nav">
+                            <div class="image-thumb">
+                                <img src="{{ main_thumb }}" title="{{ heading_title }}" alt="{{ heading_title }}" />
+                            </div>
+                        {% for image in images %}
+                            <div class="image-thumb">
+                                 <img src="{{ image.thumb }}" title="{{ heading_title }}" alt="{{ heading_title }}" />
+                            </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    <div class="list-main-image">
+                        {% if thumb %}
+                            <div class="main-image">
+                                <a class="big-img" href="{{ popup }}" title="{{ heading_title }}"><img src="{{ thumb }}" title="{{ heading_title }}" alt="{{ heading_title }}" /></a>
+                            </div>
+                        {% endif %}
+                        {% if images %}
+                            {% for image in images %}
+                            <div class="main-image">
+                                <a class="big-img" href="{{ image.popup }}" title="{{ heading_title }}"> <img src="{{ image.main_thumb }}" title="{{ heading_title }}" alt="{{ heading_title }}" /></a>
+                            </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+            </div>
+        {% if column_left or column_right %}
+        {% set class = 'col-sm-6' %}
+        {% else %}
+        {% set class = 'data-product' %}
+        {% endif %}
+        <div class="{{ class }}">
+            <div id="product">
+          <div class="btn-group">
+              {% if product_wishlist_status == 1 %}
+            <button type="button" data-toggle="tooltip" class="btn btn-default" title="{{ button_wishlist }}" onclick="wishlist.add('{{ product_id }}');"><i class="fa fa-heart"></i></button>
+              {% endif %}
+              {% if product_compare_status == 1 %}
+            <button type="button" data-toggle="tooltip" class="btn btn-default" title="{{ button_compare }}" onclick="compare.add('{{ product_id }}');"><i class="fa fa-exchange"></i></button>
+              {% endif %}
+          </div>
+          <h1>{{ heading_title }}</h1>
+            {% if price %}
+                <div class="list-price">
+                    {% if not special %}
+                    <div class="new-price">
+                        {{ price }}
+                    </div>
+                    {% else %}
+                        <div class="old-price">{{ price }}</div>
+                        <div class="new-price">
+                            {{ special }}
+                        </div>
+                    {% endif %}
+                    {% if tax %}
+                        <div class="tax">{{ text_tax }} {{ tax }}</div>
+                    {% endif %}
+                    {% if points %}
+                        <div class="points">
+                            {{ text_points }} {{ points }}
+                        </div>
+                    {% endif %}
+                    {% if discounts %}
+                        <li>
+                            <hr>
+                        </li>
+                        {% for discount in discounts %}
+                            <li>{{ discount.quantity }}{{ text_discount }}{{ discount.price }}</li>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            {% endif %}
+            <div class="product_buttons">
+                <label class="control-label" for="input-quantity">{{ entry_qty }}</label>
+                <div class="number-spinner">
+                    <button data-dir="dwn"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="3" viewBox="0 0 10 3" fill="none"> <path d="M8.55556 0H0.777778C0.348223 0 0 0.596954 0 1.33333C0 2.06971 0.348223 2.66667 0.777778 2.66667H8.55556C8.98511 2.66667 9.33333 2.06971 9.33333 1.33333C9.33333 0.596954 8.98511 0 8.55556 0Z" fill="#15A74C"/> </svg></button>
+                    <input type="text" name="quantity" value="{{ minimum }}" size="2" id="input-quantity" class="form-control" />
+                    <button data-dir="up"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 11 11" fill="none"> <path d="M9.77778 4.44444H6.22222V0.888889C6.22222 0.653141 6.12857 0.427049 5.96187 0.26035C5.79517 0.0936507 5.56908 0 5.33333 0C5.09759 0 4.87149 0.0936507 4.70479 0.26035C4.5381 0.427049 4.44444 0.653141 4.44444 0.888889V4.44444H0.888889C0.653141 4.44444 0.427049 4.5381 0.26035 4.70479C0.0936507 4.87149 0 5.09759 0 5.33333C0 5.56908 0.0936507 5.79517 0.26035 5.96187C0.427049 6.12857 0.653141 6.22222 0.888889 6.22222H4.44444V9.77778C4.44444 10.0135 4.5381 10.2396 4.70479 10.4063C4.87149 10.573 5.09759 10.6667 5.33333 10.6667C5.56908 10.6667 5.79517 10.573 5.96187 10.4063C6.12857 10.2396 6.22222 10.0135 6.22222 9.77778V6.22222H9.77778C10.0135 6.22222 10.2396 6.12857 10.4063 5.96187C10.573 5.79517 10.6667 5.56908 10.6667 5.33333C10.6667 5.09759 10.573 4.87149 10.4063 4.70479C10.2396 4.5381 10.0135 4.44444 9.77778 4.44444Z" fill="#15A74C"/> </svg></button>
+                </div>
+                <input type="hidden" name="product_id" value="{{ product_id }}" />
+            </div>
+          <div class="section-other">
+              <div class="col">
+                  {% if product_stock_status == 1 %}
+                      <div class="stock {{ class_stock }}"> {{ stock }}</div>
+                  {% endif %}
+                  {% if product_model_status == 1 %}
+                      <div class="model">{{ text_model }} {{ model }}</div>
+                  {% endif %}
+              </div>
+              <div class="col">
+                  {% if manufacturer and product_manufacturer_status %}
+                      <div class="manufacturer">{{ text_manufacturer }} <a href="{{ manufacturers }}">{{ manufacturer }}</a></div>
+                  {% endif %}
+                  {% if reward %}
+                      <div class="reward">
+                          {{ text_reward }} <span class="red">{{ reward }}</span>
+                          <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
+                              <path d="M14.8611 8.70068V15.9393C14.8611 16.1945 14.6543 16.4014 14.3991 16.4014H3.00208C2.7469 16.4014 2.54004 16.1945 2.54004 15.9393V8.70068" stroke="#15A74C" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M15.9393 4.85034H1.46204C1.20686 4.85034 1 5.05721 1 5.31238V8.23864C1 8.49384 1.20686 8.70068 1.46204 8.70068H15.9393C16.1945 8.70068 16.4014 8.49384 16.4014 8.23864V5.31238C16.4014 5.05721 16.1945 4.85034 15.9393 4.85034Z" stroke="#15A74C" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M8.70117 16.4014V4.85034" stroke="#15A74C" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M8.70102 4.85034H5.23572C4.72513 4.85034 4.23545 4.64751 3.87441 4.28647C3.51338 3.92544 3.31055 3.43576 3.31055 2.92517C3.31055 2.41458 3.51338 1.92491 3.87441 1.56387C4.23545 1.20283 4.72513 1 5.23572 1C7.93096 1 8.70102 4.85034 8.70102 4.85034Z" stroke="#15A74C" stroke-linecap="round" stroke-linejoin="round"/>
+                              <path d="M8.70117 4.85034H12.1665C12.677 4.85034 13.1667 4.64751 13.5278 4.28647C13.8888 3.92544 14.0916 3.43576 14.0916 2.92517C14.0916 2.41458 13.8888 1.92491 13.5278 1.56387C13.1667 1.20283 12.677 1 12.1665 1C9.47124 1 8.70117 4.85034 8.70117 4.85034Z" stroke="#15A74C" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                      </div>
+                  {% endif %}
+              </div>
+          </div>
+
+
+              {% if options %}
+            <hr>
+            <h3>{{ text_option }}</h3>
+            {% for option in options %}
+            {% if option.type == 'select' %}
+            <div class="form-group{% if option.required %} required {% endif %}">
+              <label class="control-label" for="input-option{{ option.product_option_id }}">{{ option.name }}</label>
+              <select name="option[{{ option.product_option_id }}]" id="input-option{{ option.product_option_id }}" class="form-control">
+                <option value="">{{ text_select }}</option>
+                {% for option_value in option.product_option_value %}
+                <option value="{{ option_value.product_option_value_id }}" data-points="{{ option_value.apo_points_value }}" data-prefix="{{ option_value.price_prefix }}" data-price="{{ option_value.apo_price_value }}">{{ option_value.name }}
+                {% if option_value.price %}
+                ({% if option_value.price_prefix == '+' or option_value.price_prefix == '-' %}{{ option_value.price_prefix }}{% endif %}{{ option_value.price }})
+                {% endif %} </option>
+                {% endfor %}
+              </select>
+            </div>
+            {% endif %}
+            {% if option.type == 'radio' %}
+            <div class="form-group{% if option.required %} required {% endif %}">
+              <label class="control-label">{{ option.name }}</label>
+              <div id="input-option{{ option.product_option_id }}"> {% for option_value in option.product_option_value %}
+                <div class="radio">
+                  <label>
+                    <input type="radio" name="option[{{ option.product_option_id }}]" value="{{ option_value.product_option_value_id }}" data-points="{{ option_value.apo_points_value }}" data-prefix="{{ option_value.price_prefix }}" data-price="{{ option_value.apo_price_value }}" />
+                    {% if option_value.image %} <img src="{{ option_value.image }}" alt="{{ option_value.name }} {% if option_value.price %} {{ option_value.price_prefix }} {{ option_value.price }} {% endif %}" class="img-thumbnail" /> {% endif %}                  
+                    {{ option_value.name }}
+                    {% if option_value.price %}
+                    ({% if option_value.price_prefix == '+' or option_value.price_prefix == '-' %}{{ option_value.price_prefix }}{% endif %}{{ option_value.price }})
+                    {% endif %} </label>
+                </div>
+                {% endfor %} </div>
+            </div>
+            {% endif %}
+            {% if option.type == 'checkbox' %}
+            <div class="form-group{% if option.required %} required {% endif %}">
+              <label class="control-label">{{ option.name }}</label>
+              <div id="input-option{{ option.product_option_id }}"> {% for option_value in option.product_option_value %}
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" name="option[{{ option.product_option_id }}][]" value="{{ option_value.product_option_value_id }}" data-points="{{ option_value.apo_points_value }}" data-prefix="{{ option_value.price_prefix }}" data-price="{{ option_value.apo_price_value }}" />
+                    {% if option_value.image %} <img src="{{ option_value.image }}" alt="{{ option_value.name }} {% if option_value.price %} {{ option_value.price_prefix }} {{ option_value.price }} {% endif %}" class="img-thumbnail" /> {% endif %}
+                    {{ option_value.name }}
+                    {% if option_value.price %}
+                    ({% if option_value.price_prefix == '+' or option_value.price_prefix == '-' %}{{ option_value.price_prefix }}{% endif %}{{ option_value.price }})
+                    {% endif %} </label>
+                </div>
+                {% endfor %} </div>
+            </div>
+            {% endif %}
+            {% if option.type == 'text' %}
+            <div class="form-group{% if option.required %} required {% endif %}">
+              <label class="control-label" for="input-option{{ option.product_option_id }}">{{ option.name }}</label>
+              <input type="text" name="option[{{ option.product_option_id }}]" value="{{ option.value }}" placeholder="{{ option.name }}" id="input-option{{ option.product_option_id }}" class="form-control" />
+            </div>
+            {% endif %}
+            {% if option.type == 'textarea' %}
+            <div class="form-group{% if option.required %} required {% endif %}">
+              <label class="control-label" for="input-option{{ option.product_option_id }}">{{ option.name }}</label>
+              <textarea name="option[{{ option.product_option_id }}]" rows="5" placeholder="{{ option.name }}" id="input-option{{ option.product_option_id }}" class="form-control">{{ option.value }}</textarea>
+            </div>
+            {% endif %}
+            {% if option.type == 'file' %}
+            <div class="form-group{% if option.required %} required {% endif %}">
+              <label class="control-label">{{ option.name }}</label>
+              <button type="button" id="button-upload{{ option.product_option_id }}" data-loading-text="{{ text_loading }}" class="btn btn-default btn-block"><i class="fa fa-upload"></i> {{ button_upload }}</button>
+              <input type="hidden" name="option[{{ option.product_option_id }}]" value="" id="input-option{{ option.product_option_id }}" />
+            </div>
+            {% endif %}
+            {% if option.type == 'date' %}
+            <div class="form-group{% if option.required %} required {% endif %}">
+              <label class="control-label" for="input-option{{ option.product_option_id }}">{{ option.name }}</label>
+              <div class="input-group date">
+                <input type="text" name="option[{{ option.product_option_id }}]" value="{{ option.value }}" data-date-format="YYYY-MM-DD" id="input-option{{ option.product_option_id }}" class="form-control" />
+                <span class="input-group-btn">
+                <button class="btn btn-default" type="button"><i class="fa fa-calendar"></i></button>
+                </span></div>
+            </div>
+            {% endif %}
+            {% if option.type == 'datetime' %}
+            <div class="form-group{% if option.required %} required {% endif %}">
+              <label class="control-label" for="input-option{{ option.product_option_id }}">{{ option.name }}</label>
+              <div class="input-group datetime">
+                <input type="text" name="option[{{ option.product_option_id }}]" value="{{ option.value }}" data-date-format="YYYY-MM-DD HH:mm" id="input-option{{ option.product_option_id }}" class="form-control" />
+                <span class="input-group-btn">
+                <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+                </span></div>
+            </div>
+            {% endif %}
+            {% if option.type == 'time' %}
+            <div class="form-group{% if option.required %} required {% endif %}">
+              <label class="control-label" for="input-option{{ option.product_option_id }}">{{ option.name }}</label>
+              <div class="input-group time">
+                <input type="text" name="option[{{ option.product_option_id }}]" value="{{ option.value }}" data-date-format="HH:mm" id="input-option{{ option.product_option_id }}" class="form-control" />
+                <span class="input-group-btn">
+                <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+                </span></div>
+            </div>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+            {% if recurrings %}
+            <hr>
+            <h3>{{ text_payment_recurring }}</h3>
+            <div class="form-group required">
+              <select name="recurring_id" class="form-control">
+                <option value="">{{ text_select }}</option>
+                {% for recurring in recurrings %}
+                <option value="{{ recurring.recurring_id }}">{{ recurring.name }}</option>
+                {% endfor %}
+              </select>
+              <div class="help-block" id="recurring-description"></div>
+            </div>
+            {% endif %}
+            <div class="group-btn-buy">
+              <button type="button" id="button-cart" data-loading-text="{{ text_loading }}" class="btn-buy">{{ button_cart }}</button>
+                {% if status_one_click == 1 %}
+                   <button href="javascript: void(0);" onclick="get_popup_one_click({{ product_id }}); return false" class="btn-buy-one">
+                       <svg xmlns="http://www.w3.org/2000/svg" width="31" height="29" viewBox="0 0 31 29" fill="none">
+                           <path d="M27.2951 12.2883C27.2951 5.77385 22.0141 0.492828 15.4996 0.492828C8.98513 0.492828 3.7041 5.77385 3.7041 12.2883" stroke="black" stroke-linecap="round" stroke-linejoin="round"/>
+                           <path d="M0.755371 18.8325V16.0653C0.755371 14.7121 1.67629 13.5327 2.98904 13.2044L5.5539 12.5632C6.11226 12.4236 6.65313 12.8459 6.65313 13.4215V21.4763C6.65313 22.052 6.11226 22.4742 5.5539 22.3346L2.98904 21.6934C1.67629 21.3652 0.755371 20.1858 0.755371 18.8325Z" stroke="black"/>
+                           <path d="M30.2439 18.8325V16.0653C30.2439 14.7121 29.323 13.5327 28.0103 13.2044L25.4454 12.5632C24.887 12.4236 24.3462 12.8459 24.3462 13.4215V21.4763C24.3462 22.052 24.887 22.4742 25.4454 22.3346L28.0103 21.6934C29.323 21.3652 30.2439 20.1858 30.2439 18.8325Z" stroke="black"/>
+                           <path d="M27.2954 22.6094V23.3466C27.2954 24.9753 25.9752 26.2955 24.3466 26.2955H19.186" stroke="black"/>
+                           <path d="M17.7111 28.5072H13.2878C12.0664 28.5072 11.0762 27.5169 11.0762 26.2955C11.0762 25.0741 12.0664 24.0838 13.2878 24.0838H17.7111C18.9326 24.0838 19.9228 25.0741 19.9228 26.2955C19.9228 27.5169 18.9326 28.5072 17.7111 28.5072Z" stroke="black"/>
+                       </svg>
+                       {{ text_one_click_buy }}
+                   </button>
+                {% endif %}
+            </div>
+            {% if minimum > 1 %}
+            <div class="alert alert-info"><i class="fa fa-info-circle"></i> {{ text_minimum }}</div>
+            {% endif %}</div>
+          {% if advantage_status and product_advantages %}
+              <div class="section-advantages {{ advantage_type }}">
+              {% for product_advantage in product_advantages %}
+                  <div class="item-advantage">
+                      {% if product_advantage.thumb_peace != '' %}
+                      <div class="ico-advantage"><img src="{{ product_advantage.thumb_peace }}"></div>
+                      {% endif %}
+                      {% if product_advantage.name != '' %}
+                      <div class="title-advantage">{{ product_advantage.name }}</div>
+                      {% endif %}
+                      {% if product_advantage.description != '' %}
+                      <div class="description-advantage">{{ product_advantage.description }}</div>
+                      {% endif %}
+                  </div>
+              {% endfor %}
+              </div>
+              {% if advantage_type == 'horizontally' %}
+              <style>
+                  .section-advantages.horizontally {
+                      display: flex;
+                      justify-content: space-between;
+                      align-items: center;
+                      margin-left: -11px;
+                  }
+                  .section-advantages.horizontally .item-advantage {
+                      border-radius: 10px;
+                      border: 1px solid #CFCFCF;
+                      margin-left: 11px;
+                      display: flex;
+                      flex-direction: column;
+                      align-items: center;
+                      padding-top: 22px;
+                      padding-bottom: 16px;
+                      padding-left: 16px;
+                      padding-right: 16px;
+                      max-height: 143px;
+                  }
+                  .section-advantages.horizontally .item-advantage .ico-advantage{
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      height: 40px;
+                      width: 40px;
+                      margin-bottom: 23px;
+                  }
+                  .section-advantages.horizontally .item-advantage .ico-advantage.ico-advantage img {
+                      width: 100%;
+                  }
+                  .section-advantages.horizontally .item-advantage .description-advantage {
+                      text-align: center;
+                      color: #000;
+                      font-size: 12px;
+                      font-style: normal;
+                      font-weight: 300;
+                      line-height: 16px;
+                      min-height: 48px;
+                  }
+                  @media(min-width: 1440px){
+                      .section-advantages.horizontally .item-advantage .description-advantage {
+                          max-width: 172px;
+                      }
+                  }
+              </style>
+              {% endif %}
+              {% if advantage_type == 'vertically' %}
+                  <style>
+                      .section-advantages.vertically {
+                          display: flex;
+                          flex-direction: column;
+                          align-items: center;
+                          width: 100%;
+                      }
+                      .section-advantages.vertically .item-advantage {
+                          border-radius: 10px;
+                          border: 1px solid #CFCFCF;
+                          display: flex;
+                          align-items: center;
+                          padding-top: 22px;
+                          padding-bottom: 16px;
+                          padding-left: 16px;
+                          padding-right: 16px;
+                          margin-bottom: 15px;
+                          width: 100%;
+                      }
+                      .section-advantages.vertically .item-advantage .ico-advantage{
+                          display: flex;
+                          align-items: center;
+                          justify-content: center;
+                          height: 40px;
+                          width: 40px;
+                          margin-right: 23px;
+                      }
+                      .section-advantages.vertically .item-advantage .ico-advantage.ico-advantage img {
+                          width: 100%;
+                      }
+                      .section-advantages.vertically .item-advantage .description-advantage {
+                          display: flex;
+                          align-items: center;
+                          text-align: center;
+                          color: #000;
+                          font-size: 12px;
+                          font-style: normal;
+                          font-weight: 300;
+                          line-height: 16px;
+                          min-height: 48px;
+                      }
+                  </style>
+              {% endif %}
+          {% endif %}
+        </div>
+        </section>
+      </div>
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab-description" data-toggle="tab">{{ tab_description }}</a></li>
+            {% if attribute_groups %}
+                <li><a href="#tab-specification" data-toggle="tab">{{ tab_attribute }}</a></li>
+            {% endif %}
+            {% if review_status %}
+                <li><a href="#tab-review" data-toggle="tab">{{ tab_review }}</a></li>
+            {% endif %}
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab-description">
+                {% if product_shot_description_status == 1 %}
+                    <div class="description-product">
+                        <div class="read-more">
+                            <div class="read-more__body">
+                                <div class="read-more__item">
+                                    <div class="read-more__text">
+                                        {{ description }}                                                                                                                                           </div>
+                                    <p class="read-more__btn button-btn" data-default="{{ text_more_description }}" data-expanded="{{ text_hide_description }}">{{ text_more_description }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", (e) => {
+                            let btnExpand = document.querySelectorAll('.read-more__btn');
+                            for(let i = 0; i < btnExpand.length; i++){
+                                btnExpand[i].addEventListener('click', function() {
+                                    let textMore = this.dataset.default;
+                                    let textLess = this.dataset.expanded;
+                                    if(this.innerText == textMore){
+                                        this.innerText = textLess
+                                    } else {
+                                        this.innerText = textMore
+                                    }
+                                    let parentEl = btnExpand[i].parentElement
+
+                                    parentEl.firstElementChild.classList.toggle('expanded');
+                                });
+                            }
+                        });
+                    </script>
+                    <style>
+                        .read-more__text {
+                            position: relative;
+                            max-height: 64px;
+                            overflow: hidden;
+                            transition: max-height 0.5s ease-out;
+                            color: #3a3a3a;
+                            font-size: 14px;
+                            font-weight: 300;
+                        }
+                        .read-more__text::after {
+                            content: "";
+                            height: 100px;
+                            width: 100%;
+                            background-image: linear-gradient( to top, white 0%, rgba(255, 255, 255, 0) 100% );
+                            position: absolute;
+                            left: 0;
+                            bottom: 0;
+                        }
+                        .read-more__btn {
+                            max-width: 120px;
+                            text-align: center;
+                            padding: 10px 16px;
+                            font-size: 14px;
+                            font-weight: 400;
+                            color: #fff;
+                            display: flex;
+                            position: relative;
+                            margin-top: 10px;
+                            cursor: pointer;
+                            justify-content: center;
+                            border: 1px solid #19141A;
+                            border-radius: 10px;
+                            background: #19141A;
+                        }
+                        .read-more__text.expanded {
+                            max-height: 100px;
+                            transition: max-height 0.5s ease-out;
+                        }
+                        .read-more__text.expanded::after {
+                            background-image: none;
+                        }
+                        .read-more {
+                            margin-bottom: 58px;
+                        }
+                    </style>
+                {% else %}
+                    <div class="description-product">
+                        {{ description }}
+                    </div>
+                {% endif %}
+
+            </div>
+            {% if attribute_groups %}
+                <div class="tab-pane" id="tab-specification">
+                    <table class="table table-bordered">
+                        {% for attribute_group in attribute_groups %}
+                            <thead>
+                            <tr>
+                                <td colspan="2"><strong>{{ attribute_group.name }}</strong></td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for attribute in attribute_group.attribute %}
+                                <tr>
+                                    <td>{{ attribute.name }}</td>
+                                    <td>{{ attribute.text }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        {% endfor %}
+                    </table>
+                </div>
+            {% endif %}
+            {% if review_status %}
+                <div class="tab-pane" id="tab-review">
+                    <form class="form-horizontal" id="form-review">
+                        <div id="review"></div>
+                        <h2>{{ text_write }}</h2>
+                        {% if review_guest %}
+                            <div class="form-group required">
+                                <div class="col-sm-12">
+                                    <label class="control-label" for="input-name">{{ entry_name }}</label>
+                                    <input type="text" name="name" value="{{ customer_name }}" id="input-name" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group required">
+                                <div class="col-sm-12">
+                                    <label class="control-label" for="input-review">{{ entry_review }}</label>
+                                    <textarea name="text" rows="5" id="input-review" class="form-control"></textarea>
+                                    <div class="help-block">{{ text_note }}</div>
+                                </div>
+                            </div>
+                            <div class="form-group required">
+                                <div class="col-sm-12">
+                                    <label class="control-label">{{ entry_rating }}</label>
+                                    &nbsp;&nbsp;&nbsp; {{ entry_bad }}&nbsp;
+                                    <input type="radio" name="rating" value="1" />
+                                    &nbsp;
+                                    <input type="radio" name="rating" value="2" />
+                                    &nbsp;
+                                    <input type="radio" name="rating" value="3" />
+                                    &nbsp;
+                                    <input type="radio" name="rating" value="4" />
+                                    &nbsp;
+                                    <input type="radio" name="rating" value="5" />
+                                    &nbsp;{{ entry_good }}</div>
+                            </div>
+                            {{ captcha }}
+                            <div class="buttons clearfix">
+                                <div class="pull-right">
+                                    <button type="button" id="button-review" data-loading-text="{{ text_loading }}" class="btn btn-primary">{{ button_continue }}</button>
+                                </div>
+                            </div>
+                        {% else %}
+                            {{ text_login }}
+                        {% endif %}
+                    </form>
+                </div>
+            {% endif %}</div>
+        {% if products_to_category %}
+            <h3 class="title-section">{{ text_related_product_category }}</h3>
+            <div class="row"> {% set i = 0 %}
+                {% for product in products_to_category %}
+                    {% if column_left and column_right %}
+                        {% set class = 'col-xs-8 col-sm-6' %}
+                    {% elseif column_left or column_right %}
+                        {% set class = 'col-xs-6 col-md-4' %}
+                    {% else %}
+                        {% set class = 'col-xs-6 col-sm-2' %}
+                    {% endif %}
+                    <div class="{{ class }}">
+                        {{ product }}
+                    </div>
+                    {% if column_left and column_right and (i + 1) % 2 == 0 %}
+                        <div class="clearfix visible-md visible-sm"></div>
+                    {% elseif column_left or column_right and (i + 1) % 3 == 0 %}
+                        <div class="clearfix visible-md"></div>
+                    {% elseif (i + 1) % 4 == 0 %}
+                        <div class="clearfix visible-md"></div>
+                    {% endif %}
+                    {% set i = i + 1 %}
+                {% endfor %} </div>
+        {% endif %}
+      {% if products %}
+      <h3 class="title-section">{{ text_related }}</h3>
+      <div class="row"> {% set i = 0 %}
+        {% for product in products %}
+        {% if column_left and column_right %}
+        {% set class = 'col-xs-8 col-sm-6' %}
+        {% elseif column_left or column_right %}
+        {% set class = 'col-xs-6 col-md-4' %}
+        {% else %}
+        {% set class = 'col-xs-6 col-sm-2' %}
+        {% endif %}
+        <div class="{{ class }}">
+            {{ product }}
+        </div>
+        {% if column_left and column_right and (i + 1) % 2 == 0 %}
+        <div class="clearfix visible-md visible-sm"></div>
+        {% elseif column_left or column_right and (i + 1) % 3 == 0 %}
+        <div class="clearfix visible-md"></div>
+        {% elseif (i + 1) % 4 == 0 %}
+        <div class="clearfix visible-md"></div>
+        {% endif %}
+        {% set i = i + 1 %}
+        {% endfor %} </div>
+        {% endif %}
+        {% if products_view %}
+            <h3 class="title-section">{{ text_view_product }}</h3>
+            <div class="row"> {% set i = 0 %}
+                {% for product in products_view %}
+                    {% if column_left and column_right %}
+                        {% set class = 'col-xs-8 col-sm-6' %}
+                    {% elseif column_left or column_right %}
+                        {% set class = 'col-xs-6 col-md-4' %}
+                    {% else %}
+                        {% set class = 'col-xs-6 col-sm-2' %}
+                    {% endif %}
+                    <div class="{{ class }}">
+                        {{ product }}
+                    </div>
+                    {% if column_left and column_right and (i + 1) % 2 == 0 %}
+                        <div class="clearfix visible-md visible-sm"></div>
+                    {% elseif column_left or column_right and (i + 1) % 3 == 0 %}
+                        <div class="clearfix visible-md"></div>
+                    {% elseif (i + 1) % 4 == 0 %}
+                        <div class="clearfix visible-md"></div>
+                    {% endif %}
+                    {% set i = i + 1 %}
+                {% endfor %} </div>
+        {% endif %}
+        {% if tags %}
+        <p>{{ text_tags }}
+        {% for i in 0..tags|length %}
+        {% if i < (tags|length - 1) %} <a href="{{ tags[i].href }}">{{ tags[i].tag }}</a>,
+        {% else %} <a href="{{ tags[i].href }}">{{ tags[i].tag }}</a> {% endif %}
+        {% endfor %} </p>
+        {% endif %}
+      {{ content_bottom }}</div>
+    {{ column_right }}</div>
+</div>
+<script type="text/javascript"><!--
+$('select[name=\'recurring_id\'], input[name="quantity"]').change(function(){
+	$.ajax({
+		url: 'index.php?route=product/product/getRecurringDescription',
+		type: 'post',
+		data: $('input[name=\'product_id\'], input[name=\'quantity\'], select[name=\'recurring_id\']'),
+		dataType: 'json',
+		beforeSend: function() {
+			$('#recurring-description').html('');
+		},
+		success: function(json) {
+			$('.alert-dismissible, .text-danger').remove();
+
+			if (json['success']) {
+				$('#recurring-description').html(json['success']);
+			}
+		}
+	});
+});
+//--></script> 
+<script type="text/javascript"><!--
+$('#button-cart').on('click', function() {
+	$.ajax({
+		url: 'index.php?route=checkout/cart/add',
+		type: 'post',
+		data: $('#product input[type=\'text\'], #product input[type=\'hidden\'], #product input[type=\'radio\']:checked, #product input[type=\'checkbox\']:checked, #product select, #product textarea'),
+		dataType: 'json',
+		beforeSend: function() {
+			$('#button-cart').button('loading');
+		},
+		complete: function() {
+			$('#button-cart').button('reset');
+		},
+		success: function(json) {
+		    console.log(json);
+			$('.alert-dismissible, .text-danger').remove();
+			$('.form-group').removeClass('has-error');
+
+			if (json['error']) {
+				if (json['error']['option']) {
+					for (i in json['error']['option']) {
+						var element = $('#input-option' + i.replace('_', '-'));
+
+						if (element.parent().hasClass('input-group')) {
+							element.parent().after('<div class="text-danger">' + json['error']['option'][i] + '</div>');
+						} else {
+							element.after('<div class="text-danger">' + json['error']['option'][i] + '</div>');
+						}
+					}
+				}
+
+				if (json['error']['recurring']) {
+					$('select[name=\'recurring_id\']').after('<div class="text-danger">' + json['error']['recurring'] + '</div>');
+				}
+
+				// Highlight any found errors
+				$('.text-danger').parent().addClass('has-error');
+			}
+
+			if (json['success']) {
+				$('.breadcrumb').after('<div class="alert alert-success alert-dismissible">' + json['success'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+
+				$('#cart > button').html('<span id="cart-total"><i class="fa fa-shopping-cart"></i> ' + json['total'] + '</span>');
+
+				$('html, body').animate({ scrollTop: 0 }, 'slow');
+
+				$('#cart > ul').load('index.php?route=common/cart/info ul li');
+			}
+		},
+        /*error: function(xhr, ajaxOptions, thrownError) {
+            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+        }*/
+        error: function(xhr, ajaxOptions, thrownError) {
+            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+        }
+	});
+});
+//--></script> 
+<script type="text/javascript"><!--
+$('.date').datetimepicker({
+	language: '{{ datepicker }}',
+	pickTime: false
+});
+
+$('.datetime').datetimepicker({
+	language: '{{ datepicker }}',
+	pickDate: true,
+	pickTime: true
+});
+
+$('.time').datetimepicker({
+	language: '{{ datepicker }}',
+	pickDate: false
+});
+
+$('button[id^=\'button-upload\']').on('click', function() {
+	var node = this;
+
+	$('#form-upload').remove();
+
+	$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="file" /></form>');
+
+	$('#form-upload input[name=\'file\']').trigger('click');
+
+	if (typeof timer != 'undefined') {
+    	clearInterval(timer);
+	}
+
+	timer = setInterval(function() {
+		if ($('#form-upload input[name=\'file\']').val() != '') {
+			clearInterval(timer);
+
+			$.ajax({
+				url: 'index.php?route=tool/upload',
+				type: 'post',
+				dataType: 'json',
+				data: new FormData($('#form-upload')[0]),
+				cache: false,
+				contentType: false,
+				processData: false,
+				beforeSend: function() {
+					$(node).button('loading');
+				},
+				complete: function() {
+					$(node).button('reset');
+				},
+				success: function(json) {
+					$('.text-danger').remove();
+
+					if (json['error']) {
+						$(node).parent().find('input').after('<div class="text-danger">' + json['error'] + '</div>');
+					}
+
+					if (json['success']) {
+						alert(json['success']);
+
+						$(node).parent().find('input').val(json['code']);
+					}
+				},
+				error: function(xhr, ajaxOptions, thrownError) {
+					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+				}
+			});
+		}
+	}, 500);
+});
+//--></script> 
+<script type="text/javascript"><!--
+$('#review').delegate('.pagination a', 'click', function(e) {
+    e.preventDefault();
+
+    $('#review').fadeOut('slow');
+
+    $('#review').load(this.href);
+
+    $('#review').fadeIn('slow');
+});
+
+$('#review').load('index.php?route=product/product/review&product_id={{ product_id }}');
+
+$('#button-review').on('click', function() {
+	$.ajax({
+		url: 'index.php?route=product/product/write&product_id={{ product_id }}',
+		type: 'post',
+		dataType: 'json',
+		data: $("#form-review").serialize(),
+		beforeSend: function() {
+			$('#button-review').button('loading');
+		},
+		complete: function() {
+			$('#button-review').button('reset');
+		},
+		success: function(json) {
+			$('.alert-dismissible').remove();
+
+			if (json['error']) {
+				$('#review').after('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + '</div>');
+			}
+
+			if (json['success']) {
+				$('#review').after('<div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> ' + json['success'] + '</div>');
+
+				$('input[name=\'name\']').val('');
+				$('textarea[name=\'text\']').val('');
+				$('input[name=\'rating\']:checked').prop('checked', false);
+			}
+		}
+	});
+});
+
+$(document).ready(function() {
+	$('.thumbnails').magnificPopup({
+		type:'image',
+		delegate: 'a',
+		gallery: {
+			enabled: true
+		}
+	});
+});
+//--></script>
+{% if thumb %}
+    <script src="catalog/view/javascript/slick/slick.js" type="text/javascript"></script>
+    <link href="catalog/view/javascript/slick/slick.css" rel="stylesheet">
+    <link href="catalog/view/javascript/slick/slick-theme.css" rel="stylesheet">
+    <script type="text/javascript">
+        if($(window).width() < 768){
+            var vr = false;
+            var btn = false;
+        } else {
+            var vr = true;
+            var btn = true;
+        }
+        $('.list-main-image').slick({
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: false,
+            fade: true,
+            asNavFor: '.slider-nav'
+        });
+        $('.slider-nav').slick({
+            slidesToShow: 4,
+            slidesToScroll: 1,
+            vertical: vr,
+            asNavFor: '.list-main-image',
+            dots: false,
+            arrows: btn,
+            centerMode: true,
+            focusOnSelect: true,
+            useCSS: true,
+            centerPadding: '100px 5px 100px 5px',
+            swipe: true,
+            touchThreshold: 4,
+            appendArrows: $('.arrow-main-slide'),
+            prevArrow: '<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 34 34" fill="none"> <g filter="url(#filter0_b_5_2736)"> <circle cx="17" cy="17" r="17" transform="matrix(-1 0 0 1 34 0)" fill="#151515" fill-opacity="0.2"/> <circle cx="17" cy="17" r="16.5" transform="matrix(-1 0 0 1 34 0)" stroke="white" stroke-opacity="0.2"/> </g> <path d="M21.4524 17.1268H12.2937M12.2937 17.1268L16.873 12.5474M12.2937 17.1268L16.873 21.7061" stroke="white" stroke-width="2"/> <defs> <filter id="filter0_b_5_2736" x="-40" y="-40" width="114" height="114" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"> <feFlood flood-opacity="0" result="BackgroundImageFix"/> <feGaussianBlur in="BackgroundImageFix" stdDeviation="20"/> <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_5_2736"/> <feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_5_2736" result="shape"/> </filter> </defs> </svg>',
+            nextArrow: '<svg xmlns="http://www.w3.org/2000/svg" width="34" height="34" viewBox="0 0 34 34" fill="none"> <g filter="url(#filter0_b_5_2732)"> <circle cx="17" cy="17" r="17" fill="#151515" fill-opacity="0.2"/> <circle cx="17" cy="17" r="16.5" stroke="white" stroke-opacity="0.2"/> </g> <path d="M12.5476 17.1268H21.7063M21.7063 17.1268L17.127 12.5474M21.7063 17.1268L17.127 21.7061" stroke="white" stroke-width="2"/> <defs> <filter id="filter0_b_5_2732" x="-40" y="-40" width="114" height="114" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"> <feFlood flood-opacity="0" result="BackgroundImageFix"/> <feGaussianBlur in="BackgroundImageFix" stdDeviation="20"/> <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_5_2732"/> <feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_5_2732" result="shape"/> </filter> </defs> </svg>',
+        });
+    </script>
+{% endif %}
+<script type="text/javascript">
+    $(document).on('click', '.number-spinner button', function() {
+        var btn = $(this),
+            oldValue = btn.closest('.number-spinner').find('input').val().trim(),
+            newVal = 1;
+
+        if (btn.attr('data-dir') == 'up') {
+            newVal = parseInt(oldValue) + 1;
+        } else {
+            if (oldValue > 1) {
+                newVal = parseInt(oldValue) - 1;
+            } else {
+                newVal = 1;
+            }
+        }
+        btn.closest('.number-spinner').find('input').val(newVal);
+    });
+</script>
+
+<!--autocalc_price_option-->
+<script type="text/javascript">
+    function price_format(price) {
+        c={{ autocalc_currency.decimals }};d='{{ autocalc_currency.decimal_point }}';t='{{ autocalc_currency.thousand_point }}';sl='{{ autocalc_currency.symbol_left }}';sr='{{ autocalc_currency.symbol_right }}';n=price*{{ autocalc_currency.value }};i=parseInt(n=Math.abs(n).toFixed(c))+''; j=((j=i.length)>3)?j%3:0;price_text=sl+(j?i.substr(0,j)+t:'')+i.substr(j).replace(/(\d{3})(?=\d)/g,"$1"+t)+(c?d+Math.abs(n-i).toFixed(c).slice(2):'')+sr;{% if autocalc_currency2 %}c={{ autocalc_currency2.decimals }};d='{{ autocalc_currency2.decimal_point }}';t='{{ autocalc_currency2.thousand_point }}';sl='{{ autocalc_currency2.symbol_left }}';sr='{{ autocalc_currency2.symbol_right }}';n=price*{{ autocalc_currency2.value }};i=parseInt(n=Math.abs(n).toFixed(c))+''; j=((j=i.length)>3)?j%3:0; price_text+='  <span class="currency2">(' + sl+(j?i.substr(0,j)+t:'')+i.substr(j).replace(/(\d{3})(?=\d)/g,"$1"+t)+(c?d+Math.abs(n-i).toFixed(c).slice(2):'')+sr + ')</span>';{% endif %}return price_text;
+    }
+    function points_format(v) {
+        return v.toFixed(0);
+    }
+    function process_discounts(price, quantity) {
+        {% for discounts in discounts_raw %}if(quantity>={{ discounts.quantity }}){price={{ discounts.price }};}{% endfor %}return price;
+    }
+    function calculate_tax(price) {
+        var p=price;{% for tax_rate in tax_rates %}{% if tax_rate.type == 'F' %}p+={{ tax_rate.rate }};{% endif %}{% if tax_rate.type == 'P' %}p+=price*{{ tax_rate.rate / 100.0 }};{% endif %}{% endfor %}return p;
+    }
+    function autocalc_aap(s,p,ff){$(s).each(function(){var $t=$(this);$({value:$t.data('value')||0}).animate({value:p},{easing:'swing',duration:500,step:function(value){$t.html(ff(value));$t.data('value',value);}});});}
+    function recalculateprice() {
+
+        var main_price = {{ apo_price_value + 0.0 }};
+        var special = {{ apo_special_value + 0.0 }};
+        var input_quantity = Number($('#product input[name="quantity"]').val()) || 1;
+        var discount_coefficient = 1;
+        var option_price = 0;
+        var discount_quantity = 0;
+
+        console.log('input_quantity '+input_quantity);
+
+        $('#product .owq-option input[type="checkbox"]').each(function() {
+            $qty = $(this).closest('tr').find('.owq-input');
+            if ($(this).data('split')=='/') discount_quantity += Number($qty.val()) || 0;
+        });
+        if (discount_quantity == 0) discount_quantity = input_quantity;
+
+        {% if special %}
+        special_coefficient = {{ apo_price_value / apo_special_value }};
+        {% else %}
+        {% if autocalc_option_discount %}
+        if (main_price) discount_coefficient = process_discounts(main_price, discount_quantity) / main_price;
+        {% else %}
+        main_price = process_discounts(main_price, discount_quantity);
+        {% endif %}
+        {% endif %}
+
+        {% if points %}
+        var points = {{ apo_points_value }};
+        $('#product input:checked,#product option:selected').each(function() {
+            if ($(this).data('points')) points += Number($(this).data('points'));
+        });
+        autocalc_aap('.autocalc-product-points', points, points_format);
+        {% endif %}
+
+        $('#product input:checked,#product option:selected').each(function() {
+            if ($(this).data('prefix') == '=') {
+                option_price += Number($(this).data('price'));
+                main_price = 0;
+                special = 0;
+            }
+        });
+
+        $('#product input:checked,#product option:selected').each(function() {
+            if ($(this).data('prefix') == '+') {
+                option_price += Number($(this).data('price'));
+            }
+            if ($(this).data('prefix') == '-') {
+                option_price -= Number($(this).data('price'));
+            }
+            if ($(this).data('prefix') == '%') {
+                pcnt = 1.0 + (Number($(this).data('price')) / 100.0);
+                option_price *= pcnt;
+                main_price *= pcnt;
+                special *= pcnt;
+            }
+            if ($(this).data('prefix') == '*') {
+                option_price *= Number($(this).data('price'));
+                main_price *= Number($(this).data('price'));
+                special *= Number($(this).data('price'));
+            }
+            if ($(this).data('prefix') == '/') {
+                option_price /= Number($(this).data('price'));
+                main_price /= Number($(this).data('price'));
+                special /= Number($(this).data('price'));
+            }
+        });
+
+        special += option_price;
+        main_price += option_price;
+
+        {% if special %}
+        {% if autocalc_option_special %}
+        special = main_price / special_coefficient;
+        {% else %}
+        main_price = special * special_coefficient;
+        {% endif %}
+        tax = special;
+        {% else %}
+        {% if autocalc_option_discount %}
+        main_price *= discount_coefficient;
+        {% endif %}
+        tax = main_price;
+        {% endif %}
+
+        {% if tax %}
+        main_price = calculate_tax(main_price);
+        {% if special %}
+        special = calculate_tax(special);
+        {% endif %}
+        {% endif %}
+
+        {% if not autocalc_not_mul_qty %}
+        if (input_quantity > 0) {
+            main_price *= input_quantity;
+            special *= input_quantity;
+            {% if tax %}tax *= input_quantity;{% endif %}
+        }
+        {% endif %}
+
+        autocalc_aap('.autocalc-product-price', main_price, price_format);
+        {% if special %}autocalc_aap('.autocalc-product-special', special, price_format);{% endif %}
+        {% if tax %}autocalc_aap('.autocalc-product-tax', tax, price_format);{% endif %}
+    }
+
+    $(document).ready(function() {
+        $('#product input[type="checkbox"],#product input[type="radio"],#product select').each(function(){if($(this).data('autocalc'))return;$(this).data('autocalc',1).on('change',function(){recalculateprice();});});
+        $('#product input[name="quantity"]').each(function(){if($(this).data('autocalc'))return;var $q=$(this);$q.data('autocalc',1).data('val',$q.val());(function(){if($q.val()!=$q.data('val')){$q.data('val',$q.val());recalculateprice();}setTimeout(arguments.callee,250);})();});
+
+        {% if autocalc_select_first %}
+        $('#product select[name^="option"] option[value=""]').remove();
+        last_name='';$('#product input[type="radio"][name^="option"]').each(function(){if($(this).attr('name')!=last_name)$(this).prop('checked',true);last_name=$(this).attr('name');});
+        {% endif %}
+
+        recalculateprice();
+    });
+</script>
+
+{{ footer }} 

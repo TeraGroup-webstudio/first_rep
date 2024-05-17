@@ -1,0 +1,20 @@
+2023-11-17 15:40:26 - PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'sochinen_tgcart'@'91.206.200.70' (using password: YES) in /home/sochinen/start-site.com.ua/tgcart/system/library/db/mysqli.php on line 7
+2023-11-17 15:40:26 - PHP Warning:  DB\MySQLi::__construct(): Couldn't fetch mysqli in /home/sochinen/start-site.com.ua/tgcart/system/library/db/mysqli.php on line 10
+2023-11-17 15:40:26 - PHP Warning:  DB\MySQLi::__construct(): Couldn't fetch mysqli in /home/sochinen/start-site.com.ua/tgcart/system/library/db/mysqli.php on line 10
+2023-11-17 15:40:26 - PHP Notice:  Undefined variable: mysql in /home/sochinen/start-site.com.ua/tgcart/install/controller/install/step_3.php on line 280
+2023-11-17 15:40:26 - PHP Notice:  Trying to get property 'connect_error' of non-object in /home/sochinen/start-site.com.ua/tgcart/install/controller/install/step_3.php on line 280
+2023-11-17 15:40:43 - PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'sochinen_tgcart'@'91.206.200.70' (using password: YES) in /home/sochinen/start-site.com.ua/tgcart/system/library/db/mysqli.php on line 7
+2023-11-17 15:40:43 - PHP Warning:  DB\MySQLi::__construct(): Couldn't fetch mysqli in /home/sochinen/start-site.com.ua/tgcart/system/library/db/mysqli.php on line 10
+2023-11-17 15:40:43 - PHP Warning:  DB\MySQLi::__construct(): Couldn't fetch mysqli in /home/sochinen/start-site.com.ua/tgcart/system/library/db/mysqli.php on line 10
+2023-11-17 15:40:43 - PHP Notice:  Undefined variable: mysql in /home/sochinen/start-site.com.ua/tgcart/install/controller/install/step_3.php on line 280
+2023-11-17 15:40:43 - PHP Notice:  Trying to get property 'connect_error' of non-object in /home/sochinen/start-site.com.ua/tgcart/install/controller/install/step_3.php on line 280
+2023-11-17 15:40:56 - PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'sochinen_tgcart'@'91.206.200.70' (using password: YES) in /home/sochinen/start-site.com.ua/tgcart/system/library/db/mysqli.php on line 7
+2023-11-17 15:40:56 - PHP Warning:  DB\MySQLi::__construct(): Couldn't fetch mysqli in /home/sochinen/start-site.com.ua/tgcart/system/library/db/mysqli.php on line 10
+2023-11-17 15:40:56 - PHP Warning:  DB\MySQLi::__construct(): Couldn't fetch mysqli in /home/sochinen/start-site.com.ua/tgcart/system/library/db/mysqli.php on line 10
+2023-11-17 15:40:56 - PHP Notice:  Undefined variable: mysql in /home/sochinen/start-site.com.ua/tgcart/install/controller/install/step_3.php on line 280
+2023-11-17 15:40:56 - PHP Notice:  Trying to get property 'connect_error' of non-object in /home/sochinen/start-site.com.ua/tgcart/install/controller/install/step_3.php on line 280
+2023-11-17 15:41:06 - PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'sochinen_tgcart'@'91.206.200.70' (using password: YES) in /home/sochinen/start-site.com.ua/tgcart/system/library/db/mysqli.php on line 7
+2023-11-17 15:41:06 - PHP Warning:  DB\MySQLi::__construct(): Couldn't fetch mysqli in /home/sochinen/start-site.com.ua/tgcart/system/library/db/mysqli.php on line 10
+2023-11-17 15:41:06 - PHP Warning:  DB\MySQLi::__construct(): Couldn't fetch mysqli in /home/sochinen/start-site.com.ua/tgcart/system/library/db/mysqli.php on line 10
+2023-11-17 15:41:06 - PHP Notice:  Undefined variable: mysql in /home/sochinen/start-site.com.ua/tgcart/install/controller/install/step_3.php on line 280
+2023-11-17 15:41:06 - PHP Notice:  Trying to get property 'connect_error' of non-object in /home/sochinen/start-site.com.ua/tgcart/install/controller/install/step_3.php on line 280

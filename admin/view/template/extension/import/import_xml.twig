@@ -1,0 +1,291 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button onclick="$('#content #apply').attr('value', '1'); $('#' + $('#content form').attr('id')).submit();" data-toggle="tooltip" title="{{ button_apply }}" class="btn btn-success"><i class="fa fa-check"></i></button>
+        <button type="submit" form="form-module" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+          <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+      <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+      </div>
+    {% endif %}
+    <div class="row">
+      <div class="col-lg-9 col-md-7">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"><i class="fa fa-cogs fw"></i> {{ text_setting }}</h3>
+          </div>
+          <div class="panel-body">
+            <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-import" class="form-horizontal">
+              <input type="hidden" name="apply" id="apply" value="0">
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+                <div class="col-sm-10">
+                  <select name="import_import_xml_status" id="input-status" class="form-control">
+                    {% if import_import_xml_status %}
+                      <option value="1" selected="selected">{{ text_enabled }}</option>
+                      <option value="0">{{ text_disabled }}</option>
+                    {% else %}
+                      <option value="1">{{ text_enabled }}</option>
+                      <option value="0" selected="selected">{{ text_disabled }}</option>
+                    {% endif %}
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3">
+                  {{ entry_type_download }}
+                  <span  class="help" data-toggle="tooltip" title="{{ help_type_download }}"><i class="fa fa-info" aria-hidden="true"></i></span>
+                </label>
+                <div class="col-sm-9">
+                  <div class="btn-group" data-toggle="buttons" id="type_download">
+                    <label class="btn btn-default btn-danger{% if not import_import_xml_type %} active {% endif %}">
+                      <input type="radio" name="import_import_xml_type" value="0" {% if not import_import_xml_type %} checked {% endif %}>
+                      <span class="on-off">{{ button_file }}</span>
+                    </label>
+                    <label class="web_font_on btn btn-default {% if import_import_xml_type %} active {% endif %}">
+                      <input type="radio" name="import_import_xml_type" value="1" {% if import_import_xml_type %} checked {% endif %}>
+                      <span class="on-off">{{ button_url }}</span>
+                    </label>
+                  </div>
+                  <script>
+                    $('#type_download .btn').click( function(e) {
+                      //var element = $(this), enabled = element.find('[type=radio]').val() == 1;
+                      var element = $(this).find('[type=radio]').val();
+                      setTimeout(function () {
+                        console.log(element);
+                        if (element==0) {
+                          $('#type_download_file_content').collapse('show');
+                          $('#type_download_url_content').collapse('hide');
+                        } else {
+                          $('#type_download_url_content').collapse('show');
+                          $('#type_download_file_content').collapse('hide');
+                        }
+                      }, 10);
+                    });
+                  </script>
+                </div>
+                <div class="col-sm-12">
+                  <div id="type_download_file_content" class="collapse fade {% if not import_import_xml_type %}in{% endif %}">
+                    <p>Выберите файл для загрузки</p>
+                    <button type="button" id="button-upload">Завантажити</button>
+                  </div>
+                  <div id="type_download_url_content" class="collapse fade {% if import_import_xml_type %}in{% endif %}">
+                    <p>Укажите ссылку для загрузки</p>
+                    <div class="input-group">
+                    <input type="text" value="{{ import_import_xml_url }}" name="import_import_xml_url" class="form-control">
+                      <span class="input-group-addon" id="paste"><i class="fa fa-link" aria-hidden="true"></i></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-12">
+                  <label>{{ entry_setting_category }}</label>
+                  <span  class="help" data-toggle="tooltip" title="{{ help_setting_category }}"><i class="fa fa-info" aria-hidden="true"></i></span>
+                </div>
+                <label class="col-sm-3">
+                  {{ entry_setting_category_status }}
+                </label>
+                <div class="col-sm-9">
+                  <div class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-default btn-danger{% if not import_import_xml_status_category %} active {% endif %}">
+                      <input type="radio" name="import_import_xml_status_category" value="0" {% if not import_import_xml_status_category %} checked {% endif %}>
+                      <span class="on-off">{{ text_disabled }}</span>
+                    </label>
+                    <label class="btn btn-default {% if import_import_xml_status_category %} active {% endif %}">
+                      <input type="radio" name="import_import_xml_status_category" value="1" {% if import_import_xml_status_category %} checked {% endif %}>
+                      <span class="on-off">{{ text_enabled }}</span>
+                    </label>
+                </div>
+                </div>
+
+              </div>
+              <div class="form-group">
+                <div class="col-sm-12">
+                  <label>{{ entry_setting_product }}</label>
+                  <span  class="help" data-toggle="tooltip" title="{{ help_setting_product}}"><i class="fa fa-info" aria-hidden="true"></i></span>
+                </div>
+                <label class="col-sm-3">
+                  {{ entry_setting_product_status }}
+                </label>
+                <div class="col-sm-9">
+                  <div class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-default btn-danger{% if not import_import_xml_status_product %} active {% endif %}">
+                      <input type="radio" name="import_import_xml_status_product" value="0" {% if not import_import_xml_status_product %} checked {% endif %}>
+                      <span class="on-off">{{ text_disabled }}</span>
+                    </label>
+                    <label class="btn btn-default {% if import_import_xml_status_product %} active {% endif %}">
+                      <input type="radio" name="import_import_xml_status_product" value="1" {% if import_import_xml_status_product %} checked {% endif %}>
+                      <span class="on-off">{{ text_enabled }}</span>
+                    </label>
+                  </div>
+                </div>
+
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-5">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title"><i class="fa fa-download" aria-hidden="true"></i> {{ text_start }}</h4>
+          </div>
+          <div class="panel-body">
+            <button type="button" onclick="importAll()" class="punch">{{ text_start }}</button>
+            <p class="help_start"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title"><i class="fa fa-info-circle" aria-hidden="true"></i> {{ text_result }}</h4>
+          </div>
+          <div class="panel-body">
+            <div id="result"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <form id="upload" enctype="multipart/form-data" class="hidden">
+    <input type="file" name="trs" id="trs">
+    <input type="submit" class="btn btn-default">
+  </form>
+</div>
+
+
+<style>
+  .help_start{
+    display: none;
+  }
+  button.punch {
+    margin-top: 54px;
+  }
+  button.punch {
+    background: #4162a8;
+    border-top: 1px solid #38538c;
+    border-right: 1px solid #1f2d4d;
+    border-bottom: 1px solid #151e33;
+    border-left: 1px solid #1f2d4d;
+    border-radius: 4px;
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 10px 1px #5c8bee, 0 1px 0 #1d2c4d, 0 6px 0 #1f3053, 0 8px 4px 1px #111111;
+    box-shadow: inset 0 1px 10px 1px #5c8bee, 0 1px 0 #1d2c4d, 0 6px 0 #1f3053, 0 8px 4px 1px #111111;
+    color: #fff;
+    font: bold 20px/1 "helvetica neue", helvetica, arial, sans-serif;
+    margin-bottom: 10px;
+    padding: 10px 10px 12px 10px;
+    text-align: center;
+    text-shadow: 0 -1px 1px #1e2d4d;
+    min-width: 150px;
+    -webkit-background-clip: padding-box;
+  }
+  button.punch:active {
+    -webkit-box-shadow: inset 0 1px 10px 1px #5c8bee, 0 1px 0 #1d2c4d, 0 2px 0 #1f3053, 0 4px 3px 0 #111111;
+    box-shadow: inset 0 1px 10px 1px #5c8bee, 0 1px 0 #1d2c4d, 0 2px 0 #1f3053, 0 4px 3px 0 #111111;
+    margin-top: 58px;
+  }
+  button.punch.save{
+    background: #a84141;
+    border-top: 1px solid #8c3838;
+    border-right: 1px solid #4d1f1f;
+    border-bottom: 1px solid #331515;
+    border-left: 1px solid #4d1f1f;
+    border-radius: 4px;
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 10px 1px #ee5c5c, 0 1px 0 #4d1d1d, 0 6px 0 #531f1f, 0 8px 4px 1px #111111;
+    box-shadow: inset 0 1px 10px 1px #ee5c5c, 0 1px 0 #4d1d1d, 0 6px 0 #531f1f, 0 8px 4px 1px #111111;
+    color: #fff;
+    font: bold 20px/1 "helvetica neue", helvetica, arial, sans-serif;
+    margin-bottom: 10px;
+    padding: 10px 10px 12px 10px;
+    text-align: center;
+    text-shadow: 0 -1px 1px #4d1e1e;
+    min-width: 150px;
+    -webkit-background-clip: padding-box;
+  }
+  span.help {
+    background: #4263aa;
+    color: #fff;
+    height: 18px;
+    width: 18px;
+    display: inline-block;
+    text-align: center;
+    border-radius: 100%;
+    cursor: help;
+  }
+</style>
+<script>
+  $(document).ready(function(){
+    $('#form-import :input').change(function(){
+        $('button.punch').addClass('save');
+        $('.help_start').addClass('visible');
+    });
+
+    $('#trs').change(function() {
+      $('#upload').submit(); // Автоматическая отправка формы
+    });
+
+    $('#button-upload').on('click', function(){
+      $('#trs').trigger('click');
+    });
+  });
+
+  /* Завантаження файла */
+  $('#upload').on('submit',function(e) {
+    e.preventDefault();
+
+    var formData = new FormData(this);
+
+    $.ajax({
+      type:'POST', // Тип запроса
+      url: 'index.php?route=extension/import/import_xml/send&user_token={{ user_token }}', //
+      data: formData, // Дані які передаються
+
+      cache:false, // В запросах POST отключено по умолчанию, но перестрахуемся
+      contentType: false, // Тип кодирования данных мы задали в форме, это отключим
+      processData: false, // Отключаем, так как передаем файл
+      beforeSend: function() {
+        $('#result').html('<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 100 100" fill="none" stroke="black" stroke-width="5" > <circle cx="50" cy="50" r="40" stroke-dasharray="64 64" transform="rotate(0 50 50)" > <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="1s" repeatCount="indefinite" /> </circle> </svg>');
+      },
+      success:function(data){
+        $('#result').html('').html('<b>Файл успешно загружен</b>');
+        //$('.step_2').css('display','block');
+      },
+      error:function(data){
+        console.log(data);
+      }
+    })
+  });
+
+  function importAll() {
+    $.ajax({
+      url: "/index.php?route=extension/import/import_xml",
+      cache: false,
+      beforeSend: function() {
+        $('#result').html('<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 100 100" fill="none" stroke="black" stroke-width="5" > <circle cx="50" cy="50" r="40" stroke-dasharray="64 64" transform="rotate(0 50 50)" > <animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="1s" repeatCount="indefinite" /> </circle> </svg>');
+      },
+    })
+    .done(function (html) {
+      $("#result").html(html);
+    });
+  }
+</script>
+{{ footer }}
