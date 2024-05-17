@@ -13,4 +13,4 @@ jobs:
         server: sochinen.ftp.tools
         username: sochinen_testgit
         password: me4Di9V2E5
-        server-dir: /home/sochinen/start-site.com.ua/first_rep/
+        server-dir: first_rep/
